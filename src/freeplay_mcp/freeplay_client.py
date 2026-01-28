@@ -75,23 +75,29 @@ class FreeplayClient:
         data = await self._request("GET", "/api/v2/projects/all")
         return data.get("projects", data) if isinstance(data, dict) else data
 
-    async def search_completions(
+    def _build_filters(
         self,
-        project_id: str,
-        query: str | None = None,
-        limit: int = 20,
-        offset: int = 0,
         start_date: str | None = None,
         end_date: str | None = None,
         environment: str | None = None,
         template_name: str | None = None,
+        prompt_template_id: str | None = None,
+        model: str | None = None,
+        provider: str | None = None,
+        session_id: str | None = None,
+        completion_id: str | None = None,
+        agent_name: str | None = None,
+        review_status: str | None = None,
+        cost_min: float | None = None,
+        cost_max: float | None = None,
+        latency_min: float | None = None,
+        latency_max: float | None = None,
     ) -> dict[str, Any]:
-        """Search completions in a project."""
-        # Build filters based on provided criteria
+        """Build filter conditions for search endpoints."""
         filter_conditions: list[dict[str, Any]] = []
 
+        # Date/time filters
         if start_date is not None:
-            # Ensure date has time component for API compatibility
             start_value = start_date if " " in start_date else f"{start_date} 00:00:00"
             filter_conditions.append({
                 "field": "start_time",
@@ -99,33 +105,108 @@ class FreeplayClient:
                 "value": start_value,
             })
         if end_date is not None:
-            # Ensure date has time component for API compatibility
             end_value = end_date if " " in end_date else f"{end_date} 23:59:59"
             filter_conditions.append({
                 "field": "start_time",
                 "op": "lte",
                 "value": end_value,
             })
-        if environment is not None:
+
+        # Equality filters
+        equality_filters = [
+            ("environment", environment),
+            ("prompt_template", template_name),
+            ("prompt_template_id", prompt_template_id),
+            ("model", model),
+            ("provider", provider),
+            ("session_id", session_id),
+            ("completion_id", completion_id),
+            ("agent_name", agent_name),
+            ("review_status", review_status),
+        ]
+        for field, value in equality_filters:
+            if value is not None:
+                filter_conditions.append({
+                    "field": field,
+                    "op": "eq",
+                    "value": value,
+                })
+
+        # Range filters (cost)
+        if cost_min is not None:
             filter_conditions.append({
-                "field": "environment",
-                "op": "eq",
-                "value": environment,
+                "field": "cost",
+                "op": "gte",
+                "value": cost_min,
             })
-        if template_name is not None:
+        if cost_max is not None:
             filter_conditions.append({
-                "field": "prompt_template",
-                "op": "eq",
-                "value": template_name,
+                "field": "cost",
+                "op": "lte",
+                "value": cost_max,
+            })
+
+        # Range filters (latency)
+        if latency_min is not None:
+            filter_conditions.append({
+                "field": "latency",
+                "op": "gte",
+                "value": latency_min,
+            })
+        if latency_max is not None:
+            filter_conditions.append({
+                "field": "latency",
+                "op": "lte",
+                "value": latency_max,
             })
 
         # Construct the filters object
         if len(filter_conditions) == 0:
-            filters: dict[str, Any] = {}
+            return {}
         elif len(filter_conditions) == 1:
-            filters = filter_conditions[0]
+            return filter_conditions[0]
         else:
-            filters = {"and": filter_conditions}
+            return {"and": filter_conditions}
+
+    async def search_completions(
+        self,
+        project_id: str,
+        limit: int = 20,
+        offset: int = 0,
+        start_date: str | None = None,
+        end_date: str | None = None,
+        environment: str | None = None,
+        template_name: str | None = None,
+        prompt_template_id: str | None = None,
+        model: str | None = None,
+        provider: str | None = None,
+        session_id: str | None = None,
+        completion_id: str | None = None,
+        agent_name: str | None = None,
+        review_status: str | None = None,
+        cost_min: float | None = None,
+        cost_max: float | None = None,
+        latency_min: float | None = None,
+        latency_max: float | None = None,
+    ) -> dict[str, Any]:
+        """Search completions in a project."""
+        filters = self._build_filters(
+            start_date=start_date,
+            end_date=end_date,
+            environment=environment,
+            template_name=template_name,
+            prompt_template_id=prompt_template_id,
+            model=model,
+            provider=provider,
+            session_id=session_id,
+            completion_id=completion_id,
+            agent_name=agent_name,
+            review_status=review_status,
+            cost_min=cost_min,
+            cost_max=cost_max,
+            latency_min=latency_min,
+            latency_max=latency_max,
+        )
 
         body: dict[str, Any] = {"filters": filters}
 
@@ -136,6 +217,106 @@ class FreeplayClient:
         return await self._request(
             "POST",
             f"/api/v2/projects/{project_id}/search/completions",
+            json=body,
+            params={"page": page, "page_size": page_size},
+        )
+
+    async def search_traces(
+        self,
+        project_id: str,
+        limit: int = 20,
+        offset: int = 0,
+        start_date: str | None = None,
+        end_date: str | None = None,
+        environment: str | None = None,
+        template_name: str | None = None,
+        prompt_template_id: str | None = None,
+        model: str | None = None,
+        provider: str | None = None,
+        session_id: str | None = None,
+        agent_name: str | None = None,
+        review_status: str | None = None,
+        cost_min: float | None = None,
+        cost_max: float | None = None,
+        latency_min: float | None = None,
+        latency_max: float | None = None,
+    ) -> dict[str, Any]:
+        """Search traces in a project."""
+        filters = self._build_filters(
+            start_date=start_date,
+            end_date=end_date,
+            environment=environment,
+            template_name=template_name,
+            prompt_template_id=prompt_template_id,
+            model=model,
+            provider=provider,
+            session_id=session_id,
+            agent_name=agent_name,
+            review_status=review_status,
+            cost_min=cost_min,
+            cost_max=cost_max,
+            latency_min=latency_min,
+            latency_max=latency_max,
+        )
+
+        body: dict[str, Any] = {"filters": filters}
+
+        page_size = limit
+        page = (offset // limit) + 1 if limit > 0 else 1
+
+        return await self._request(
+            "POST",
+            f"/api/v2/projects/{project_id}/search/traces",
+            json=body,
+            params={"page": page, "page_size": page_size},
+        )
+
+    async def search_sessions(
+        self,
+        project_id: str,
+        limit: int = 20,
+        offset: int = 0,
+        start_date: str | None = None,
+        end_date: str | None = None,
+        environment: str | None = None,
+        template_name: str | None = None,
+        prompt_template_id: str | None = None,
+        model: str | None = None,
+        provider: str | None = None,
+        session_id: str | None = None,
+        agent_name: str | None = None,
+        review_status: str | None = None,
+        cost_min: float | None = None,
+        cost_max: float | None = None,
+        latency_min: float | None = None,
+        latency_max: float | None = None,
+    ) -> dict[str, Any]:
+        """Search sessions in a project."""
+        filters = self._build_filters(
+            start_date=start_date,
+            end_date=end_date,
+            environment=environment,
+            template_name=template_name,
+            prompt_template_id=prompt_template_id,
+            model=model,
+            provider=provider,
+            session_id=session_id,
+            agent_name=agent_name,
+            review_status=review_status,
+            cost_min=cost_min,
+            cost_max=cost_max,
+            latency_min=latency_min,
+            latency_max=latency_max,
+        )
+
+        body: dict[str, Any] = {"filters": filters}
+
+        page_size = limit
+        page = (offset // limit) + 1 if limit > 0 else 1
+
+        return await self._request(
+            "POST",
+            f"/api/v2/projects/{project_id}/search/sessions",
             json=body,
             params={"page": page, "page_size": page_size},
         )
