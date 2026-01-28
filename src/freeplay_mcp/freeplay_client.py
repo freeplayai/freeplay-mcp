@@ -74,3 +74,64 @@ class FreeplayClient:
         """List all projects accessible to the authenticated user."""
         data = await self._request("GET", "/api/v2/projects/all")
         return data.get("projects", data) if isinstance(data, dict) else data
+
+    async def search_completions(
+        self,
+        project_id: str,
+        query: str | None = None,
+        limit: int = 20,
+        offset: int = 0,
+        start_date: str | None = None,
+        end_date: str | None = None,
+        environment: str | None = None,
+        template_name: str | None = None,
+    ) -> dict[str, Any]:
+        """Search completions in a project."""
+        # Build filters based on provided criteria
+        filter_conditions: list[dict[str, Any]] = []
+
+        if start_date is not None:
+            filter_conditions.append({
+                "field": "completion_metadata.start_time",
+                "op": "gte",
+                "value": start_date,
+            })
+        if end_date is not None:
+            filter_conditions.append({
+                "field": "completion_metadata.start_time",
+                "op": "lte",
+                "value": end_date,
+            })
+        if environment is not None:
+            filter_conditions.append({
+                "field": "completion_metadata.environment",
+                "op": "eq",
+                "value": environment,
+            })
+        if template_name is not None:
+            filter_conditions.append({
+                "field": "completion_metadata.prompt_template.name",
+                "op": "eq",
+                "value": template_name,
+            })
+
+        # Construct the filters object
+        if len(filter_conditions) == 0:
+            filters: dict[str, Any] = {}
+        elif len(filter_conditions) == 1:
+            filters = filter_conditions[0]
+        else:
+            filters = {"and": filter_conditions}
+
+        body: dict[str, Any] = {"filters": filters}
+
+        # Convert limit/offset to page/page_size
+        page_size = limit
+        page = (offset // limit) + 1 if limit > 0 else 1
+
+        return await self._request(
+            "POST",
+            f"/api/v2/projects/{project_id}/search/completions",
+            json=body,
+            params={"page": page, "page_size": page_size},
+        )

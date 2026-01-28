@@ -1,12 +1,11 @@
 """Freeplay MCP Server - Workflow-oriented tools for the Freeplay API."""
 
-import json
 import logging
 import sys
 
 from mcp.server.fastmcp import FastMCP
 
-from freeplay_mcp.client import FreeplayClient
+from freeplay_mcp.freeplay_client import FreeplayClient
 
 # Configure logging to stderr (stdout corrupts MCP JSON-RPC)
 logging.basicConfig(
@@ -74,10 +73,7 @@ async def search_completions(
     environment: str | None = None,
     template_name: str | None = None,
 ) -> str:
-    """Build a search completions API request without executing it.
-
-    Returns the HTTP request details as JSON for the calling agent to execute.
-    This allows the agent to inspect, modify, or execute the request as needed.
+    """Search logged completions in a Freeplay project.
 
     Args:
         project_id: The Freeplay project ID (required)
@@ -91,42 +87,54 @@ async def search_completions(
     """
     try:
         client = get_client()
+        result = await client.search_completions(
+            project_id=project_id,
+            query=query,
+            limit=limit,
+            offset=offset,
+            start_date=start_date,
+            end_date=end_date,
+            environment=environment,
+            template_name=template_name,
+        )
 
-        # Build request body with only provided parameters
-        body: dict = {
-            "project_id": project_id,
-            "limit": limit,
-            "offset": offset,
-        }
+        completions = result.get("data", result.get("completions", []))
+        pagination = result.get("pagination", {})
+        has_next = pagination.get("has_next", False)
 
-        if query is not None:
-            body["query"] = query
-        if start_date is not None:
-            body["start_date"] = start_date
-        if end_date is not None:
-            body["end_date"] = end_date
-        if environment is not None:
-            body["environment"] = environment
-        if template_name is not None:
-            body["template_name"] = template_name
+        if not completions:
+            return "No completions found matching the search criteria."
 
-        # Build the request object
-        request_info = {
-            "method": "POST",
-            "url": f"{client.base_url}/api/v2/search/completions",
-            "headers": {
-                "Authorization": "Bearer {FREEPLAY_API_KEY}",
-                "Content-Type": "application/json",
-                "Accept": "application/json",
-            },
-            "body": body,
-        }
+        lines = [f"Found {len(completions)} completions (has_next: {has_next}):", ""]
 
-        return json.dumps(request_info, indent=2)
+        for comp in completions:
+            comp_id = comp.get("completion_id", comp.get("id", "unknown"))
+            metadata = comp.get("completion_metadata", {})
+            start_time = metadata.get("start_time", "unknown")
+            template_info = metadata.get("prompt_template", {})
+            template = template_info.get("name", "N/A") if template_info else "N/A"
+            env = metadata.get("environment", "N/A")
+            model = metadata.get("model", "N/A")
+
+            lines.append(f"- ID: {comp_id}")
+            lines.append(f"  Template: {template} | Env: {env} | Model: {model}")
+            lines.append(f"  Time: {start_time}")
+
+            # Show truncated input/output if available
+            if messages := comp.get("messages"):
+                last_msg = messages[-1] if messages else {}
+                content = str(last_msg.get("content", ""))[:100]
+                if len(str(last_msg.get("content", ""))) > 100:
+                    content += "..."
+                lines.append(f"  Last message: {content}")
+
+            lines.append("")
+
+        return "\n".join(lines)
 
     except Exception as e:
-        logger.exception("Error building search completions request")
-        return json.dumps({"error": str(e)})
+        logger.exception("Error searching completions")
+        return f"Error searching completions: {e}"
 
 
 def main() -> None:
