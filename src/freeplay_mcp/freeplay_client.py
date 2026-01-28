@@ -91,26 +91,30 @@ class FreeplayClient:
         filter_conditions: list[dict[str, Any]] = []
 
         if start_date is not None:
+            # Ensure date has time component for API compatibility
+            start_value = start_date if " " in start_date else f"{start_date} 00:00:00"
             filter_conditions.append({
-                "field": "completion_metadata.start_time",
+                "field": "start_time",
                 "op": "gte",
-                "value": start_date,
+                "value": start_value,
             })
         if end_date is not None:
+            # Ensure date has time component for API compatibility
+            end_value = end_date if " " in end_date else f"{end_date} 23:59:59"
             filter_conditions.append({
-                "field": "completion_metadata.start_time",
+                "field": "start_time",
                 "op": "lte",
-                "value": end_date,
+                "value": end_value,
             })
         if environment is not None:
             filter_conditions.append({
-                "field": "completion_metadata.environment",
+                "field": "environment",
                 "op": "eq",
                 "value": environment,
             })
         if template_name is not None:
             filter_conditions.append({
-                "field": "completion_metadata.prompt_template.name",
+                "field": "prompt_template",
                 "op": "eq",
                 "value": template_name,
             })
