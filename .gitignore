@@ -12,3 +12,4 @@ __pycache__/
 .env.production.local
 .env.test.local
 .env.test.local.example
+.idea
