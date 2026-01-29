@@ -2,7 +2,23 @@
 
 ## Overview
 
-Create a **workflow-oriented** MCP server that provides high-level operations for common Freeplay tasks, rather than exposing every API endpoint directly.
+A **workflow-oriented** MCP server that provides high-level operations for common Freeplay tasks, rather than
+exposing every API endpoint directly.
+
+## Installation instructions
+
+### Claude Code
+
+1. Clone this repository locally.
+1. Add the Freeplay MCP server to your claude code. From this directory.
+    ```shell
+   claude mcp add --transport stdio freeplay-mcp-v1 -- uv run main.py
+    ```
+1. Configure `.env` and:
+   ```shell
+   source .env 
+   ```
+1. Start Claude code and run `/mcp` to check installation.
 
 ## Project Structure
 
@@ -30,18 +46,18 @@ freeplay-mcp/
 
 ## Proposed Workflow Tools (Not 1:1 API Mapping)
 
-| Tool | Description | Combines APIs |
-|------|-------------|---------------|
-| `list_projects` | List available projects | Foundation for all other operations |
-| `list_prompt_templates` | List templates in a project | GET templates |
-| `get_prompt_template` | Get template with current versions | GET template + versions |
-| `create_prompt_version` | Create a new version of a prompt | POST version by name/ID |
-| `deploy_prompt_version` | Deploy a version to an environment (dev/staging/prod) | POST environments |
-| `list_datasets` | List prompt datasets in a project | GET datasets |
-| `create_test_run` | Run tests against a dataset for a prompt | POST test-runs |
-| `get_test_run_results` | Get test run results with statistics | GET test-run results |
-| `search_completions` | Search logged completions with filters | POST search/completions |
-| `get_prompt_statistics` | Get evaluation statistics for a prompt | POST statistics |
+| Tool                    | Description                                           | Combines APIs                       |
+|-------------------------|-------------------------------------------------------|-------------------------------------|
+| `list_projects`         | List available projects                               | Foundation for all other operations |
+| `list_prompt_templates` | List templates in a project                           | GET templates                       |
+| `get_prompt_template`   | Get template with current versions                    | GET template + versions             |
+| `create_prompt_version` | Create a new version of a prompt                      | POST version by name/ID             |
+| `deploy_prompt_version` | Deploy a version to an environment (dev/staging/prod) | POST environments                   |
+| `list_datasets`         | List prompt datasets in a project                     | GET datasets                        |
+| `create_test_run`       | Run tests against a dataset for a prompt              | POST test-runs                      |
+| `get_test_run_results`  | Get test run results with statistics                  | GET test-run results                |
+| `search_completions`    | Search logged completions with filters                | POST search/completions             |
+| `get_prompt_statistics` | Get evaluation statistics for a prompt                | POST statistics                     |
 
 ## Freeplay Action Workflows
 
@@ -60,11 +76,11 @@ e.g. ```create_and_deploy_prompt```
 ```python
 @mcp.tool()
 async def create_prompt_version(
-    project_id: str,
-    template_name: str,
-    messages: list[dict],
-    model: str = "gpt-4",
-    temperature: float = 0.7
+        project_id: str,
+        template_name: str,
+        messages: list[dict],
+        model: str = "gpt-4",
+        temperature: float = 0.7
 ) -> str:
     """Create a new version of a prompt template.
 
@@ -97,7 +113,14 @@ uv run mcp run src/freeplay_mcp/server.py
   "mcpServers": {
     "freeplay": {
       "command": "uv",
-      "args": ["--directory", "/path/to/freeplay-mcp", "run", "python", "-m", "freeplay_mcp.server"],
+      "args": [
+        "--directory",
+        "/path/to/freeplay-mcp",
+        "run",
+        "python",
+        "-m",
+        "freeplay_mcp.server"
+      ],
       "env": {
         "FREEPLAY_API_KEY": "your-api-key"
       }
