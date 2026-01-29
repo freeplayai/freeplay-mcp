@@ -10,7 +10,15 @@ exposing every API endpoint directly.
 ### Claude Code
 
 1. Clone this repository locally.
-1. Add the Freeplay MCP server to your claude code. From this directory.
+   ```shell
+   git clone git@github.com:freeplayai/freeplay-mcp.git
+   ```
+1.
+   ```shell
+   cd freeplay-mcp
+   uv sync # install dependencies
+   ```
+1. Add the Freeplay MCP server to your claude code. From the freeplay-mcp directly.
     ```shell
    claude mcp add --transport stdio freeplay-mcp-v1 -- uv run main.py
     ```
