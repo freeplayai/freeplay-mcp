@@ -10,6 +10,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', '..', 'sw
 from swagger_client.models.search_request import SearchRequest
 
 from ..api_client import get_search_api, build_filters
+from ..response import ListItem, ListResponse
 
 logger = logging.getLogger(__name__)
 
@@ -56,61 +57,55 @@ async def search_sessions(
         latency_min: Filter by minimum latency (ms)
         latency_max: Filter by maximum latency (ms)
     """
-    try:
-        api = get_search_api()
-        filters = build_filters(
-            start_date=start_date, end_date=end_date, environment=environment,
-            template_name=template_name, prompt_template_id=prompt_template_id,
-            model=model, provider=provider, session_id=session_id,
-            agent_name=agent_name, review_status=review_status,
-            cost_min=cost_min, cost_max=cost_max,
-            latency_min=latency_min, latency_max=latency_max,
-        )
+    api = get_search_api()
+    filters = build_filters(
+        start_date=start_date, end_date=end_date, environment=environment,
+        template_name=template_name, prompt_template_id=prompt_template_id,
+        model=model, provider=provider, session_id=session_id,
+        agent_name=agent_name, review_status=review_status,
+        cost_min=cost_min, cost_max=cost_max,
+        latency_min=latency_min, latency_max=latency_max,
+    )
 
-        page_size = limit
-        page = (offset // limit) + 1 if limit > 0 else 1
-        body = SearchRequest(filters=filters)
+    page_size = limit
+    page = (offset // limit) + 1 if limit > 0 else 1
+    body = SearchRequest(filters=filters)
 
-        result = await asyncio.to_thread(
-            api.post_search_sessions, project_id, body=body, page=page, page_size=page_size
-        )
+    result = await asyncio.to_thread(
+        api.post_search_sessions, project_id, body=body, page=page, page_size=page_size
+    )
 
-        sessions = result.data if hasattr(result, 'data') else []
-        pagination = result.pagination if hasattr(result, 'pagination') else {}
-        has_next = pagination.has_next if hasattr(pagination, 'has_next') else False
+    sessions = result.data if hasattr(result, 'data') else []
+    pagination = result.pagination if hasattr(result, 'pagination') else {}
+    has_next = pagination.has_next if hasattr(pagination, 'has_next') else False
 
-        if not sessions:
-            return "No sessions found matching the search criteria."
+    items = []
+    for session in sessions:
+        if isinstance(session, dict):
+            sess_id = session.get('session_id', session.get('id', 'unknown'))
+            env = session.get('environment', 'N/A')
+            start_time = session.get('start_time', 'unknown')
+            metadata = session.get('custom_metadata', {}) or {}
+        else:
+            sess_id = getattr(session, 'session_id', getattr(session, 'id', 'unknown'))
+            env = getattr(session, 'environment', 'N/A')
+            start_time = getattr(session, 'start_time', 'unknown')
+            metadata = getattr(session, 'custom_metadata', {}) or {}
 
-        lines = [f"Found {len(sessions)} sessions (has_next: {has_next}):", ""]
+        lines = [
+            f"Environment: {env}",
+            f"Time: {start_time}",
+        ]
+        if metadata and isinstance(metadata, dict):
+            meta_str = ", ".join(f"{k}={v}" for k, v in list(metadata.items())[:3])
+            if len(metadata) > 3:
+                meta_str += ", ..."
+            lines.append(f"Metadata: {meta_str}")
 
-        for session in sessions:
-            # Handle both dict and object access patterns (API returns dicts)
-            if isinstance(session, dict):
-                sess_id = session.get('session_id', session.get('id', 'unknown'))
-                env = session.get('environment', 'N/A')
-                start_time = session.get('start_time', 'unknown')
-                metadata = session.get('custom_metadata', {}) or {}
-            else:
-                sess_id = getattr(session, 'session_id', getattr(session, 'id', 'unknown'))
-                env = getattr(session, 'environment', 'N/A')
-                start_time = getattr(session, 'start_time', 'unknown')
-                metadata = getattr(session, 'custom_metadata', {}) or {}
+        items.append(ListItem(id=sess_id, title=f"ID: {sess_id}", lines=lines))
 
-            lines.append(f"- ID: {sess_id}")
-            lines.append(f"  Environment: {env}")
-            lines.append(f"  Time: {start_time}")
-            if metadata:
-                if isinstance(metadata, dict):
-                    meta_str = ", ".join(f"{k}={v}" for k, v in list(metadata.items())[:3])
-                    if len(metadata) > 3:
-                        meta_str += ", ..."
-                    lines.append(f"  Metadata: {meta_str}")
-
-            lines.append("")
-
-        return "\n".join(lines)
-
-    except Exception as e:
-        logger.exception("Error searching sessions")
-        return f"Error searching sessions: {e}"
+    return ListResponse(
+        header=f"Found {len(items)} sessions",
+        items=items,
+        has_next=has_next,
+    ).render()

@@ -10,6 +10,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', '..', 'sw
 from swagger_client.models.search_request import SearchRequest
 
 from ..api_client import get_search_api, build_filters
+from ..response import ListItem, ListResponse
 
 logger = logging.getLogger(__name__)
 
@@ -57,71 +58,66 @@ async def search_traces(
         latency_min: Filter by minimum latency (ms)
         latency_max: Filter by maximum latency (ms)
     """
-    try:
-        api = get_search_api()
-        filters = build_filters(
-            start_date=start_date, end_date=end_date, environment=environment,
-            template_name=template_name, prompt_template_id=prompt_template_id,
-            model=model, provider=provider, session_id=session_id,
-            agent_name=agent_name, review_status=review_status,
-            cost_min=cost_min, cost_max=cost_max,
-            latency_min=latency_min, latency_max=latency_max,
-        )
+    api = get_search_api()
+    filters = build_filters(
+        start_date=start_date, end_date=end_date, environment=environment,
+        template_name=template_name, prompt_template_id=prompt_template_id,
+        model=model, provider=provider, session_id=session_id,
+        agent_name=agent_name, review_status=review_status,
+        cost_min=cost_min, cost_max=cost_max,
+        latency_min=latency_min, latency_max=latency_max,
+    )
 
-        page_size = limit
-        page = (offset // limit) + 1 if limit > 0 else 1
-        body = SearchRequest(filters=filters)
+    page_size = limit
+    page = (offset // limit) + 1 if limit > 0 else 1
+    body = SearchRequest(filters=filters)
 
-        result = await asyncio.to_thread(
-            api.post_search_traces, project_id, body=body, page=page, page_size=page_size
-        )
+    result = await asyncio.to_thread(
+        api.post_search_traces, project_id, body=body, page=page, page_size=page_size
+    )
 
-        traces = result.data if hasattr(result, 'data') else []
-        pagination = result.pagination if hasattr(result, 'pagination') else {}
-        has_next = pagination.has_next if hasattr(pagination, 'has_next') else False
+    traces = result.data if hasattr(result, 'data') else []
+    pagination = result.pagination if hasattr(result, 'pagination') else {}
+    has_next = pagination.has_next if hasattr(pagination, 'has_next') else False
 
-        if not traces:
-            return "No traces found matching the search criteria."
+    items = []
+    for trace in traces:
+        if isinstance(trace, dict):
+            trace_id = trace.get('trace_id', trace.get('id', 'unknown'))
+            name = trace.get('name', 'N/A')
+            kind = trace.get('kind', 'N/A')
+            agent = trace.get('agent_name', 'N/A')
+            start_time = trace.get('start_time', 'unknown')
+            end_time = trace.get('end_time', 'unknown')
+            parent_id = trace.get('parent_id')
+            trace_input = trace.get('input', '')
+        else:
+            trace_id = getattr(trace, 'trace_id', getattr(trace, 'id', 'unknown'))
+            name = getattr(trace, 'name', 'N/A')
+            kind = getattr(trace, 'kind', 'N/A')
+            agent = getattr(trace, 'agent_name', 'N/A')
+            start_time = getattr(trace, 'start_time', 'unknown')
+            end_time = getattr(trace, 'end_time', 'unknown')
+            parent_id = getattr(trace, 'parent_id', None)
+            trace_input = getattr(trace, 'input', '')
 
-        lines = [f"Found {len(traces)} traces (has_next: {has_next}):", ""]
+        lines = [
+            f"Name: {name} | Kind: {kind} | Agent: {agent}",
+            f"Time: {start_time} -> {end_time}",
+        ]
+        if parent_id:
+            lines.append(f"Parent: {parent_id}")
 
-        for trace in traces:
-            # Handle both dict and object access patterns (API returns dicts)
-            if isinstance(trace, dict):
-                trace_id = trace.get('trace_id', trace.get('id', 'unknown'))
-                name = trace.get('name', 'N/A')
-                kind = trace.get('kind', 'N/A')
-                agent = trace.get('agent_name', 'N/A')
-                start_time = trace.get('start_time', 'unknown')
-                end_time = trace.get('end_time', 'unknown')
-                parent_id = trace.get('parent_id')
-                trace_input = trace.get('input', '')
-            else:
-                trace_id = getattr(trace, 'trace_id', getattr(trace, 'id', 'unknown'))
-                name = getattr(trace, 'name', 'N/A')
-                kind = getattr(trace, 'kind', 'N/A')
-                agent = getattr(trace, 'agent_name', 'N/A')
-                start_time = getattr(trace, 'start_time', 'unknown')
-                end_time = getattr(trace, 'end_time', 'unknown')
-                parent_id = getattr(trace, 'parent_id', None)
-                trace_input = getattr(trace, 'input', '')
+        if trace_input:
+            content = str(trace_input)[:100]
+            if len(str(trace_input)) > 100:
+                content += "..."
+            lines.append(f"Input: {content}")
 
-            lines.append(f"- ID: {trace_id}")
-            lines.append(f"  Name: {name} | Kind: {kind} | Agent: {agent}")
-            lines.append(f"  Time: {start_time} -> {end_time}")
-            if parent_id:
-                lines.append(f"  Parent: {parent_id}")
+        items.append(ListItem(id=trace_id, title=f"ID: {trace_id}", lines=lines))
 
-            if trace_input:
-                content = str(trace_input)[:100]
-                if len(str(trace_input)) > 100:
-                    content += "..."
-                lines.append(f"  Input: {content}")
-
-            lines.append("")
-
-        return "\n".join(lines)
-
-    except Exception as e:
-        logger.exception("Error searching traces")
-        return f"Error searching traces: {e}"
+    return ListResponse(
+        header=f"Found {len(items)} traces",
+        items=items,
+        has_next=has_next,
+    ).render()
