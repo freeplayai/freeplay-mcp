@@ -9,6 +9,7 @@ from .traces import search_traces
 from .sessions import search_sessions
 from .prompts import list_prompt_templates, get_prompt_version, create_prompt_version_and_deploy
 from .logging_analysis import find_logging_issues
+from .prompt_optimization import optimize_prompt
 
 __all__ = [
     "list_projects",
@@ -19,4 +20,5 @@ __all__ = [
     "get_prompt_version",
     "create_prompt_version_and_deploy",
     "find_logging_issues",
+    "optimize_prompt",
 ]

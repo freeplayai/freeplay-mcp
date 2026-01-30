@@ -3,7 +3,7 @@
 import logging
 import sys
 
-from mcp.server.fastmcp import FastMCP
+from fastmcp import FastMCP
 
 from .tools import (
     list_projects,
@@ -14,6 +14,7 @@ from .tools import (
     get_prompt_version,
     create_prompt_version_and_deploy,
     find_logging_issues,
+    optimize_prompt,
 )
 
 # Configure logging to stderr (stdout corrupts MCP JSON-RPC)
@@ -41,6 +42,9 @@ TOOLS = [
 
 for tool in TOOLS:
     mcp.tool()(tool)
+
+# Register task-enabled tools (long-running async operations)
+mcp.tool(task=True)(optimize_prompt)
 
 
 def main() -> None:
