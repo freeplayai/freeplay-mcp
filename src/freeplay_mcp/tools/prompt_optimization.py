@@ -55,7 +55,7 @@ async def _start_optimization_job(
         payload["user_instructions"] = user_instructions
 
     response = await client.post(
-        f"/v2/projects/{project_id}/prompt-optimization-jobs",
+        f"/api/v2/projects/{project_id}/prompt-optimization-jobs",
         json=payload,
     )
     response.raise_for_status()
@@ -68,7 +68,7 @@ async def _get_job_status(
     job_id: str,
 ) -> dict:
     response = await client.get(
-        f"/v2/projects/{project_id}/prompt-optimization-jobs/{job_id}",
+        f"/api/v2/projects/{project_id}/prompt-optimization-jobs/{job_id}",
     )
     response.raise_for_status()
     return response.json()

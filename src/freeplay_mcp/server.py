@@ -15,6 +15,7 @@ from .tools import (
     create_prompt_version_and_deploy,
     find_logging_issues,
     optimize_prompt,
+    generate_comparison_insights,
 )
 
 # Configure logging to stderr (stdout corrupts MCP JSON-RPC)
@@ -45,6 +46,7 @@ for tool in TOOLS:
 
 # Register task-enabled tools (long-running async operations)
 mcp.tool(task=True)(optimize_prompt)
+mcp.tool(task=True)(generate_comparison_insights)
 
 
 def main() -> None:
