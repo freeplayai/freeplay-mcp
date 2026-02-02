@@ -9,8 +9,8 @@ Method | HTTP request | Description
 [**delete_delete_theme**](DefaultApi.md#delete_delete_theme) | **DELETE** /api/v2/projects/{project_id}/review-themes/{theme_id} | Delete Review Theme
 [**get_get_agent**](DefaultApi.md#get_get_agent) | **GET** /api/v2/projects/{project_id}/agents/{agent_id} | 
 [**get_get_agents**](DefaultApi.md#get_get_agents) | **GET** /api/v2/projects/{project_id}/agents | 
-[**get_get_theme**](DefaultApi.md#get_get_theme) | **GET** /api/v2/projects/{project_id}/review-themes/{theme_id} | Get Review Theme
-[**get_list_themes**](DefaultApi.md#get_list_themes) | **GET** /api/v2/projects/{project_id}/review-themes | List Review Themes
+[**get_get_insights**](DefaultApi.md#get_get_insights) | **GET** /api/v2/projects/{project_id}/insights | Get Insights
+
 [**patch_update_agent**](DefaultApi.md#patch_update_agent) | **PATCH** /api/v2/projects/{project_id}/agents/{agent_id} | 
 [**patch_update_evaluation_criteria**](DefaultApi.md#patch_update_evaluation_criteria) | **PATCH** /api/v2/projects/{project_id}/evaluation-criteria/id/{criteria_id} | 
 [**post_create_agent**](DefaultApi.md#post_create_agent) | **POST** /api/v2/projects/{project_id}/agents | 
@@ -258,6 +258,63 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**GetAgentsResponsePayload**](GetAgentsResponsePayload.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **get_get_insights**
+> object get_get_insights(project_id, page=page, page_size=page_size, prompt_template_id=prompt_template_id, agent_id=agent_id)
+
+Get Insights
+
+ Retrieve a paginated list of insights for a project. Use to discover insights or filter by prompt template or agent.
+
+### Example
+```python
+from __future__ import print_function
+import time
+import swagger_client
+from swagger_client.rest import ApiException
+from pprint import pprint
+
+
+# create an instance of the API class
+api_instance = swagger_client.DefaultApi(swagger_client.ApiClient(configuration))
+project_id = NULL # object | 
+page = 1 # object |  (optional) (default to 1)
+page_size = 30 # object |  (optional) (default to 30)
+prompt_template_id = NULL # object |  (optional)
+agent_id = NULL # object |  (optional)
+
+try:
+    # Get Insights
+    api_response = api_instance.get_get_insights(project_id, page=page, page_size=page_size, prompt_template_id=prompt_template_id, agent_id=agent_id)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling DefaultApi->get_get_insights: %s\n" % e)
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **project_id** | [**object**](.md)|  | 
+ **page** | [**object**](.md)|  | [optional] [default to 1]
+ **page_size** | [**object**](.md)|  | [optional] [default to 30]
+ **prompt_template_id** | [**object**](.md)|  | [optional] 
+ **agent_id** | [**object**](.md)|  | [optional] 
+
+### Return type
+
+**object**
 
 ### Authorization
 
