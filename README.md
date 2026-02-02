@@ -137,6 +137,18 @@ uv run mcp run src/freeplay_mcp/server.py
 }
 ```
 
+## Security Limitations
+
+This MCP server, like all MCP servers, operates within the security model
+defined by the MCP host (e.g., Claude Code). We cannot prevent:
+
+- Data exfiltration through composition with other MCP servers
+- Prompt injection attacks that span multiple tools
+- Malicious MCP servers from accessing data retrieved by this tool
+
+Users should only connect MCP servers they fully trust and understand
+that all connected servers operate within a shared security context.
+
 ## Open Questions
 
 1. Are there specific workflows to prioritize beyond prompt versioning?
