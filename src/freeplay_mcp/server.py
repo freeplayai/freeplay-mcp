@@ -15,6 +15,7 @@ from .tools import (
     create_prompt_version_and_deploy,
     find_logging_issues,
     optimize_prompt,
+    list_insights,
 )
 
 # Configure logging to stderr (stdout corrupts MCP JSON-RPC)
@@ -38,6 +39,7 @@ TOOLS = [
     get_prompt_version,
     create_prompt_version_and_deploy,
     find_logging_issues,
+    list_insights,
 ]
 
 for tool in TOOLS:
