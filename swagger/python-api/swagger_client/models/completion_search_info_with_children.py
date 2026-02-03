@@ -30,6 +30,7 @@ class CompletionSearchInfoWithChildren(object):
     swagger_types = {
         'completion_id': 'object',
         'session_id': 'object',
+        'review_queue_id': 'object',
         'evaluation_results': 'EvaluationResultsInfo',
         'completion_metadata': 'CompletionMetadataInfo',
         'customer_feedback': 'object',
@@ -42,6 +43,7 @@ class CompletionSearchInfoWithChildren(object):
     attribute_map = {
         'completion_id': 'completion_id',
         'session_id': 'session_id',
+        'review_queue_id': 'review_queue_id',
         'evaluation_results': 'evaluation_results',
         'completion_metadata': 'completion_metadata',
         'customer_feedback': 'customer_feedback',
@@ -51,10 +53,11 @@ class CompletionSearchInfoWithChildren(object):
         'children': 'children'
     }
 
-    def __init__(self, completion_id=None, session_id=None, evaluation_results=None, completion_metadata=None, customer_feedback=None, usage=None, messages=None, input_variables=None, children=None):  # noqa: E501
+    def __init__(self, completion_id=None, session_id=None, review_queue_id=None, evaluation_results=None, completion_metadata=None, customer_feedback=None, usage=None, messages=None, input_variables=None, children=None):  # noqa: E501
         """CompletionSearchInfoWithChildren - a model defined in Swagger"""  # noqa: E501
         self._completion_id = None
         self._session_id = None
+        self._review_queue_id = None
         self._evaluation_results = None
         self._completion_metadata = None
         self._customer_feedback = None
@@ -65,6 +68,7 @@ class CompletionSearchInfoWithChildren(object):
         self.discriminator = None
         self.completion_id = completion_id
         self.session_id = session_id
+        self.review_queue_id = review_queue_id
         self.evaluation_results = evaluation_results
         self.completion_metadata = completion_metadata
         self.customer_feedback = customer_feedback
@@ -119,6 +123,29 @@ class CompletionSearchInfoWithChildren(object):
             raise ValueError("Invalid value for `session_id`, must not be `None`")  # noqa: E501
 
         self._session_id = session_id
+
+    @property
+    def review_queue_id(self):
+        """Gets the review_queue_id of this CompletionSearchInfoWithChildren.  # noqa: E501
+
+
+        :return: The review_queue_id of this CompletionSearchInfoWithChildren.  # noqa: E501
+        :rtype: object
+        """
+        return self._review_queue_id
+
+    @review_queue_id.setter
+    def review_queue_id(self, review_queue_id):
+        """Sets the review_queue_id of this CompletionSearchInfoWithChildren.
+
+
+        :param review_queue_id: The review_queue_id of this CompletionSearchInfoWithChildren.  # noqa: E501
+        :type: object
+        """
+        if review_queue_id is None:
+            raise ValueError("Invalid value for `review_queue_id`, must not be `None`")  # noqa: E501
+
+        self._review_queue_id = review_queue_id
 
     @property
     def evaluation_results(self):

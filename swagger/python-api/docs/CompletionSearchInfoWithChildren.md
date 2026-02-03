@@ -5,6 +5,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **completion_id** | **object** |  | 
 **session_id** | **object** |  | 
+**review_queue_id** | **object** |  | 
 **evaluation_results** | [**EvaluationResultsInfo**](EvaluationResultsInfo.md) |  | 
 **completion_metadata** | [**CompletionMetadataInfo**](CompletionMetadataInfo.md) |  | 
 **customer_feedback** | **object** |  | 

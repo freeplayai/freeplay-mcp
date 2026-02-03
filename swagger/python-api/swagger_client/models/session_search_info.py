@@ -29,6 +29,7 @@ class SessionSearchInfo(object):
     """
     swagger_types = {
         'session_id': 'object',
+        'review_queue_id': 'object',
         'session_metadata': 'SessionMetadataInfo',
         'usage': 'UsageInfo',
         'custom_metadata': 'object',
@@ -37,21 +38,24 @@ class SessionSearchInfo(object):
 
     attribute_map = {
         'session_id': 'session_id',
+        'review_queue_id': 'review_queue_id',
         'session_metadata': 'session_metadata',
         'usage': 'usage',
         'custom_metadata': 'custom_metadata',
         'test_run_id': 'test_run_id'
     }
 
-    def __init__(self, session_id=None, session_metadata=None, usage=None, custom_metadata=None, test_run_id=None):  # noqa: E501
+    def __init__(self, session_id=None, review_queue_id=None, session_metadata=None, usage=None, custom_metadata=None, test_run_id=None):  # noqa: E501
         """SessionSearchInfo - a model defined in Swagger"""  # noqa: E501
         self._session_id = None
+        self._review_queue_id = None
         self._session_metadata = None
         self._usage = None
         self._custom_metadata = None
         self._test_run_id = None
         self.discriminator = None
         self.session_id = session_id
+        self.review_queue_id = review_queue_id
         self.session_metadata = session_metadata
         self.usage = usage
         self.custom_metadata = custom_metadata
@@ -79,6 +83,29 @@ class SessionSearchInfo(object):
             raise ValueError("Invalid value for `session_id`, must not be `None`")  # noqa: E501
 
         self._session_id = session_id
+
+    @property
+    def review_queue_id(self):
+        """Gets the review_queue_id of this SessionSearchInfo.  # noqa: E501
+
+
+        :return: The review_queue_id of this SessionSearchInfo.  # noqa: E501
+        :rtype: object
+        """
+        return self._review_queue_id
+
+    @review_queue_id.setter
+    def review_queue_id(self, review_queue_id):
+        """Sets the review_queue_id of this SessionSearchInfo.
+
+
+        :param review_queue_id: The review_queue_id of this SessionSearchInfo.  # noqa: E501
+        :type: object
+        """
+        if review_queue_id is None:
+            raise ValueError("Invalid value for `review_queue_id`, must not be `None`")  # noqa: E501
+
+        self._review_queue_id = review_queue_id
 
     @property
     def session_metadata(self):

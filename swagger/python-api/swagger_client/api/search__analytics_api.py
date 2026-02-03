@@ -376,7 +376,7 @@ class SearchAnalyticsApi(object):
     def post_search_completions(self, project_id, **kwargs):  # noqa: E501
         """Search Completions  # noqa: E501
 
-         Query LLM completions using advanced filters. Use to find specific prompts and responses, filter by evaluation results or metadata, prompt templates, latency, and more.  Supports pagination and optional inclusion of all child traces and completions within the session, using the `include_children` parameter.  # noqa: E501
+         Query LLM completions using advanced filters. Use to find specific prompts and responses, filter by evaluation results or metadata, prompt templates, latency, and more.  Supports pagination and optional inclusion of all child traces and completions within the session, using the `include_children` parameter.  For filter operators and examples, see: https://docs.freeplay.ai/openapi/search-api-operators  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.post_search_completions(project_id, async_req=True)
@@ -402,7 +402,7 @@ class SearchAnalyticsApi(object):
     def post_search_completions_with_http_info(self, project_id, **kwargs):  # noqa: E501
         """Search Completions  # noqa: E501
 
-         Query LLM completions using advanced filters. Use to find specific prompts and responses, filter by evaluation results or metadata, prompt templates, latency, and more.  Supports pagination and optional inclusion of all child traces and completions within the session, using the `include_children` parameter.  # noqa: E501
+         Query LLM completions using advanced filters. Use to find specific prompts and responses, filter by evaluation results or metadata, prompt templates, latency, and more.  Supports pagination and optional inclusion of all child traces and completions within the session, using the `include_children` parameter.  For filter operators and examples, see: https://docs.freeplay.ai/openapi/search-api-operators  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.post_search_completions_with_http_info(project_id, async_req=True)
@@ -491,7 +491,7 @@ class SearchAnalyticsApi(object):
     def post_search_sessions(self, project_id, **kwargs):  # noqa: E501
         """Search Sessions  # noqa: E501
 
-         Query sessions using advanced filters. Use to find specific conversations or filter by metadata.  Supports pagination and optional inclusion of all traces and completions within the session, using the `include_children` parameter.  # noqa: E501
+         Query sessions using advanced filters. Use to find specific conversations or filter by metadata.  Supports pagination and optional inclusion of all traces and completions within the session, using the `include_children` parameter.  For filter operators and examples, see: https://docs.freeplay.ai/openapi/search-api-operators  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.post_search_sessions(project_id, async_req=True)
@@ -517,7 +517,7 @@ class SearchAnalyticsApi(object):
     def post_search_sessions_with_http_info(self, project_id, **kwargs):  # noqa: E501
         """Search Sessions  # noqa: E501
 
-         Query sessions using advanced filters. Use to find specific conversations or filter by metadata.  Supports pagination and optional inclusion of all traces and completions within the session, using the `include_children` parameter.  # noqa: E501
+         Query sessions using advanced filters. Use to find specific conversations or filter by metadata.  Supports pagination and optional inclusion of all traces and completions within the session, using the `include_children` parameter.  For filter operators and examples, see: https://docs.freeplay.ai/openapi/search-api-operators  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.post_search_sessions_with_http_info(project_id, async_req=True)
@@ -606,7 +606,7 @@ class SearchAnalyticsApi(object):
     def post_search_traces(self, project_id, **kwargs):  # noqa: E501
         """Search Traces  # noqa: E501
 
-         Query traces using advanced filters. Use to find specific trace executions, filter by metadata, or analyze trace patterns.  Supports pagination and optional inclusion of all child traces and completions within the session, using the `include_children` parameter.  # noqa: E501
+         Query traces using advanced filters. Use to find specific trace executions, filter by metadata, or analyze trace patterns.  Supports pagination and optional inclusion of all child traces and completions within the session, using the `include_children` parameter.  For filter operators and examples, see: https://docs.freeplay.ai/openapi/search-api-operators  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.post_search_traces(project_id, async_req=True)
@@ -632,7 +632,7 @@ class SearchAnalyticsApi(object):
     def post_search_traces_with_http_info(self, project_id, **kwargs):  # noqa: E501
         """Search Traces  # noqa: E501
 
-         Query traces using advanced filters. Use to find specific trace executions, filter by metadata, or analyze trace patterns.  Supports pagination and optional inclusion of all child traces and completions within the session, using the `include_children` parameter.  # noqa: E501
+         Query traces using advanced filters. Use to find specific trace executions, filter by metadata, or analyze trace patterns.  Supports pagination and optional inclusion of all child traces and completions within the session, using the `include_children` parameter.  For filter operators and examples, see: https://docs.freeplay.ai/openapi/search-api-operators  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.post_search_traces_with_http_info(project_id, async_req=True)

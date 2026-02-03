@@ -5,6 +5,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **session_id** | **object** |  | 
 **trace_id** | **object** |  | 
+**review_queue_id** | **object** |  | 
 **trace_metadata** | **object** |  | 
 **custom_metadata** | **object** |  | 
 **customer_feedback** | **object** |  | 

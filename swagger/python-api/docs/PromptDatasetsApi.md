@@ -179,7 +179,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_get_by_id**
-> TestListInfo get_get_by_id(project_id, dataset_id)
+> TestListInfo1 get_get_by_id(project_id, dataset_id)
 
 Get Prompt Dataset
 
@@ -214,7 +214,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**TestListInfo**](TestListInfo.md)
+[**TestListInfo1**](TestListInfo1.md)
 
 ### Authorization
 
@@ -228,7 +228,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_get_by_name**
-> TestListInfo get_get_by_name(project_id, dataset_name)
+> TestListInfo1 get_get_by_name(project_id, dataset_name)
 
 Get Prompt Dataset by Name
 
@@ -263,7 +263,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**TestListInfo**](TestListInfo.md)
+[**TestListInfo1**](TestListInfo1.md)
 
 ### Authorization
 
