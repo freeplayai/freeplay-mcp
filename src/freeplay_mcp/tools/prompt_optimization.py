@@ -103,7 +103,7 @@ async def optimize_prompt(
         use_best_practices: Whether to apply general prompt engineering best practices (default: True)
         use_labels: Whether to use human labels from the dataset in analysis (default: True)
         use_customer_feedback: Whether to incorporate customer feedback data (default: True)
-        run_test_after_optimization: Whether to run a comparison test after optimization (default: True)
+        run_test_after_optimization: Whether to run a comparison test after optimization (default: False)
     """
     async with _get_http_client() as client:
         # Start the optimization job

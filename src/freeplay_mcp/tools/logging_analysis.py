@@ -202,7 +202,7 @@ async def find_logging_issues(
         project_id: The Freeplay project ID
         template_name: Optional prompt template name to filter by. If not provided,
             analyzes all completions and checks for missing prompt template associations.
-        environment: Optional environment filter (e.g., "production", "staging")
+        environment: Optional environment filter (e.g., "prod", "dev", "local")
         limit: Number of recent completions to analyze (default: 50)
     """
     api = get_search_api()

@@ -61,6 +61,7 @@ The auto-generated swagger client lives at `swagger/python-api/`. Key patterns:
 - API responses are dicts - access fields with `result.get('field')` or `result['field']`
 - Use `asyncio.to_thread()` to call the synchronous swagger methods
 - Request models are in `swagger_client.models`
+- Do not use any `/review-themes` endpoints, these are not available for consumption.
 
 ## Environment Variables
 

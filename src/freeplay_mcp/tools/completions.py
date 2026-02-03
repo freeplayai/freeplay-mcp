@@ -43,7 +43,7 @@ async def search_completions(
         offset: Number of results to skip for pagination (default: 0)
         start_date: Filter completions after this ISO date (e.g., "2024-01-01")
         end_date: Filter completions before this ISO date
-        environment: Filter by environment (e.g., "production", "staging")
+        environment: Filter by environment (e.g., "prod", "dev", "local")
         template_name: Filter by prompt template name
         prompt_template_id: Filter by prompt template ID
         model: Filter by model name (e.g., "gpt-4", "claude-3")
