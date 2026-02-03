@@ -1,0 +1,139 @@
+#!/usr/bin/env python3
+"""
+Create a Freeplay dataset from completions associated with a specific insight.
+"""
+import os
+import sys
+import requests
+from typing import List, Dict, Any
+
+def freeplay_request(method: str, endpoint: str, data: Dict[str, Any] = None) -> Dict[str, Any]:
+    """Make a request to the Freeplay API."""
+    freeplay_api_key = os.environ.get("FREEPLAY_API_KEY")
+    freeplay_api_base = os.environ.get("FREEPLAY_API_BASE", "https://api.freeplay.ai")
+
+    if not freeplay_api_key:
+        raise ValueError("FREEPLAY_API_KEY environment variable is required")
+
+    headers = {
+        "Authorization": f"Bearer {freeplay_api_key}",
+        "Content-Type": "application/json"
+    }
+
+    url = f"{freeplay_api_base}{endpoint}"
+    response = requests.request(method, url, headers=headers, json=data)
+    response.raise_for_status()
+    return response.json()
+
+def search_completions_by_insight(project_id: str, insight_name: str) -> List[Dict[str, Any]]:
+    """Search for completions associated with a specific insight."""
+    print(f"Searching for completions with insight: {insight_name}")
+
+    response = freeplay_request(
+        "POST",
+        f"/api/v2/projects/{project_id}/search/completions",
+        data={
+            "filters": {
+                "field": "insight_names",
+                "op": "contains",
+                "value": insight_name
+            }
+        }
+    )
+
+    completions = response.get("data", [])
+    print(f"Found {len(completions)} completions")
+    return completions
+
+def create_dataset_from_completions(
+    project_id: str,
+    dataset_name: str,
+    description: str,
+    template_id: str,
+    completions: List[Dict[str, Any]]
+) -> str:
+    """Create a prompt dataset from completions."""
+
+    # Step 1: Create the dataset
+    print(f"Creating dataset: {dataset_name}")
+    dataset_response = freeplay_request(
+        "POST",
+        f"/api/v2/projects/{project_id}/prompt-datasets",
+        data={
+            "name": dataset_name,
+            "description": description,
+            "compatible_prompts": [template_id]
+        }
+    )
+    dataset_id = dataset_response["id"]
+    print(f"Created dataset with ID: {dataset_id}")
+
+    # Step 2: Convert completions to test cases
+    test_cases = []
+    for completion in completions:
+        # Extract inputs and outputs from the completion
+        # The structure depends on how the completion is logged
+        test_case = {
+            "input": completion.get("completion_inputs", {}),
+            "output": completion.get("completion_outputs", {}),
+            "metadata": {
+                "completion_id": completion.get("id"),
+                "session_id": completion.get("session_id"),
+                "created_at": completion.get("created_at")
+            }
+        }
+        test_cases.append(test_case)
+
+    # Step 3: Bulk upload test cases (max 100 at a time)
+    print(f"Uploading {len(test_cases)} test cases...")
+    batch_size = 100
+    for i in range(0, len(test_cases), batch_size):
+        batch = test_cases[i:i+batch_size]
+        freeplay_request(
+            "POST",
+            f"/api/v2/projects/{project_id}/prompt-datasets/{dataset_id}/test-cases/bulk",
+            data={"test_cases": batch}
+        )
+        print(f"Uploaded batch {i//batch_size + 1}/{(len(test_cases)-1)//batch_size + 1}")
+
+    print(f"Successfully created dataset with {len(test_cases)} test cases")
+    return dataset_id
+
+def main():
+    if len(sys.argv) < 4:
+        print("Usage: python create_insight_dataset.py <project_id> <template_id> <insight_name> [dataset_name]")
+        print("\nExample:")
+        print("  python create_insight_dataset.py 8e7e1982-797a-42d2-ad03-4873885defbf \\")
+        print("    d2dd355c-5ccc-4977-b84b-41f5774443d7 \\")
+        print("    'Misses User-Provided Information' \\")
+        print("    'User Info Insight Dataset'")
+        sys.exit(1)
+
+    project_id = sys.argv[1]
+    template_id = sys.argv[2]
+    insight_name = sys.argv[3]
+    dataset_name = sys.argv[4] if len(sys.argv) > 4 else f"Dataset for: {insight_name}"
+
+    # Search for completions
+    completions = search_completions_by_insight(project_id, insight_name)
+
+    if not completions:
+        print("No completions found for this insight")
+        sys.exit(1)
+
+    # Create dataset
+    description = f"Dataset created from completions associated with the insight: {insight_name}"
+    dataset_id = create_dataset_from_completions(
+        project_id=project_id,
+        dataset_name=dataset_name,
+        description=description,
+        template_id=template_id,
+        completions=completions
+    )
+
+    print(f"\n✅ Dataset created successfully!")
+    print(f"Dataset ID: {dataset_id}")
+    print(f"\nYou can now use this dataset for prompt optimization.")
+
+if __name__ == "__main__":
+    main()

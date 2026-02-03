@@ -16,6 +16,11 @@ from .tools import (
     find_logging_issues,
     optimize_prompt,
     list_insights,
+    search_completions_by_insight,
+    optimize_prompt_from_insight,
+    create_prompt_dataset,
+    add_completions_to_dataset,
+    list_datasets,
 )
 
 # Configure logging to stderr (stdout corrupts MCP JSON-RPC)
@@ -40,6 +45,10 @@ TOOLS = [
     create_prompt_version_and_deploy,
     find_logging_issues,
     list_insights,
+    search_completions_by_insight,
+    create_prompt_dataset,
+    add_completions_to_dataset,
+    list_datasets,
 ]
 
 for tool in TOOLS:
@@ -47,6 +56,7 @@ for tool in TOOLS:
 
 # Register task-enabled tools (long-running async operations)
 mcp.tool(task=True)(optimize_prompt)
+mcp.tool(task=True)(optimize_prompt_from_insight)
 
 
 def main() -> None:
