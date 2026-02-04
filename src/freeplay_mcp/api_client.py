@@ -2,9 +2,16 @@
 
 import os
 import sys
+from importlib.metadata import version, PackageNotFoundError
 
 # Add swagger client to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'swagger', 'python-api'))
+
+# Get version from installed package metadata
+try:
+    MCP_VERSION = version("freeplay-mcp")
+except PackageNotFoundError:
+    MCP_VERSION = "version-not-found"
 
 from swagger_client import Configuration, ApiClient
 from swagger_client.api.configuration_api import ConfigurationApi
@@ -35,6 +42,8 @@ def get_api_client() -> ApiClient:
         config.verify_ssl = verify_ssl
         # Set up Bearer auth
         _api_client = ApiClient(config, header_name="Authorization", header_value=f"Bearer {api_key}")
+        # Set custom user agent
+        _api_client.user_agent = f"freeplay-mcp/{MCP_VERSION}"
     return _api_client
 
 
