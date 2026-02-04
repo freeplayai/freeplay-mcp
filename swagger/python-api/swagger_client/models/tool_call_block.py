@@ -30,7 +30,7 @@ class ToolCallBlock(object):
     swagger_types = {
         'id': 'object',
         'name': 'object',
-        'arguments': 'object',
+        'arguments': 'JSONValue',
         'thought_signature': 'object',
         'type': 'object'
     }
@@ -111,7 +111,7 @@ class ToolCallBlock(object):
 
 
         :return: The arguments of this ToolCallBlock.  # noqa: E501
-        :rtype: object
+        :rtype: JSONValue
         """
         return self._arguments
 
@@ -121,7 +121,7 @@ class ToolCallBlock(object):
 
 
         :param arguments: The arguments of this ToolCallBlock.  # noqa: E501
-        :type: object
+        :type: JSONValue
         """
         if arguments is None:
             raise ValueError("Invalid value for `arguments`, must not be `None`")  # noqa: E501

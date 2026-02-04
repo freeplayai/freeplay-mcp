@@ -4,7 +4,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **id** | **object** |  | 
-**input** | **object** |  | 
+**input** | [**JSONValue**](JSONValue.md) |  | 
 **name** | **object** |  | 
 **type** | **object** |  | [optional] 
 

@@ -30,6 +30,8 @@ Name | Type | Description | Notes
 **assignee** | **object** |  | [optional] 
 **evaluation_notes** | **object** |  | [optional] 
 **review_queue_id** | **object** |  | [optional] 
+**history** | **object** |  | [optional] 
+**history_is_truncated** | **object** |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

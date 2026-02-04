@@ -5,7 +5,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **id** | **object** |  | 
 **name** | **object** |  | 
-**arguments** | **object** |  | 
+**arguments** | [**JSONValue**](JSONValue.md) |  | 
 **thought_signature** | **object** |  | [optional] 
 **type** | **object** |  | [optional] 
 

@@ -54,7 +54,9 @@ class CompletionTableRowInfo(object):
         'completion_feedback': 'object',
         'assignee': 'object',
         'evaluation_notes': 'object',
-        'review_queue_id': 'object'
+        'review_queue_id': 'object',
+        'history': 'object',
+        'history_is_truncated': 'object'
     }
 
     attribute_map = {
@@ -84,10 +86,12 @@ class CompletionTableRowInfo(object):
         'completion_feedback': 'completion_feedback',
         'assignee': 'assignee',
         'evaluation_notes': 'evaluation_notes',
-        'review_queue_id': 'review_queue_id'
+        'review_queue_id': 'review_queue_id',
+        'history': 'history',
+        'history_is_truncated': 'history_is_truncated'
     }
 
-    def __init__(self, start_time=None, inputs=None, response=None, response_is_truncated=None, has_human_evaluation=None, has_auto_evaluation=None, client_evaluations=None, custom_metadata=None, review_status=None, evaluations=None, review_themes=None, dataset_info=None, id=None, session_id=None, kind=None, cost=None, latency=None, prompt_name=None, prompt_version_name=None, model=None, provider=None, api_key_name=None, environment=None, completion_feedback=None, assignee=None, evaluation_notes=None, review_queue_id=None):  # noqa: E501
+    def __init__(self, start_time=None, inputs=None, response=None, response_is_truncated=None, has_human_evaluation=None, has_auto_evaluation=None, client_evaluations=None, custom_metadata=None, review_status=None, evaluations=None, review_themes=None, dataset_info=None, id=None, session_id=None, kind=None, cost=None, latency=None, prompt_name=None, prompt_version_name=None, model=None, provider=None, api_key_name=None, environment=None, completion_feedback=None, assignee=None, evaluation_notes=None, review_queue_id=None, history=None, history_is_truncated=None):  # noqa: E501
         """CompletionTableRowInfo - a model defined in Swagger"""  # noqa: E501
         self._start_time = None
         self._inputs = None
@@ -116,6 +120,8 @@ class CompletionTableRowInfo(object):
         self._assignee = None
         self._evaluation_notes = None
         self._review_queue_id = None
+        self._history = None
+        self._history_is_truncated = None
         self.discriminator = None
         self.start_time = start_time
         self.inputs = inputs
@@ -157,6 +163,10 @@ class CompletionTableRowInfo(object):
             self.evaluation_notes = evaluation_notes
         if review_queue_id is not None:
             self.review_queue_id = review_queue_id
+        if history is not None:
+            self.history = history
+        if history_is_truncated is not None:
+            self.history_is_truncated = history_is_truncated
 
     @property
     def start_time(self):
@@ -752,6 +762,48 @@ class CompletionTableRowInfo(object):
         """
 
         self._review_queue_id = review_queue_id
+
+    @property
+    def history(self):
+        """Gets the history of this CompletionTableRowInfo.  # noqa: E501
+
+
+        :return: The history of this CompletionTableRowInfo.  # noqa: E501
+        :rtype: object
+        """
+        return self._history
+
+    @history.setter
+    def history(self, history):
+        """Sets the history of this CompletionTableRowInfo.
+
+
+        :param history: The history of this CompletionTableRowInfo.  # noqa: E501
+        :type: object
+        """
+
+        self._history = history
+
+    @property
+    def history_is_truncated(self):
+        """Gets the history_is_truncated of this CompletionTableRowInfo.  # noqa: E501
+
+
+        :return: The history_is_truncated of this CompletionTableRowInfo.  # noqa: E501
+        :rtype: object
+        """
+        return self._history_is_truncated
+
+    @history_is_truncated.setter
+    def history_is_truncated(self, history_is_truncated):
+        """Sets the history_is_truncated of this CompletionTableRowInfo.
+
+
+        :param history_is_truncated: The history_is_truncated of this CompletionTableRowInfo.  # noqa: E501
+        :type: object
+        """
+
+        self._history_is_truncated = history_is_truncated
 
     def to_dict(self):
         """Returns the model properties as a dict"""

@@ -28,18 +28,23 @@ class BedrockTextBlock(object):
                             and the value is json key in definition.
     """
     swagger_types = {
-        'text': 'object'
+        'text': 'object',
+        'type': 'object'
     }
 
     attribute_map = {
-        'text': 'text'
+        'text': 'text',
+        'type': 'type'
     }
 
-    def __init__(self, text=None):  # noqa: E501
+    def __init__(self, text=None, type=None):  # noqa: E501
         """BedrockTextBlock - a model defined in Swagger"""  # noqa: E501
         self._text = None
+        self._type = None
         self.discriminator = None
         self.text = text
+        if type is not None:
+            self.type = type
 
     @property
     def text(self):
@@ -63,6 +68,27 @@ class BedrockTextBlock(object):
             raise ValueError("Invalid value for `text`, must not be `None`")  # noqa: E501
 
         self._text = text
+
+    @property
+    def type(self):
+        """Gets the type of this BedrockTextBlock.  # noqa: E501
+
+
+        :return: The type of this BedrockTextBlock.  # noqa: E501
+        :rtype: object
+        """
+        return self._type
+
+    @type.setter
+    def type(self, type):
+        """Sets the type of this BedrockTextBlock.
+
+
+        :param type: The type of this BedrockTextBlock.  # noqa: E501
+        :type: object
+        """
+
+        self._type = type
 
     def to_dict(self):
         """Returns the model properties as a dict"""
