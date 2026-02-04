@@ -29,8 +29,8 @@ class EvaluationResultInfo(object):
     """
     swagger_types = {
         'name': 'object',
-        'manual_score': 'object',
-        'auto_eval_score': 'object'
+        'manual_score': 'JSONValue',
+        'auto_eval_score': 'JSONValue'
     }
 
     attribute_map = {
@@ -78,7 +78,7 @@ class EvaluationResultInfo(object):
 
 
         :return: The manual_score of this EvaluationResultInfo.  # noqa: E501
-        :rtype: object
+        :rtype: JSONValue
         """
         return self._manual_score
 
@@ -88,7 +88,7 @@ class EvaluationResultInfo(object):
 
 
         :param manual_score: The manual_score of this EvaluationResultInfo.  # noqa: E501
-        :type: object
+        :type: JSONValue
         """
         if manual_score is None:
             raise ValueError("Invalid value for `manual_score`, must not be `None`")  # noqa: E501
@@ -101,7 +101,7 @@ class EvaluationResultInfo(object):
 
 
         :return: The auto_eval_score of this EvaluationResultInfo.  # noqa: E501
-        :rtype: object
+        :rtype: JSONValue
         """
         return self._auto_eval_score
 
@@ -111,7 +111,7 @@ class EvaluationResultInfo(object):
 
 
         :param auto_eval_score: The auto_eval_score of this EvaluationResultInfo.  # noqa: E501
-        :type: object
+        :type: JSONValue
         """
         if auto_eval_score is None:
             raise ValueError("Invalid value for `auto_eval_score`, must not be `None`")  # noqa: E501

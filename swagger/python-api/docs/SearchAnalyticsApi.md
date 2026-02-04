@@ -185,7 +185,7 @@ Name | Type | Description  | Notes
 
 Search Completions
 
- Query LLM completions using advanced filters. Use to find specific prompts and responses, filter by evaluation results or metadata, prompt templates, latency, and more.  Supports pagination and optional inclusion of all child traces and completions within the session, using the `include_children` parameter.
+ Query LLM completions using advanced filters. Use to find specific prompts and responses, filter by evaluation results or metadata, prompt templates, latency, and more.  Supports pagination and optional inclusion of all child traces and completions within the session, using the `include_children` parameter.  For filter operators and examples, see: https://docs.freeplay.ai/openapi/search-api-operators
 
 ### Example
 ```python
@@ -242,7 +242,7 @@ Name | Type | Description  | Notes
 
 Search Sessions
 
- Query sessions using advanced filters. Use to find specific conversations or filter by metadata.  Supports pagination and optional inclusion of all traces and completions within the session, using the `include_children` parameter.
+ Query sessions using advanced filters. Use to find specific conversations or filter by metadata.  Supports pagination and optional inclusion of all traces and completions within the session, using the `include_children` parameter.  For filter operators and examples, see: https://docs.freeplay.ai/openapi/search-api-operators
 
 ### Example
 ```python
@@ -299,7 +299,7 @@ Name | Type | Description  | Notes
 
 Search Traces
 
- Query traces using advanced filters. Use to find specific trace executions, filter by metadata, or analyze trace patterns.  Supports pagination and optional inclusion of all child traces and completions within the session, using the `include_children` parameter.
+ Query traces using advanced filters. Use to find specific trace executions, filter by metadata, or analyze trace patterns.  Supports pagination and optional inclusion of all child traces and completions within the session, using the `include_children` parameter.  For filter operators and examples, see: https://docs.freeplay.ai/openapi/search-api-operators
 
 ### Example
 ```python

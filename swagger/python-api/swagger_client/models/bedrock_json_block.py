@@ -28,18 +28,23 @@ class BedrockJsonBlock(object):
                             and the value is json key in definition.
     """
     swagger_types = {
-        'json': 'object'
+        'json': 'JSONValue',
+        'type': 'object'
     }
 
     attribute_map = {
-        'json': 'json'
+        'json': 'json',
+        'type': 'type'
     }
 
-    def __init__(self, json=None):  # noqa: E501
+    def __init__(self, json=None, type=None):  # noqa: E501
         """BedrockJsonBlock - a model defined in Swagger"""  # noqa: E501
         self._json = None
+        self._type = None
         self.discriminator = None
         self.json = json
+        if type is not None:
+            self.type = type
 
     @property
     def json(self):
@@ -47,7 +52,7 @@ class BedrockJsonBlock(object):
 
 
         :return: The json of this BedrockJsonBlock.  # noqa: E501
-        :rtype: object
+        :rtype: JSONValue
         """
         return self._json
 
@@ -57,12 +62,33 @@ class BedrockJsonBlock(object):
 
 
         :param json: The json of this BedrockJsonBlock.  # noqa: E501
-        :type: object
+        :type: JSONValue
         """
         if json is None:
             raise ValueError("Invalid value for `json`, must not be `None`")  # noqa: E501
 
         self._json = json
+
+    @property
+    def type(self):
+        """Gets the type of this BedrockJsonBlock.  # noqa: E501
+
+
+        :return: The type of this BedrockJsonBlock.  # noqa: E501
+        :rtype: object
+        """
+        return self._type
+
+    @type.setter
+    def type(self, type):
+        """Sets the type of this BedrockJsonBlock.
+
+
+        :param type: The type of this BedrockJsonBlock.  # noqa: E501
+        :type: object
+        """
+
+        self._type = type
 
     def to_dict(self):
         """Returns the model properties as a dict"""

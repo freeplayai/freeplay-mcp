@@ -4,6 +4,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **session_id** | **object** |  | 
+**review_queue_id** | **object** |  | 
 **session_metadata** | [**SessionMetadataInfo**](SessionMetadataInfo.md) |  | 
 **usage** | [**UsageInfo**](UsageInfo.md) |  | 
 **custom_metadata** | **object** |  | 

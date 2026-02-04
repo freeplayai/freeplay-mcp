@@ -28,18 +28,23 @@ class VertexFunctionCallPart(object):
                             and the value is json key in definition.
     """
     swagger_types = {
-        'function_call': 'VertexFunctionCall'
+        'function_call': 'VertexFunctionCall',
+        'thought_signature': 'object'
     }
 
     attribute_map = {
-        'function_call': 'functionCall'
+        'function_call': 'functionCall',
+        'thought_signature': 'thoughtSignature'
     }
 
-    def __init__(self, function_call=None):  # noqa: E501
+    def __init__(self, function_call=None, thought_signature=None):  # noqa: E501
         """VertexFunctionCallPart - a model defined in Swagger"""  # noqa: E501
         self._function_call = None
+        self._thought_signature = None
         self.discriminator = None
         self.function_call = function_call
+        if thought_signature is not None:
+            self.thought_signature = thought_signature
 
     @property
     def function_call(self):
@@ -63,6 +68,27 @@ class VertexFunctionCallPart(object):
             raise ValueError("Invalid value for `function_call`, must not be `None`")  # noqa: E501
 
         self._function_call = function_call
+
+    @property
+    def thought_signature(self):
+        """Gets the thought_signature of this VertexFunctionCallPart.  # noqa: E501
+
+
+        :return: The thought_signature of this VertexFunctionCallPart.  # noqa: E501
+        :rtype: object
+        """
+        return self._thought_signature
+
+    @thought_signature.setter
+    def thought_signature(self, thought_signature):
+        """Sets the thought_signature of this VertexFunctionCallPart.
+
+
+        :param thought_signature: The thought_signature of this VertexFunctionCallPart.  # noqa: E501
+        :type: object
+        """
+
+        self._thought_signature = thought_signature
 
     def to_dict(self):
         """Returns the model properties as a dict"""

@@ -6,6 +6,8 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**delete_delete_session**](ObservabilityApi.md#delete_delete_session) | **DELETE** /api/v2/projects/{project_id}/sessions/{session_id} | Delete Session
 [**patch_update_session_metadata**](ObservabilityApi.md#patch_update_session_metadata) | **PATCH** /api/v2/projects/{project_id}/sessions/id/{session_id}/metadata | Update Session Metadata
+[**patch_update_trace_by_id**](ObservabilityApi.md#patch_update_trace_by_id) | **PATCH** /api/v2/projects/{project_id}/sessions/{session_id}/traces/id/{trace_id} | Update Trace by ID
+[**patch_update_trace_by_otel_span_id**](ObservabilityApi.md#patch_update_trace_by_otel_span_id) | **PATCH** /api/v2/projects/{project_id}/sessions/{session_id}/traces/otel-span-id/{otel_span_id_hex} | Update Trace by OTEL Span ID
 [**patch_update_trace_metadata**](ObservabilityApi.md#patch_update_trace_metadata) | **PATCH** /api/v2/projects/{project_id}/sessions/{session_id}/traces/id/{trace_id}/metadata | Update Trace Metadata
 [**post_create_completion_feedback**](ObservabilityApi.md#post_create_completion_feedback) | **POST** /api/v2/projects/{project_id}/completion-feedback/id/{completion_id} | Add Completion Feedback
 [**post_record_completion**](ObservabilityApi.md#post_record_completion) | **POST** /api/v2/projects/{project_id}/sessions/{session_id}/completions | Record Completion
@@ -100,6 +102,116 @@ Name | Type | Description  | Notes
  **project_id** | [**object**](.md)|  | 
  **session_id** | [**object**](.md)|  | 
  **body** | [**object**](object.md)|  | [optional] 
+
+### Return type
+
+[**SimpleResponseWithMessage**](SimpleResponseWithMessage.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **patch_update_trace_by_id**
+> SimpleResponseWithMessage patch_update_trace_by_id(project_id, session_id, trace_id, body=body)
+
+Update Trace by ID
+
+ Update a trace's metadata and/or feedback by its trace ID. This endpoint is a superset of the older metadata and feedback update endpoints.
+
+### Example
+```python
+from __future__ import print_function
+import time
+import swagger_client
+from swagger_client.rest import ApiException
+from pprint import pprint
+
+
+# create an instance of the API class
+api_instance = swagger_client.ObservabilityApi(swagger_client.ApiClient(configuration))
+project_id = NULL # object | 
+session_id = NULL # object | 
+trace_id = NULL # object | 
+body = swagger_client.TraceUpdateRequest() # TraceUpdateRequest |  (optional)
+
+try:
+    # Update Trace by ID
+    api_response = api_instance.patch_update_trace_by_id(project_id, session_id, trace_id, body=body)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling ObservabilityApi->patch_update_trace_by_id: %s\n" % e)
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **project_id** | [**object**](.md)|  | 
+ **session_id** | [**object**](.md)|  | 
+ **trace_id** | [**object**](.md)|  | 
+ **body** | [**TraceUpdateRequest**](TraceUpdateRequest.md)|  | [optional] 
+
+### Return type
+
+[**SimpleResponseWithMessage**](SimpleResponseWithMessage.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **patch_update_trace_by_otel_span_id**
+> SimpleResponseWithMessage patch_update_trace_by_otel_span_id(project_id, session_id, otel_span_id_hex, body=body)
+
+Update Trace by OTEL Span ID
+
+ Update a trace's metadata and/or feedback by its OpenTelemetry span ID (hex string).  Note: OTEL spans are mapped to Freeplay Traces, so we use the OTEL span ID to identify Traces.
+
+### Example
+```python
+from __future__ import print_function
+import time
+import swagger_client
+from swagger_client.rest import ApiException
+from pprint import pprint
+
+
+# create an instance of the API class
+api_instance = swagger_client.ObservabilityApi(swagger_client.ApiClient(configuration))
+project_id = NULL # object | 
+session_id = NULL # object | 
+otel_span_id_hex = NULL # object | 
+body = swagger_client.TraceUpdateRequest1() # TraceUpdateRequest1 |  (optional)
+
+try:
+    # Update Trace by OTEL Span ID
+    api_response = api_instance.patch_update_trace_by_otel_span_id(project_id, session_id, otel_span_id_hex, body=body)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling ObservabilityApi->patch_update_trace_by_otel_span_id: %s\n" % e)
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **project_id** | [**object**](.md)|  | 
+ **session_id** | [**object**](.md)|  | 
+ **otel_span_id_hex** | [**object**](.md)|  | 
+ **body** | [**TraceUpdateRequest1**](TraceUpdateRequest1.md)|  | [optional] 
 
 ### Return type
 
