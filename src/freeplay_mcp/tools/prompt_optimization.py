@@ -69,7 +69,7 @@ async def optimize_prompt(
         body=request,
     )
 
-    job_id = start_result.get("job_id")
+    job_id = start_result.job_id
     if progress:
         total_steps = 4 if run_test_after_optimization else 1
         await progress.set_total(total_steps)
@@ -81,12 +81,12 @@ async def optimize_prompt(
             project_id,
             job_id,
         )
-        status = status_result.get("status")
-        job_progress = status_result.get("progress", {})
+        status = status_result.status
+        job_progress = status_result.progress or {}
 
         if progress and job_progress:
-            step = job_progress.get("step", 1)
-            step_name = job_progress.get("step_name", "Processing...")
+            step = job_progress.get("step", 1) if isinstance(job_progress, dict) else 1
+            step_name = job_progress.get("step_name", "Processing...") if isinstance(job_progress, dict) else "Processing..."
             await progress.set_message(f"Step {step}: {step_name}")
 
         if status in TERMINAL_STATUSES:
@@ -95,30 +95,30 @@ async def optimize_prompt(
         await asyncio.sleep(POLL_INTERVAL_SECONDS)
 
     if status == "failed":
-        error_msg = status_result.get("error_message", "Unknown error")
+        error_msg = status_result.error_message or "Unknown error"
         return f"Optimization failed: {error_msg}"
 
     if status == "cancelled":
         return "Optimization was cancelled."
 
-    changes_summary = status_result.get("changes_summary", "No changes summary available.")
-    data_sources = status_result.get("data_sources_used", {})
-    human_labels_count = data_sources.get("human_labels_count", 0)
-    customer_feedback_count = data_sources.get("customer_feedback_count", 0)
+    changes_summary = status_result.changes_summary or "No changes summary available."
+    data_sources = status_result.data_sources_used or {}
+    human_labels_count = data_sources.get("human_labels_count", 0) if isinstance(data_sources, dict) else 0
+    customer_feedback_count = data_sources.get("customer_feedback_count", 0) if isinstance(data_sources, dict) else 0
 
     sections: dict[str, str | dict | list] = {
         "status": "completed",
         "original_version_id": prompt_template_version_id,
-        "optimized_version_id": status_result.get("optimized_version_id", "N/A"),
+        "optimized_version_id": status_result.optimized_version_id or "N/A",
         "changes_summary": changes_summary,
         "data_sources_used": f"{human_labels_count} human labels, {customer_feedback_count} customer feedback items",
     }
 
     if run_test_after_optimization:
-        if status_result.get("test_run_id"):
-            sections["test_run_id"] = status_result["test_run_id"]
-        if status_result.get("comparison_id"):
-            sections["comparison_id"] = status_result["comparison_id"]
+        if status_result.test_run_id:
+            sections["test_run_id"] = status_result.test_run_id
+        if status_result.comparison_id:
+            sections["comparison_id"] = status_result.comparison_id
 
     return DetailResponse(
         title="Prompt Optimization Complete",
