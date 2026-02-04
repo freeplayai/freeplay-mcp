@@ -16,6 +16,7 @@ from __future__ import absolute_import
 
 # import apis into sdk package
 from swagger_client.api.agent_datasets_api import AgentDatasetsApi
+from swagger_client.api.agents_api import AgentsApi
 from swagger_client.api.configuration_api import ConfigurationApi
 from swagger_client.api.evaluation_criteria_api import EvaluationCriteriaApi
 from swagger_client.api.insights_api import InsightsApi
@@ -38,6 +39,7 @@ from swagger_client.models.agent_dataset_response import AgentDatasetResponse
 from swagger_client.models.agent_dataset_response1 import AgentDatasetResponse1
 from swagger_client.models.agent_datasets_list_response import AgentDatasetsListResponse
 from swagger_client.models.agent_info import AgentInfo
+from swagger_client.models.agent_info1 import AgentInfo1
 from swagger_client.models.agent_observability_metrics import AgentObservabilityMetrics
 from swagger_client.models.agent_test_case import AgentTestCase
 from swagger_client.models.agent_test_case1 import AgentTestCase1
@@ -114,6 +116,7 @@ from swagger_client.models.component_info import ComponentInfo
 from swagger_client.models.configurable_param import ConfigurableParam
 from swagger_client.models.context_source_info import ContextSourceInfo
 from swagger_client.models.create_agent_dataset_request import CreateAgentDatasetRequest
+from swagger_client.models.create_agent_request import CreateAgentRequest
 from swagger_client.models.create_environment_request import CreateEnvironmentRequest
 from swagger_client.models.create_project_request import CreateProjectRequest
 from swagger_client.models.create_prompt_dataset_request import CreatePromptDatasetRequest
@@ -174,6 +177,7 @@ from swagger_client.models.filter_operators import FilterOperators
 from swagger_client.models.filter_types import FilterTypes
 from swagger_client.models.function_call import FunctionCall
 from swagger_client.models.generated_evaluation_suggestion import GeneratedEvaluationSuggestion
+from swagger_client.models.get_agents_response_payload import GetAgentsResponsePayload
 from swagger_client.models.get_completion_summary_info import GetCompletionSummaryInfo
 from swagger_client.models.get_completion_summary_info1 import GetCompletionSummaryInfo1
 from swagger_client.models.get_insights_response_payload import GetInsightsResponsePayload
@@ -365,6 +369,7 @@ from swagger_client.models.trace_test_case_info import TraceTestCaseInfo
 from swagger_client.models.trace_update_request import TraceUpdateRequest
 from swagger_client.models.trace_update_request1 import TraceUpdateRequest1
 from swagger_client.models.update_agent_dataset_request import UpdateAgentDatasetRequest
+from swagger_client.models.update_agent_request import UpdateAgentRequest
 from swagger_client.models.update_environment_request import UpdateEnvironmentRequest
 from swagger_client.models.update_member_request import UpdateMemberRequest
 from swagger_client.models.update_model_request import UpdateModelRequest

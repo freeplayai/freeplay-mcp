@@ -224,6 +224,11 @@ Class | Method | HTTP request | Description
 *AgentDatasetsApi* | [**patch_update_agent_dataset_test_case**](docs/AgentDatasetsApi.md#patch_update_agent_dataset_test_case) | **PATCH** /api/v2/projects/{project_id}/agent-datasets/{dataset_id}/test-cases/{test_case_id} | Update Agent Test Case
 *AgentDatasetsApi* | [**post_bulk_create_agent_dataset_test_cases**](docs/AgentDatasetsApi.md#post_bulk_create_agent_dataset_test_cases) | **POST** /api/v2/projects/{project_id}/agent-datasets/{dataset_id}/test-cases/bulk | Bulk Create Agent Test Cases
 *AgentDatasetsApi* | [**post_create_agent_dataset**](docs/AgentDatasetsApi.md#post_create_agent_dataset) | **POST** /api/v2/projects/{project_id}/agent-datasets | Create Agent-Level Dataset
+*AgentsApi* | [**delete_delete_agent**](docs/AgentsApi.md#delete_delete_agent) | **DELETE** /api/v2/projects/{project_id}/agents/{agent_id} | Delete Agent
+*AgentsApi* | [**get_get_agent**](docs/AgentsApi.md#get_get_agent) | **GET** /api/v2/projects/{project_id}/agents/{agent_id} | Get Agent
+*AgentsApi* | [**get_get_agents**](docs/AgentsApi.md#get_get_agents) | **GET** /api/v2/projects/{project_id}/agents | List Agents
+*AgentsApi* | [**patch_update_agent**](docs/AgentsApi.md#patch_update_agent) | **PATCH** /api/v2/projects/{project_id}/agents/{agent_id} | Update Agent
+*AgentsApi* | [**post_create_agent**](docs/AgentsApi.md#post_create_agent) | **POST** /api/v2/projects/{project_id}/agents | Create Agent
 *ConfigurationApi* | [**delete_delete_environment**](docs/ConfigurationApi.md#delete_delete_environment) | **DELETE** /api/v2/environments/{environment_id} | Delete Environment
 *ConfigurationApi* | [**delete_delete_user**](docs/ConfigurationApi.md#delete_delete_user) | **DELETE** /api/v2/users/{user_id} | Delete User
 *ConfigurationApi* | [**delete_remove_member**](docs/ConfigurationApi.md#delete_remove_member) | **DELETE** /api/v2/projects/{project_id}/members/{user_id} | Remove Project Member
@@ -326,6 +331,7 @@ Class | Method | HTTP request | Description
  - [AgentDatasetResponse1](docs/AgentDatasetResponse1.md)
  - [AgentDatasetsListResponse](docs/AgentDatasetsListResponse.md)
  - [AgentInfo](docs/AgentInfo.md)
+ - [AgentInfo1](docs/AgentInfo1.md)
  - [AgentObservabilityMetrics](docs/AgentObservabilityMetrics.md)
  - [AgentTestCase](docs/AgentTestCase.md)
  - [AgentTestCase1](docs/AgentTestCase1.md)
@@ -402,6 +408,7 @@ Class | Method | HTTP request | Description
  - [ConfigurableParam](docs/ConfigurableParam.md)
  - [ContextSourceInfo](docs/ContextSourceInfo.md)
  - [CreateAgentDatasetRequest](docs/CreateAgentDatasetRequest.md)
+ - [CreateAgentRequest](docs/CreateAgentRequest.md)
  - [CreateEnvironmentRequest](docs/CreateEnvironmentRequest.md)
  - [CreateProjectRequest](docs/CreateProjectRequest.md)
  - [CreatePromptDatasetRequest](docs/CreatePromptDatasetRequest.md)
@@ -462,6 +469,7 @@ Class | Method | HTTP request | Description
  - [FilterTypes](docs/FilterTypes.md)
  - [FunctionCall](docs/FunctionCall.md)
  - [GeneratedEvaluationSuggestion](docs/GeneratedEvaluationSuggestion.md)
+ - [GetAgentsResponsePayload](docs/GetAgentsResponsePayload.md)
  - [GetCompletionSummaryInfo](docs/GetCompletionSummaryInfo.md)
  - [GetCompletionSummaryInfo1](docs/GetCompletionSummaryInfo1.md)
  - [GetInsightsResponsePayload](docs/GetInsightsResponsePayload.md)
@@ -653,6 +661,7 @@ Class | Method | HTTP request | Description
  - [TraceUpdateRequest](docs/TraceUpdateRequest.md)
  - [TraceUpdateRequest1](docs/TraceUpdateRequest1.md)
  - [UpdateAgentDatasetRequest](docs/UpdateAgentDatasetRequest.md)
+ - [UpdateAgentRequest](docs/UpdateAgentRequest.md)
  - [UpdateEnvironmentRequest](docs/UpdateEnvironmentRequest.md)
  - [UpdateMemberRequest](docs/UpdateMemberRequest.md)
  - [UpdateModelRequest](docs/UpdateModelRequest.md)

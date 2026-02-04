@@ -4,6 +4,7 @@ from __future__ import absolute_import
 
 # import apis into api package
 from swagger_client.api.agent_datasets_api import AgentDatasetsApi
+from swagger_client.api.agents_api import AgentsApi
 from swagger_client.api.configuration_api import ConfigurationApi
 from swagger_client.api.evaluation_criteria_api import EvaluationCriteriaApi
 from swagger_client.api.insights_api import InsightsApi
