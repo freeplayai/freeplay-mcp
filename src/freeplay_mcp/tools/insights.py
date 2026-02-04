@@ -7,7 +7,7 @@ import os
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', '..', 'swagger', 'python-api'))
 
-from swagger_client.api.default_api import DefaultApi
+from swagger_client.api.insights_api import InsightsApi
 
 from ..api_client import get_api_client
 from ..response import ListItem, ListResponse
@@ -35,7 +35,7 @@ async def list_insights(
         prompt_template_id: Filter insights by prompt template UUID (optional)
         agent_id: Filter insights by agent UUID (optional)
     """
-    api = DefaultApi(get_api_client())
+    api = InsightsApi(get_api_client())
     
     kwargs = {
         'page': page,
