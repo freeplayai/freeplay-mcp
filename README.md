@@ -61,11 +61,6 @@ Only use this with agents and MCP servers you fully trust.
    export FREEPLAY_API_KEY="your-api-key"
    export FREEPLAY_BASE_URL="https://app.freeplay.ai"
    ```
-   
-   For local development against a Freeplay server running on your host machine:
-   ```sh
-   export FREEPLAY_BASE_URL="http://host.docker.internal:8080"
-   ```
 
 4. Add the Freeplay MCP server to Claude Code.
    ```sh
