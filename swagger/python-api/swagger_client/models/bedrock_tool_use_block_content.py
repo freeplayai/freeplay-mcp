@@ -30,7 +30,7 @@ class BedrockToolUseBlockContent(object):
     swagger_types = {
         'tool_use_id': 'object',
         'name': 'object',
-        'input': 'object'
+        'input': 'JSONValue'
     }
 
     attribute_map = {
@@ -101,7 +101,7 @@ class BedrockToolUseBlockContent(object):
 
 
         :return: The input of this BedrockToolUseBlockContent.  # noqa: E501
-        :rtype: object
+        :rtype: JSONValue
         """
         return self._input
 
@@ -111,7 +111,7 @@ class BedrockToolUseBlockContent(object):
 
 
         :param input: The input of this BedrockToolUseBlockContent.  # noqa: E501
-        :type: object
+        :type: JSONValue
         """
         if input is None:
             raise ValueError("Invalid value for `input`, must not be `None`")  # noqa: E501

@@ -242,6 +242,244 @@ class ObservabilityApi(object):
             _request_timeout=params.get('_request_timeout'),
             collection_formats=collection_formats)
 
+    def patch_update_trace_by_id(self, project_id, session_id, trace_id, **kwargs):  # noqa: E501
+        """Update Trace by ID  # noqa: E501
+
+         Update a trace's metadata and/or feedback by its trace ID. This endpoint is a superset of the older metadata and feedback update endpoints.  # noqa: E501
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.patch_update_trace_by_id(project_id, session_id, trace_id, async_req=True)
+        >>> result = thread.get()
+
+        :param async_req bool
+        :param object project_id: (required)
+        :param object session_id: (required)
+        :param object trace_id: (required)
+        :param TraceUpdateRequest body:
+        :return: SimpleResponseWithMessage
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        kwargs['_return_http_data_only'] = True
+        if kwargs.get('async_req'):
+            return self.patch_update_trace_by_id_with_http_info(project_id, session_id, trace_id, **kwargs)  # noqa: E501
+        else:
+            (data) = self.patch_update_trace_by_id_with_http_info(project_id, session_id, trace_id, **kwargs)  # noqa: E501
+            return data
+
+    def patch_update_trace_by_id_with_http_info(self, project_id, session_id, trace_id, **kwargs):  # noqa: E501
+        """Update Trace by ID  # noqa: E501
+
+         Update a trace's metadata and/or feedback by its trace ID. This endpoint is a superset of the older metadata and feedback update endpoints.  # noqa: E501
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.patch_update_trace_by_id_with_http_info(project_id, session_id, trace_id, async_req=True)
+        >>> result = thread.get()
+
+        :param async_req bool
+        :param object project_id: (required)
+        :param object session_id: (required)
+        :param object trace_id: (required)
+        :param TraceUpdateRequest body:
+        :return: SimpleResponseWithMessage
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+
+        all_params = ['project_id', 'session_id', 'trace_id', 'body']  # noqa: E501
+        all_params.append('async_req')
+        all_params.append('_return_http_data_only')
+        all_params.append('_preload_content')
+        all_params.append('_request_timeout')
+
+        params = locals()
+        for key, val in six.iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method patch_update_trace_by_id" % key
+                )
+            params[key] = val
+        del params['kwargs']
+        # verify the required parameter 'project_id' is set
+        if ('project_id' not in params or
+                params['project_id'] is None):
+            raise ValueError("Missing the required parameter `project_id` when calling `patch_update_trace_by_id`")  # noqa: E501
+        # verify the required parameter 'session_id' is set
+        if ('session_id' not in params or
+                params['session_id'] is None):
+            raise ValueError("Missing the required parameter `session_id` when calling `patch_update_trace_by_id`")  # noqa: E501
+        # verify the required parameter 'trace_id' is set
+        if ('trace_id' not in params or
+                params['trace_id'] is None):
+            raise ValueError("Missing the required parameter `trace_id` when calling `patch_update_trace_by_id`")  # noqa: E501
+
+        collection_formats = {}
+
+        path_params = {}
+        if 'project_id' in params:
+            path_params['project_id'] = params['project_id']  # noqa: E501
+        if 'session_id' in params:
+            path_params['session_id'] = params['session_id']  # noqa: E501
+        if 'trace_id' in params:
+            path_params['trace_id'] = params['trace_id']  # noqa: E501
+
+        query_params = []
+
+        header_params = {}
+
+        form_params = []
+        local_var_files = {}
+
+        body_params = None
+        if 'body' in params:
+            body_params = params['body']
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.select_header_accept(
+            ['application/json'])  # noqa: E501
+
+        # HTTP header `Content-Type`
+        header_params['Content-Type'] = self.api_client.select_header_content_type(  # noqa: E501
+            ['application/json'])  # noqa: E501
+
+        # Authentication setting
+        auth_settings = ['BearerAuth']  # noqa: E501
+
+        return self.api_client.call_api(
+            '/api/v2/projects/{project_id}/sessions/{session_id}/traces/id/{trace_id}', 'PATCH',
+            path_params,
+            query_params,
+            header_params,
+            body=body_params,
+            post_params=form_params,
+            files=local_var_files,
+            response_type='SimpleResponseWithMessage',  # noqa: E501
+            auth_settings=auth_settings,
+            async_req=params.get('async_req'),
+            _return_http_data_only=params.get('_return_http_data_only'),
+            _preload_content=params.get('_preload_content', True),
+            _request_timeout=params.get('_request_timeout'),
+            collection_formats=collection_formats)
+
+    def patch_update_trace_by_otel_span_id(self, project_id, session_id, otel_span_id_hex, **kwargs):  # noqa: E501
+        """Update Trace by OTEL Span ID  # noqa: E501
+
+         Update a trace's metadata and/or feedback by its OpenTelemetry span ID (hex string).  Note: OTEL spans are mapped to Freeplay Traces, so we use the OTEL span ID to identify Traces.  # noqa: E501
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.patch_update_trace_by_otel_span_id(project_id, session_id, otel_span_id_hex, async_req=True)
+        >>> result = thread.get()
+
+        :param async_req bool
+        :param object project_id: (required)
+        :param object session_id: (required)
+        :param object otel_span_id_hex: (required)
+        :param TraceUpdateRequest1 body:
+        :return: SimpleResponseWithMessage
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        kwargs['_return_http_data_only'] = True
+        if kwargs.get('async_req'):
+            return self.patch_update_trace_by_otel_span_id_with_http_info(project_id, session_id, otel_span_id_hex, **kwargs)  # noqa: E501
+        else:
+            (data) = self.patch_update_trace_by_otel_span_id_with_http_info(project_id, session_id, otel_span_id_hex, **kwargs)  # noqa: E501
+            return data
+
+    def patch_update_trace_by_otel_span_id_with_http_info(self, project_id, session_id, otel_span_id_hex, **kwargs):  # noqa: E501
+        """Update Trace by OTEL Span ID  # noqa: E501
+
+         Update a trace's metadata and/or feedback by its OpenTelemetry span ID (hex string).  Note: OTEL spans are mapped to Freeplay Traces, so we use the OTEL span ID to identify Traces.  # noqa: E501
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.patch_update_trace_by_otel_span_id_with_http_info(project_id, session_id, otel_span_id_hex, async_req=True)
+        >>> result = thread.get()
+
+        :param async_req bool
+        :param object project_id: (required)
+        :param object session_id: (required)
+        :param object otel_span_id_hex: (required)
+        :param TraceUpdateRequest1 body:
+        :return: SimpleResponseWithMessage
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+
+        all_params = ['project_id', 'session_id', 'otel_span_id_hex', 'body']  # noqa: E501
+        all_params.append('async_req')
+        all_params.append('_return_http_data_only')
+        all_params.append('_preload_content')
+        all_params.append('_request_timeout')
+
+        params = locals()
+        for key, val in six.iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method patch_update_trace_by_otel_span_id" % key
+                )
+            params[key] = val
+        del params['kwargs']
+        # verify the required parameter 'project_id' is set
+        if ('project_id' not in params or
+                params['project_id'] is None):
+            raise ValueError("Missing the required parameter `project_id` when calling `patch_update_trace_by_otel_span_id`")  # noqa: E501
+        # verify the required parameter 'session_id' is set
+        if ('session_id' not in params or
+                params['session_id'] is None):
+            raise ValueError("Missing the required parameter `session_id` when calling `patch_update_trace_by_otel_span_id`")  # noqa: E501
+        # verify the required parameter 'otel_span_id_hex' is set
+        if ('otel_span_id_hex' not in params or
+                params['otel_span_id_hex'] is None):
+            raise ValueError("Missing the required parameter `otel_span_id_hex` when calling `patch_update_trace_by_otel_span_id`")  # noqa: E501
+
+        collection_formats = {}
+
+        path_params = {}
+        if 'project_id' in params:
+            path_params['project_id'] = params['project_id']  # noqa: E501
+        if 'session_id' in params:
+            path_params['session_id'] = params['session_id']  # noqa: E501
+        if 'otel_span_id_hex' in params:
+            path_params['otel_span_id_hex'] = params['otel_span_id_hex']  # noqa: E501
+
+        query_params = []
+
+        header_params = {}
+
+        form_params = []
+        local_var_files = {}
+
+        body_params = None
+        if 'body' in params:
+            body_params = params['body']
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.select_header_accept(
+            ['application/json'])  # noqa: E501
+
+        # HTTP header `Content-Type`
+        header_params['Content-Type'] = self.api_client.select_header_content_type(  # noqa: E501
+            ['application/json'])  # noqa: E501
+
+        # Authentication setting
+        auth_settings = ['BearerAuth']  # noqa: E501
+
+        return self.api_client.call_api(
+            '/api/v2/projects/{project_id}/sessions/{session_id}/traces/otel-span-id/{otel_span_id_hex}', 'PATCH',
+            path_params,
+            query_params,
+            header_params,
+            body=body_params,
+            post_params=form_params,
+            files=local_var_files,
+            response_type='SimpleResponseWithMessage',  # noqa: E501
+            auth_settings=auth_settings,
+            async_req=params.get('async_req'),
+            _return_http_data_only=params.get('_return_http_data_only'),
+            _preload_content=params.get('_preload_content', True),
+            _request_timeout=params.get('_request_timeout'),
+            collection_formats=collection_formats)
+
     def patch_update_trace_metadata(self, project_id, session_id, trace_id, **kwargs):  # noqa: E501
         """Update Trace Metadata  # noqa: E501
 

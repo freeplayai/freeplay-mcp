@@ -30,6 +30,7 @@ class TraceSearchInfo(object):
     swagger_types = {
         'session_id': 'object',
         'trace_id': 'object',
+        'review_queue_id': 'object',
         'trace_metadata': 'object',
         'custom_metadata': 'object',
         'customer_feedback': 'object',
@@ -41,6 +42,7 @@ class TraceSearchInfo(object):
     attribute_map = {
         'session_id': 'session_id',
         'trace_id': 'trace_id',
+        'review_queue_id': 'review_queue_id',
         'trace_metadata': 'trace_metadata',
         'custom_metadata': 'custom_metadata',
         'customer_feedback': 'customer_feedback',
@@ -49,10 +51,11 @@ class TraceSearchInfo(object):
         'evaluation_results': 'evaluation_results'
     }
 
-    def __init__(self, session_id=None, trace_id=None, trace_metadata=None, custom_metadata=None, customer_feedback=None, input=None, output=None, evaluation_results=None):  # noqa: E501
+    def __init__(self, session_id=None, trace_id=None, review_queue_id=None, trace_metadata=None, custom_metadata=None, customer_feedback=None, input=None, output=None, evaluation_results=None):  # noqa: E501
         """TraceSearchInfo - a model defined in Swagger"""  # noqa: E501
         self._session_id = None
         self._trace_id = None
+        self._review_queue_id = None
         self._trace_metadata = None
         self._custom_metadata = None
         self._customer_feedback = None
@@ -62,6 +65,7 @@ class TraceSearchInfo(object):
         self.discriminator = None
         self.session_id = session_id
         self.trace_id = trace_id
+        self.review_queue_id = review_queue_id
         self.trace_metadata = trace_metadata
         self.custom_metadata = custom_metadata
         self.customer_feedback = customer_feedback
@@ -114,6 +118,29 @@ class TraceSearchInfo(object):
             raise ValueError("Invalid value for `trace_id`, must not be `None`")  # noqa: E501
 
         self._trace_id = trace_id
+
+    @property
+    def review_queue_id(self):
+        """Gets the review_queue_id of this TraceSearchInfo.  # noqa: E501
+
+
+        :return: The review_queue_id of this TraceSearchInfo.  # noqa: E501
+        :rtype: object
+        """
+        return self._review_queue_id
+
+    @review_queue_id.setter
+    def review_queue_id(self, review_queue_id):
+        """Sets the review_queue_id of this TraceSearchInfo.
+
+
+        :param review_queue_id: The review_queue_id of this TraceSearchInfo.  # noqa: E501
+        :type: object
+        """
+        if review_queue_id is None:
+            raise ValueError("Invalid value for `review_queue_id`, must not be `None`")  # noqa: E501
+
+        self._review_queue_id = review_queue_id
 
     @property
     def trace_metadata(self):

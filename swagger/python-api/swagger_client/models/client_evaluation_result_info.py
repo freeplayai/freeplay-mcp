@@ -29,7 +29,7 @@ class ClientEvaluationResultInfo(object):
     """
     swagger_types = {
         'name': 'object',
-        'value': 'object'
+        'value': 'JSONValue'
     }
 
     attribute_map = {
@@ -74,7 +74,7 @@ class ClientEvaluationResultInfo(object):
 
 
         :return: The value of this ClientEvaluationResultInfo.  # noqa: E501
-        :rtype: object
+        :rtype: JSONValue
         """
         return self._value
 
@@ -84,7 +84,7 @@ class ClientEvaluationResultInfo(object):
 
 
         :param value: The value of this ClientEvaluationResultInfo.  # noqa: E501
-        :type: object
+        :type: JSONValue
         """
         if value is None:
             raise ValueError("Invalid value for `value`, must not be `None`")  # noqa: E501

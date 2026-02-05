@@ -28,18 +28,23 @@ class BedrockToolUseBlock(object):
                             and the value is json key in definition.
     """
     swagger_types = {
-        'tool_use': 'BedrockToolUseBlockContent'
+        'tool_use': 'BedrockToolUseBlockContent',
+        'type': 'object'
     }
 
     attribute_map = {
-        'tool_use': 'toolUse'
+        'tool_use': 'toolUse',
+        'type': 'type'
     }
 
-    def __init__(self, tool_use=None):  # noqa: E501
+    def __init__(self, tool_use=None, type=None):  # noqa: E501
         """BedrockToolUseBlock - a model defined in Swagger"""  # noqa: E501
         self._tool_use = None
+        self._type = None
         self.discriminator = None
         self.tool_use = tool_use
+        if type is not None:
+            self.type = type
 
     @property
     def tool_use(self):
@@ -63,6 +68,27 @@ class BedrockToolUseBlock(object):
             raise ValueError("Invalid value for `tool_use`, must not be `None`")  # noqa: E501
 
         self._tool_use = tool_use
+
+    @property
+    def type(self):
+        """Gets the type of this BedrockToolUseBlock.  # noqa: E501
+
+
+        :return: The type of this BedrockToolUseBlock.  # noqa: E501
+        :rtype: object
+        """
+        return self._type
+
+    @type.setter
+    def type(self, type):
+        """Sets the type of this BedrockToolUseBlock.
+
+
+        :param type: The type of this BedrockToolUseBlock.  # noqa: E501
+        :type: object
+        """
+
+        self._type = type
 
     def to_dict(self):
         """Returns the model properties as a dict"""

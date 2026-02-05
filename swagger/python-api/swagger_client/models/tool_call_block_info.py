@@ -30,7 +30,8 @@ class ToolCallBlockInfo(object):
     swagger_types = {
         'id': 'object',
         'name': 'object',
-        'arguments': 'object',
+        'arguments': 'JSONValue',
+        'thought_signature': 'object',
         'type': 'object'
     }
 
@@ -38,19 +39,23 @@ class ToolCallBlockInfo(object):
         'id': 'id',
         'name': 'name',
         'arguments': 'arguments',
+        'thought_signature': 'thought_signature',
         'type': 'type'
     }
 
-    def __init__(self, id=None, name=None, arguments=None, type=None):  # noqa: E501
+    def __init__(self, id=None, name=None, arguments=None, thought_signature=None, type=None):  # noqa: E501
         """ToolCallBlockInfo - a model defined in Swagger"""  # noqa: E501
         self._id = None
         self._name = None
         self._arguments = None
+        self._thought_signature = None
         self._type = None
         self.discriminator = None
         self.id = id
         self.name = name
         self.arguments = arguments
+        if thought_signature is not None:
+            self.thought_signature = thought_signature
         if type is not None:
             self.type = type
 
@@ -106,7 +111,7 @@ class ToolCallBlockInfo(object):
 
 
         :return: The arguments of this ToolCallBlockInfo.  # noqa: E501
-        :rtype: object
+        :rtype: JSONValue
         """
         return self._arguments
 
@@ -116,12 +121,33 @@ class ToolCallBlockInfo(object):
 
 
         :param arguments: The arguments of this ToolCallBlockInfo.  # noqa: E501
-        :type: object
+        :type: JSONValue
         """
         if arguments is None:
             raise ValueError("Invalid value for `arguments`, must not be `None`")  # noqa: E501
 
         self._arguments = arguments
+
+    @property
+    def thought_signature(self):
+        """Gets the thought_signature of this ToolCallBlockInfo.  # noqa: E501
+
+
+        :return: The thought_signature of this ToolCallBlockInfo.  # noqa: E501
+        :rtype: object
+        """
+        return self._thought_signature
+
+    @thought_signature.setter
+    def thought_signature(self, thought_signature):
+        """Sets the thought_signature of this ToolCallBlockInfo.
+
+
+        :param thought_signature: The thought_signature of this ToolCallBlockInfo.  # noqa: E501
+        :type: object
+        """
+
+        self._thought_signature = thought_signature
 
     @property
     def type(self):

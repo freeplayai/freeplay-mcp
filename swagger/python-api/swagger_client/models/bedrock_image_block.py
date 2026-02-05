@@ -28,18 +28,23 @@ class BedrockImageBlock(object):
                             and the value is json key in definition.
     """
     swagger_types = {
-        'image': 'BedrockImageContent'
+        'image': 'BedrockImageContent',
+        'type': 'object'
     }
 
     attribute_map = {
-        'image': 'image'
+        'image': 'image',
+        'type': 'type'
     }
 
-    def __init__(self, image=None):  # noqa: E501
+    def __init__(self, image=None, type=None):  # noqa: E501
         """BedrockImageBlock - a model defined in Swagger"""  # noqa: E501
         self._image = None
+        self._type = None
         self.discriminator = None
         self.image = image
+        if type is not None:
+            self.type = type
 
     @property
     def image(self):
@@ -63,6 +68,27 @@ class BedrockImageBlock(object):
             raise ValueError("Invalid value for `image`, must not be `None`")  # noqa: E501
 
         self._image = image
+
+    @property
+    def type(self):
+        """Gets the type of this BedrockImageBlock.  # noqa: E501
+
+
+        :return: The type of this BedrockImageBlock.  # noqa: E501
+        :rtype: object
+        """
+        return self._type
+
+    @type.setter
+    def type(self, type):
+        """Sets the type of this BedrockImageBlock.
+
+
+        :param type: The type of this BedrockImageBlock.  # noqa: E501
+        :type: object
+        """
+
+        self._type = type
 
     def to_dict(self):
         """Returns the model properties as a dict"""

@@ -28,18 +28,23 @@ class BedrockDocumentBlock(object):
                             and the value is json key in definition.
     """
     swagger_types = {
-        'document': 'BedrockDocumentContent'
+        'document': 'BedrockDocumentContent',
+        'type': 'object'
     }
 
     attribute_map = {
-        'document': 'document'
+        'document': 'document',
+        'type': 'type'
     }
 
-    def __init__(self, document=None):  # noqa: E501
+    def __init__(self, document=None, type=None):  # noqa: E501
         """BedrockDocumentBlock - a model defined in Swagger"""  # noqa: E501
         self._document = None
+        self._type = None
         self.discriminator = None
         self.document = document
+        if type is not None:
+            self.type = type
 
     @property
     def document(self):
@@ -63,6 +68,27 @@ class BedrockDocumentBlock(object):
             raise ValueError("Invalid value for `document`, must not be `None`")  # noqa: E501
 
         self._document = document
+
+    @property
+    def type(self):
+        """Gets the type of this BedrockDocumentBlock.  # noqa: E501
+
+
+        :return: The type of this BedrockDocumentBlock.  # noqa: E501
+        :rtype: object
+        """
+        return self._type
+
+    @type.setter
+    def type(self, type):
+        """Sets the type of this BedrockDocumentBlock.
+
+
+        :param type: The type of this BedrockDocumentBlock.  # noqa: E501
+        :type: object
+        """
+
+        self._type = type
 
     def to_dict(self):
         """Returns the model properties as a dict"""

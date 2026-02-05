@@ -212,8 +212,8 @@ defined by the MCP host (e.g., Claude Code). We cannot prevent:
 Users should only connect MCP servers they fully trust and understand
 that all connected servers operate within a shared security context.
 
-## Open Questions
+## Support
 
-1. Are there specific workflows to prioritize beyond prompt versioning?
-2. Do you need project listing, or will you always provide `project_id` directly?
-3. Any specific prompt template fields you want exposed (metadata, tags, etc.)?
+- **Docs**: https://docs.freeplay.ai
+- **Issues**: https://github.com/freeplayai/freeplay-mcp/issues
+- **Security**: security@freeplay.ai

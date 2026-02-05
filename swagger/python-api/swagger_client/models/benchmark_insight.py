@@ -30,28 +30,24 @@ class BenchmarkInsight(object):
     swagger_types = {
         'title': 'object',
         'description': 'object',
-        'test_case_ids': 'object',
-        'suggested_action': 'object'
+        'test_case_ids': 'object'
     }
 
     attribute_map = {
         'title': 'title',
         'description': 'description',
-        'test_case_ids': 'test_case_ids',
-        'suggested_action': 'suggested_action'
+        'test_case_ids': 'test_case_ids'
     }
 
-    def __init__(self, title=None, description=None, test_case_ids=None, suggested_action=None):  # noqa: E501
+    def __init__(self, title=None, description=None, test_case_ids=None):  # noqa: E501
         """BenchmarkInsight - a model defined in Swagger"""  # noqa: E501
         self._title = None
         self._description = None
         self._test_case_ids = None
-        self._suggested_action = None
         self.discriminator = None
         self.title = title
         self.description = description
         self.test_case_ids = test_case_ids
-        self.suggested_action = suggested_action
 
     @property
     def title(self):
@@ -121,29 +117,6 @@ class BenchmarkInsight(object):
             raise ValueError("Invalid value for `test_case_ids`, must not be `None`")  # noqa: E501
 
         self._test_case_ids = test_case_ids
-
-    @property
-    def suggested_action(self):
-        """Gets the suggested_action of this BenchmarkInsight.  # noqa: E501
-
-
-        :return: The suggested_action of this BenchmarkInsight.  # noqa: E501
-        :rtype: object
-        """
-        return self._suggested_action
-
-    @suggested_action.setter
-    def suggested_action(self, suggested_action):
-        """Sets the suggested_action of this BenchmarkInsight.
-
-
-        :param suggested_action: The suggested_action of this BenchmarkInsight.  # noqa: E501
-        :type: object
-        """
-        if suggested_action is None:
-            raise ValueError("Invalid value for `suggested_action`, must not be `None`")  # noqa: E501
-
-        self._suggested_action = suggested_action
 
     def to_dict(self):
         """Returns the model properties as a dict"""
