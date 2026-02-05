@@ -47,14 +47,15 @@ exposing every API endpoint directly.
    export FREEPLAY_API_KEY="your-api-key"
    export FREEPLAY_BASE_URL="https://app.freeplay.ai"
    ```
+   
    For local development against a Freeplay server running on your host machine:
-   ```shell
+   ```sh
    export FREEPLAY_BASE_URL="http://host.docker.internal:8080"
    ```
 
 4. Add the Freeplay MCP server to Claude Code.
-   ```shell
-   claude mcp add --transport stdio freeplay-mcp-v1 -- docker run -i --rm -e FREEPLAY_API_KEY -e FREEPLAY_BASE_URL freeplay-mcp
+   ```sh
+   claude mcp add --transport stdio freeplay-mcp-v1 -- docker run -i --rm -e FREEPLAY_API_KEY=$FREEPLAY_API_KEY -e FREEPLAY_BASE_URL=$FREEPLAY_BASE_URL freeplay-mcp
    ```
 
 5. Start Claude Code and run `/mcp` to check installation.
