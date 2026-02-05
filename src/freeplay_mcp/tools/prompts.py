@@ -200,7 +200,7 @@ async def get_prompt_version(
     return DetailResponse(title=title, sections=sections).render()
 
 
-async def get_deployed_prompts(
+async def get_deployed_prompt_versions(
     project_id: str,
     template_name: str,
 ) -> str:
@@ -231,17 +231,20 @@ async def get_deployed_prompts(
     errors: list[str] = []
     for env in environments:
         try:
-            result = await asyncio.to_thread(
+            response = await asyncio.to_thread(
                 prompt_api.get_get_by_name_and_environment,
                 project_id,
                 template_name,
                 environment=env,
+                _preload_content=False,
             )
+            result = json.loads(response.data.decode('utf-8'))
+            metadata = result.get('metadata', {})
             env_to_version[env] = {
-                'version_id': str(result.prompt_template_version_id),
-                'version_name': result.version_name or '',
-                'model': result.metadata.model if result.metadata else 'unknown',
-                'template_id': str(result.prompt_template_id),
+                'version_id': str(result.get('prompt_template_version_id', '')),
+                'version_name': result.get('version_name') or '',
+                'model': metadata.get('model', 'unknown') if metadata else 'unknown',
+                'template_id': str(result.get('prompt_template_id', '')),
             }
         except ApiException as e:
             if e.status == 404:

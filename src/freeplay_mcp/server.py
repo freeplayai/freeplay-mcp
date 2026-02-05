@@ -13,7 +13,7 @@ from .tools import (
     list_prompt_templates,
     get_prompt_version,
     create_prompt_version,
-    get_deployed_prompts,
+    get_deployed_prompt_versions,
     find_logging_issues,
     optimize_prompt,
     list_insights,
@@ -39,7 +39,7 @@ TOOLS = [
     list_prompt_templates,
     get_prompt_version,
     create_prompt_version,
-    get_deployed_prompts,
+    get_deployed_prompt_versions,
     find_logging_issues,
     list_insights,
 ]
