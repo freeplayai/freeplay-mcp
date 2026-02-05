@@ -4,6 +4,8 @@ import os
 import sys
 from importlib.metadata import version, PackageNotFoundError
 
+from .secrets import SecretString
+
 # Add swagger client to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'swagger', 'python-api'))
 
@@ -29,7 +31,7 @@ def get_api_client() -> ApiClient:
     """Get or create the Swagger API client."""
     global _api_client
     if _api_client is None:
-        api_key = os.environ.get("FREEPLAY_API_KEY")
+        api_key = SecretString(os.environ.get("FREEPLAY_API_KEY"))
         if not api_key:
             raise ValueError("FREEPLAY_API_KEY environment variable is required.")
 
@@ -40,8 +42,8 @@ def get_api_client() -> ApiClient:
         config = Configuration()
         config.host = base_url
         config.verify_ssl = verify_ssl
-        # Set up Bearer auth
-        _api_client = ApiClient(config, header_name="Authorization", header_value=f"Bearer {api_key}")
+        # Set up Bearer auth - use .get() to access the actual key value
+        _api_client = ApiClient(config, header_name="Authorization", header_value=f"Bearer {api_key.get()}")
         # Set custom user agent
         _api_client.user_agent = f"freeplay-mcp/{MCP_VERSION}"
     return _api_client
