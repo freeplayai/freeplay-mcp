@@ -1,13 +1,9 @@
 """Shared API client setup and utilities for Freeplay MCP tools."""
 
 import os
-import sys
 from importlib.metadata import PackageNotFoundError, version
 
 from .secrets import SecretString
-
-# Add swagger client to path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'swagger', 'python-api'))
 
 # Get version from installed package metadata
 try:
@@ -16,14 +12,17 @@ except PackageNotFoundError:
     _mcp_version = "version-not-found"
 MCP_VERSION = _mcp_version
 
-from swagger_client import ApiClient, Configuration  # type: ignore[import-untyped]
-from swagger_client.api.configuration_api import (
+from freeplay_mcp.vendor.swagger_client import (  # type: ignore[import-untyped]
+    ApiClient,
+    Configuration,
+)
+from freeplay_mcp.vendor.swagger_client.api.configuration_api import (
     ConfigurationApi,  # type: ignore[import-untyped]
 )
-from swagger_client.api.prompt_templates_api import (
+from freeplay_mcp.vendor.swagger_client.api.prompt_templates_api import (
     PromptTemplatesApi,  # type: ignore[import-untyped]
 )
-from swagger_client.api.search__analytics_api import (
+from freeplay_mcp.vendor.swagger_client.api.search__analytics_api import (
     SearchAnalyticsApi,  # type: ignore[import-untyped]
 )
 

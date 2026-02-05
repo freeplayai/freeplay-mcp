@@ -18,7 +18,7 @@ exposing every API endpoint directly.
    cd freeplay-mcp
    uv sync # install dependencies
    ```
-1. Add the Freeplay MCP server to your claude code. From the freeplay-mcp directly.
+1. Add the Freeplay MCP server to your claude code. From the freeplay-mcp directory.
     ```shell
    claude mcp add --transport stdio freeplay-mcp-v1 -- uv run main.py
     ```
@@ -65,12 +65,17 @@ exposing every API endpoint directly.
 
 ```
 freeplay-mcp/
-├── pyproject.toml          # Dependencies managed via uv
+├── pyproject.toml              # Dependencies managed via uv
 ├── src/
 │   └── freeplay_mcp/
 │       ├── __init__.py
-│       ├── server.py       # FastMCP server + tool definitions
-│       └── client.py       # Freeplay API client (handles auth, requests)
+│       ├── server.py           # FastMCP server + tool definitions
+│       ├── tools/              # Tool implementations
+│       └── vendor/            # Vendored dependencies
+│           └── swagger_client/
+├── main.py
+├── Dockerfile
+└── README.md
 ```
 
 ## Dependencies (pyproject.toml)

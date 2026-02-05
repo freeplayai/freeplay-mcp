@@ -16,7 +16,6 @@ WORKDIR $PYSETUP_PATH
 
 COPY pyproject.toml uv.lock README.md ./
 COPY src ./src
-COPY swagger ./swagger
 
 RUN python -m uv sync --locked --no-group dev --no-editable && \
     rm -rf /root/.cache/uv
@@ -34,7 +33,7 @@ COPY --from=builder --chown=65532:65532 /opt/pysetup /opt/pysetup
 COPY --chown=65532:65532 --parents \
     ./pyproject.toml \
     ./main.py \
-    ./src ./swagger \
+    ./src \
     /app/
 
 WORKDIR /app

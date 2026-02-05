@@ -2,12 +2,8 @@
 
 import asyncio
 import logging
-import os
-import sys
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', '..', 'swagger', 'python-api'))
-
-from swagger_client.models.search_request import (
+from freeplay_mcp.vendor.swagger_client.models.search_request import (
     SearchRequest,  # type: ignore[import-untyped]
 )
 
