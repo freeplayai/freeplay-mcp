@@ -20,10 +20,11 @@ async def list_projects() -> str:
 
     projects = result.projects if hasattr(result, 'projects') else result
     items = []
-    for project in projects or []:
-        project_id = project.id if hasattr(project, 'id') else project.get("id", "unknown")
-        name = project.name if hasattr(project, 'name') else project.get("name", "Unnamed")
-        description = project.description if hasattr(project, 'description') else project.get("description", "")
+    project_list = projects if isinstance(projects, list) else []
+    for project in project_list:
+        project_id = str(project.id if hasattr(project, 'id') else project.get("id", "unknown"))
+        name = str(project.name if hasattr(project, 'name') else project.get("name", "Unnamed"))
+        description = str(project.description if hasattr(project, 'description') else project.get("description", ""))
 
         items.append(ListItem(
             id=project_id,

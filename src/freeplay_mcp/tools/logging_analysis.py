@@ -1,17 +1,18 @@
 """Logging analysis tools."""
 
 import asyncio
-import sys
 import os
+import sys
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', '..', 'swagger', 'python-api'))
 
-from swagger_client.models.search_request import SearchRequest
-
-from ..api_client import get_search_api, build_filters
-from ..response import ToolResponse
-
 from pydantic import BaseModel
+from swagger_client.models.search_request import (
+    SearchRequest,  # type: ignore[import-untyped]
+)
+
+from ..api_client import build_filters, get_search_api
+from ..response import ToolResponse
 
 
 class LoggingIssue(BaseModel):
@@ -111,7 +112,7 @@ LOGGABLE_FIELDS = {
 }
 
 
-def _is_empty(value) -> bool:
+def _is_empty(value: object) -> bool:
     if value is None:
         return True
     if isinstance(value, dict) and not value:

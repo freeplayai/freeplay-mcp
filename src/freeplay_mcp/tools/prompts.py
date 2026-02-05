@@ -3,15 +3,17 @@
 import asyncio
 import json
 import logging
-import sys
 import os
+import sys
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', '..', 'swagger', 'python-api'))
 
-from swagger_client.models.create_template_version_request1 import CreateTemplateVersionRequest1
-from swagger_client.rest import ApiException
+from swagger_client.models.create_template_version_request1 import (  # type: ignore[import-untyped]
+    CreateTemplateVersionRequest1,
+)
+from swagger_client.rest import ApiException  # type: ignore[import-untyped]
 
-from ..api_client import get_prompt_templates_api, get_config_api
+from ..api_client import get_config_api, get_prompt_templates_api
 from ..response import ActionResponse, DetailResponse, ListItem, ListResponse
 
 logger = logging.getLogger(__name__)

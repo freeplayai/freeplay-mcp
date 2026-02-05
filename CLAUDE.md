@@ -74,3 +74,13 @@ The auto-generated swagger client lives at `swagger/python-api/`. Key patterns:
 ```bash
 uv run freeplay-mcp
 ```
+
+## Type Checking and Linting
+
+```bash
+uv run ruff check src/        # Lint
+uv run ruff check --fix src/  # Lint + auto-fix
+uv run basedpyright src/      # Type check
+```
+
+The swagger client is untyped, so pyright rules for unknown types are disabled. All other strict checks apply.

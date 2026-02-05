@@ -2,21 +2,30 @@
 
 import os
 import sys
-from importlib.metadata import version, PackageNotFoundError
+from importlib.metadata import PackageNotFoundError, version
+
+from .secrets import SecretString
 
 # Add swagger client to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'swagger', 'python-api'))
 
 # Get version from installed package metadata
 try:
-    MCP_VERSION = version("freeplay-mcp")
+    _mcp_version = version("freeplay-mcp")
 except PackageNotFoundError:
-    MCP_VERSION = "version-not-found"
+    _mcp_version = "version-not-found"
+MCP_VERSION = _mcp_version
 
-from swagger_client import Configuration, ApiClient
-from swagger_client.api.configuration_api import ConfigurationApi
-from swagger_client.api.search__analytics_api import SearchAnalyticsApi
-from swagger_client.api.prompt_templates_api import PromptTemplatesApi
+from swagger_client import ApiClient, Configuration  # type: ignore[import-untyped]
+from swagger_client.api.configuration_api import (
+    ConfigurationApi,  # type: ignore[import-untyped]
+)
+from swagger_client.api.prompt_templates_api import (
+    PromptTemplatesApi,  # type: ignore[import-untyped]
+)
+from swagger_client.api.search__analytics_api import (
+    SearchAnalyticsApi,  # type: ignore[import-untyped]
+)
 
 # Lazy-initialized API clients
 _api_client: ApiClient | None = None
@@ -29,7 +38,7 @@ def get_api_client() -> ApiClient:
     """Get or create the Swagger API client."""
     global _api_client
     if _api_client is None:
-        api_key = os.environ.get("FREEPLAY_API_KEY")
+        api_key = SecretString(os.environ.get("FREEPLAY_API_KEY"))
         if not api_key:
             raise ValueError("FREEPLAY_API_KEY environment variable is required.")
 
@@ -40,8 +49,8 @@ def get_api_client() -> ApiClient:
         config = Configuration()
         config.host = base_url
         config.verify_ssl = verify_ssl
-        # Set up Bearer auth
-        _api_client = ApiClient(config, header_name="Authorization", header_value=f"Bearer {api_key}")
+        # Set up Bearer auth - use .get() to access the actual key value
+        _api_client = ApiClient(config, header_name="Authorization", header_value=f"Bearer {api_key.get()}")
         # Set custom user agent
         _api_client.user_agent = f"freeplay-mcp/{MCP_VERSION}"
     return _api_client
