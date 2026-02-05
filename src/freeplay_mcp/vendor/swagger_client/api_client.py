@@ -23,7 +23,7 @@ import six
 from six.moves.urllib.parse import quote
 
 from freeplay_mcp.vendor.swagger_client.configuration import Configuration
-import freeplay_mcp.vendor.swagger_client.models
+from freeplay_mcp.vendor import swagger_client
 from freeplay_mcp.vendor.swagger_client import rest
 
 
