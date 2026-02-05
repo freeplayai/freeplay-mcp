@@ -134,21 +134,21 @@ def _analyze_completions(completions: list, check_prompt_template: bool = True) 
             session_id = comp.get("session_id")
             input_variables = comp.get("input_variables")
             metadata = comp.get("completion_metadata") or {}
-            prompt_template = comp.get("prompt_template")
         else:
             session_id = getattr(comp, "session_id", None)
             input_variables = getattr(comp, "input_variables", None)
             metadata = getattr(comp, "completion_metadata", None) or {}
-            prompt_template = getattr(comp, "prompt_template", None)
 
         if isinstance(metadata, dict):
             environment = metadata.get("environment")
             model = metadata.get("model")
             provider = metadata.get("provider")
+            prompt_template = metadata.get("prompt_template")
         else:
             environment = getattr(metadata, "environment", None)
             model = getattr(metadata, "model", None)
             provider = getattr(metadata, "provider", None)
+            prompt_template = getattr(metadata, "prompt_template", None)
 
         if check_prompt_template and _is_empty(prompt_template):
             missing_prompt_template_count += 1
