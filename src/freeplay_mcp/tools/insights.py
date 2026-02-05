@@ -2,12 +2,12 @@
 
 import asyncio
 import logging
-import sys
 import os
+import sys
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', '..', 'swagger', 'python-api'))
 
-from swagger_client.api.insights_api import InsightsApi
+from swagger_client.api.insights_api import InsightsApi  # type: ignore[import-untyped]
 
 from ..api_client import get_api_client
 from ..response import ListItem, ListResponse
@@ -37,16 +37,16 @@ async def list_insights(
     """
     api = InsightsApi(get_api_client())
     
-    kwargs = {
+    kwargs: dict[str, int | str] = {
         'page': page,
         'page_size': page_size,
     }
-    
+
     if prompt_template_id is not None:
         kwargs['prompt_template_id'] = prompt_template_id
     if agent_id is not None:
         kwargs['agent_id'] = agent_id
-    
+
     result = await asyncio.to_thread(api.get_get_insights, project_id, **kwargs)
 
     data = result.data or []

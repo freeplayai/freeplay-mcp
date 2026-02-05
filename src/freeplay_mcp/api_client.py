@@ -2,7 +2,7 @@
 
 import os
 import sys
-from importlib.metadata import version, PackageNotFoundError
+from importlib.metadata import PackageNotFoundError, version
 
 from .secrets import SecretString
 
@@ -11,14 +11,21 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'swagger'
 
 # Get version from installed package metadata
 try:
-    MCP_VERSION = version("freeplay-mcp")
+    _mcp_version = version("freeplay-mcp")
 except PackageNotFoundError:
-    MCP_VERSION = "version-not-found"
+    _mcp_version = "version-not-found"
+MCP_VERSION = _mcp_version
 
-from swagger_client import Configuration, ApiClient
-from swagger_client.api.configuration_api import ConfigurationApi
-from swagger_client.api.search__analytics_api import SearchAnalyticsApi
-from swagger_client.api.prompt_templates_api import PromptTemplatesApi
+from swagger_client import ApiClient, Configuration  # type: ignore[import-untyped]
+from swagger_client.api.configuration_api import (
+    ConfigurationApi,  # type: ignore[import-untyped]
+)
+from swagger_client.api.prompt_templates_api import (
+    PromptTemplatesApi,  # type: ignore[import-untyped]
+)
+from swagger_client.api.search__analytics_api import (
+    SearchAnalyticsApi,  # type: ignore[import-untyped]
+)
 
 # Lazy-initialized API clients
 _api_client: ApiClient | None = None

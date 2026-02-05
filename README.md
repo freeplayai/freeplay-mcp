@@ -114,6 +114,19 @@ uv run python -m freeplay_mcp.server
 uv run mcp run src/freeplay_mcp/server.py
 ```
 
+## Development
+
+```bash
+# Install dev dependencies
+uv sync --dev
+
+# Lint (with auto-fix)
+uv run ruff check --fix src/
+
+# Type check
+uv run basedpyright src/
+```
+
 ## Claude Desktop Configuration
 
 ```json

@@ -2,14 +2,16 @@
 
 import asyncio
 import logging
-import sys
 import os
+import sys
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', '..', 'swagger', 'python-api'))
 
-from swagger_client.models.search_request import SearchRequest
+from swagger_client.models.search_request import (
+    SearchRequest,  # type: ignore[import-untyped]
+)
 
-from ..api_client import get_search_api, build_filters
+from ..api_client import build_filters, get_search_api
 from ..response import ListItem, ListResponse
 
 logger = logging.getLogger(__name__)

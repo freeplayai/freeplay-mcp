@@ -6,17 +6,17 @@ import sys
 from fastmcp import FastMCP
 
 from .tools import (
-    list_projects,
-    search_completions,
-    search_traces,
-    search_sessions,
-    list_prompt_templates,
-    get_prompt_version,
     create_prompt_version,
-    get_deployed_prompt_versions,
     find_logging_issues,
-    optimize_prompt,
+    get_deployed_prompt_versions,
+    get_prompt_version,
     list_insights,
+    list_projects,
+    list_prompt_templates,
+    optimize_prompt,
+    search_completions,
+    search_sessions,
+    search_traces,
 )
 
 # Configure logging to stderr (stdout corrupts MCP JSON-RPC)
