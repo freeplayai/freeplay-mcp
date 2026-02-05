@@ -7,7 +7,7 @@ exposing every API endpoint directly.
 
 ## Installation instructions
 
-### Claude Code
+### Claude Code (with uv)
 
 1. Clone this repository locally.
    ```shell
@@ -24,9 +24,42 @@ exposing every API endpoint directly.
     ```
 1. Configure `.env` and:
    ```shell
-   source .env 
+   source .env
    ```
 1. Start Claude code and run `/mcp` to check installation.
+
+### Claude Code (with Docker)
+
+1. Clone this repository locally.
+   ```shell
+   git clone git@github.com:freeplayai/freeplay-mcp.git
+   cd freeplay-mcp
+   ```
+
+2. Build the Docker image.
+   ```shell
+   docker build -t freeplay-mcp .
+   ```
+   For production deployments, consider using a hardened base image such as [Chainguard](https://www.chainguard.dev/) or [Distroless](https://github.com/GoogleContainerTools/distroless).
+
+3. Set your environment variables (in .env, then source it).
+   ```shell
+   export FREEPLAY_API_KEY="your-api-key"
+   export FREEPLAY_BASE_URL="https://app.freeplay.ai"
+   ```
+   
+   For local development against a Freeplay server running on your host machine:
+   ```sh
+   export FREEPLAY_BASE_URL="http://host.docker.internal:8080"
+   ```
+
+4. Add the Freeplay MCP server to Claude Code.
+   ```sh
+   claude mcp add --transport stdio freeplay-mcp-v1 -- docker run -i --rm -e FREEPLAY_API_KEY=$FREEPLAY_API_KEY -e FREEPLAY_BASE_URL=$FREEPLAY_BASE_URL freeplay-mcp
+   ```
+
+5. Start Claude Code and run `/mcp` to check installation.
+
 
 ## Project Structure
 
@@ -116,6 +149,8 @@ uv run mcp run src/freeplay_mcp/server.py
 
 ## Claude Desktop Configuration
 
+### Using uv
+
 ```json
 {
   "mcpServers": {
@@ -131,6 +166,30 @@ uv run mcp run src/freeplay_mcp/server.py
       ],
       "env": {
         "FREEPLAY_API_KEY": "your-api-key"
+      }
+    }
+  }
+}
+```
+
+### Using Docker
+
+```json
+{
+  "mcpServers": {
+    "freeplay": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e", "FREEPLAY_API_KEY",
+        "-e", "FREEPLAY_BASE_URL",
+        "freeplay-mcp"
+      ],
+      "env": {
+        "FREEPLAY_API_KEY": "your-api-key",
+        "FREEPLAY_BASE_URL": "https://app.freeplay.ai"
       }
     }
   }
