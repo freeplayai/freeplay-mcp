@@ -35,19 +35,14 @@ exposing every API endpoint directly.
    git clone git@github.com:freeplayai/freeplay-mcp.git
    cd freeplay-mcp
    ```
-2. Authenticate with Chainguard registry (for local builds).
-   Set up a pull token at https://console.chainguard.dev/org/freeplay.ai/settings/pull-tokens then:
-   ```shell
-   docker login cgr.dev --username "your_pull_token_username" --password-stdin
-   ```
-   Paste your token, press Enter, then Ctrl+D.
 
-3. Build the Docker image.
+2. Build the Docker image.
    ```shell
    docker build -t freeplay-mcp .
    ```
+   For production deployments, consider using a hardened base image such as [Chainguard](https://www.chainguard.dev/) or [Distroless](https://github.com/GoogleContainerTools/distroless).
 
-4. Set your environment variables (in .env, then source it).
+3. Set your environment variables (in .env, then source it).
    ```shell
    export FREEPLAY_API_KEY="your-api-key"
    export FREEPLAY_BASE_URL="https://app.freeplay.ai"
@@ -57,12 +52,12 @@ exposing every API endpoint directly.
    export FREEPLAY_BASE_URL="http://host.docker.internal:8080"
    ```
 
-5. Add the Freeplay MCP server to Claude Code.
+4. Add the Freeplay MCP server to Claude Code.
    ```shell
    claude mcp add --transport stdio freeplay-mcp-v1 -- docker run -i --rm -e FREEPLAY_API_KEY -e FREEPLAY_BASE_URL freeplay-mcp
    ```
 
-6. Start Claude Code and run `/mcp` to check installation.
+5. Start Claude Code and run `/mcp` to check installation.
 
 
 ## Project Structure
