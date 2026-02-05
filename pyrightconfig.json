@@ -1,0 +1,21 @@
+{
+  "pythonVersion": "3.12",
+  "typeCheckingMode": "strict",
+  "useLibraryCodeForTypes": true,
+  "reportUnusedFunction": "none",
+  "reportMissingTypeStubs": "none",
+  "reportUnknownMemberType": "none",
+  "reportUnknownVariableType": "none",
+  "reportUnknownArgumentType": "none",
+  "reportUnknownParameterType": "none",
+  "reportUnknownLambdaType": "none",
+  "reportAttributeAccessIssue": "none",
+  "reportOptionalMemberAccess": "none",
+  "reportMissingTypeArgument": "none",
+  "include": ["src"],
+  "exclude": [
+    "swagger",
+    "**/__pycache__",
+    "**/.venv"
+  ]
+}

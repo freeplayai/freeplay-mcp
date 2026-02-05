@@ -8,8 +8,12 @@ import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', '..', 'swagger', 'python-api'))
 
 from fastmcp.dependencies import Progress
-from swagger_client.api.prompt_optimization_api import PromptOptimizationApi
-from swagger_client.models.start_prompt_optimization_job_request import StartPromptOptimizationJobRequest
+from swagger_client.api.prompt_optimization_api import (
+    PromptOptimizationApi,  # type: ignore[import-untyped]
+)
+from swagger_client.models.start_prompt_optimization_job_request import (  # type: ignore[import-untyped]
+    StartPromptOptimizationJobRequest,
+)
 
 from ..api_client import get_api_client
 from ..response import DetailResponse
