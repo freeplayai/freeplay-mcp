@@ -32,7 +32,7 @@ Only use this with agents and MCP servers you fully trust.
    cd freeplay-mcp
    uv sync # install dependencies
    ```
-1. Add the Freeplay MCP server to your claude code. From the freeplay-mcp directly.
+1. Add the Freeplay MCP server to your claude code. From the freeplay-mcp directory.
     ```shell
    claude mcp add --transport stdio freeplay-mcp-v1 -- uv run main.py
     ```

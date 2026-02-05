@@ -2,12 +2,10 @@
 
 import asyncio
 import logging
-import os
-import sys
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', '..', 'swagger', 'python-api'))
-
-from swagger_client.api.insights_api import InsightsApi  # type: ignore[import-untyped]
+from freeplay_mcp.vendor.swagger_client.api.insights_api import (
+    InsightsApi,  # type: ignore[import-untyped]
+)
 
 from ..api_client import get_api_client
 from ..response import ListItem, ListResponse

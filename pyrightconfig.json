@@ -14,8 +14,8 @@
   "reportMissingTypeArgument": "none",
   "include": ["src"],
   "exclude": [
-    "swagger",
     "**/__pycache__",
-    "**/.venv"
+    "**/.venv",
+    "src/freeplay_mcp/vendor"
   ]
 }

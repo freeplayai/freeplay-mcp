@@ -5,14 +5,21 @@ This codebase is for a Freeplay MCP server.
 ## Project Structure
 
 ```
-src/freeplay_mcp/
-├── api_client.py        # Shared API client setup, lazy initialization, helpers
-├── server.py            # MCP server entry point, registers tools from TOOLS list
-└── tools/               # One file per tool or tool group
-    ├── __init__.py      # Exports all tool functions
-    ├── projects.py
-    ├── completions.py
-    └── ...
+freeplay-mcp/
+├── pyproject.toml
+├── src/freeplay_mcp/
+│   ├── api_client.py            # Shared API client setup, lazy initialization, helpers
+│   ├── server.py                # MCP server entry point, registers tools from TOOLS list
+│   ├── tools/                   # One file per tool or tool group
+│   │   ├── __init__.py          # Exports all tool functions
+│   │   ├── projects.py
+│   │   ├── completions.py
+│   │   └── ...
+│   └── vendor/                 # Vendored dependencies
+│       └── swagger_client/      # Auto-generated API client
+├── main.py
+├── Dockerfile
+└── README.md
 ```
 
 ## Core Philosophy: Simplicity First
@@ -57,7 +64,7 @@ src/freeplay_mcp/
 
 ## Swagger Client
 
-The auto-generated swagger client lives at `swagger/python-api/`. Key patterns:
+The auto-generated swagger client is vendored at `src/freeplay_mcp/vendor/swagger_client/`. Key patterns:
 - API responses are dicts - access fields with `result.get('field')` or `result['field']`
 - Use `asyncio.to_thread()` to call the synchronous swagger methods
 - Request models are in `swagger_client.models`
