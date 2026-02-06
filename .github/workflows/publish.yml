@@ -44,6 +44,12 @@ jobs:
       - name: Install dependencies
         run: uv sync --group dev --locked
 
+      - name: Type checking
+        run: make type-check
+
+      - name: Lint checking
+        run: make lint-check
+
       - name: Determine release version
         id: release_version
         run: |
@@ -103,12 +109,6 @@ jobs:
       - name: Set version for later steps
         id: version
         run: echo "version=${{ steps.release_version.outputs.version }}" >> $GITHUB_OUTPUT
-
-      - name: Type checking
-        run: make type-check
-
-      - name: Lint checking
-        run: make lint-check
 
       - name: Clean dist directory
         run: rm -rf dist/*
