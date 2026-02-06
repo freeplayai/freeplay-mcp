@@ -1,6 +1,6 @@
 [project]
 name = "freeplay-mcp"
-version = "0.1.0"
+version = "0.0.3"
 description = "Workflow-oriented MCP server for the Freeplay API"
 readme = "README.md"
 license = "Apache-2.0"
