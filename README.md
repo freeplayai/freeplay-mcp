@@ -31,7 +31,10 @@ Only use this with agents and MCP servers you fully trust.
 
 ### Claude Code
 
-The simplest way to install the Freeplay MCP server is via `uvx`:
+If using Claude Code, it is recommended to use the freeplay-plugin, which includes skills and this MCP 
+server: https://github.com/freeplayai/freeplay-plugin.
+
+The simplest way to install only the Freeplay MCP server is via `uvx`:
 
 ```shell
 claude mcp add freeplay -- uvx freeplay-mcp
@@ -73,7 +76,7 @@ For containerized deployments:
 
 1. Clone and build:
    ```shell
-   git clone git@github.com:freeplayai/freeplay-mcp.git
+   git clone https://github.com/freeplayai/freeplay-mcp.git
    cd freeplay-mcp
    docker build -t freeplay-mcp .
    ```
@@ -103,7 +106,7 @@ or [Distroless](https://github.com/GoogleContainerTools/distroless).
 
 ```bash
 # Clone and install
-git clone git@github.com:freeplayai/freeplay-mcp.git
+git clone https://github.com/freeplayai/freeplay-mcp.git
 cd freeplay-mcp
 uv sync --group dev
 
