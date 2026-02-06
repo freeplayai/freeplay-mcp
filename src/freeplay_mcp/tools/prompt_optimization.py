@@ -87,7 +87,11 @@ async def optimize_prompt(
 
         if progress and job_progress:
             step = job_progress.get("step", 1) if isinstance(job_progress, dict) else 1
-            step_name = job_progress.get("step_name", "Processing...") if isinstance(job_progress, dict) else "Processing..."
+            step_name = (
+                job_progress.get("step_name", "Processing...")
+                if isinstance(job_progress, dict)
+                else "Processing..."
+            )
             await progress.set_message(f"Step {step}: {step_name}")
 
         if status in TERMINAL_STATUSES:
@@ -104,8 +108,16 @@ async def optimize_prompt(
 
     changes_summary = status_result.changes_summary or "No changes summary available."
     data_sources = status_result.data_sources_used or {}
-    human_labels_count = data_sources.get("human_labels_count", 0) if isinstance(data_sources, dict) else 0
-    customer_feedback_count = data_sources.get("customer_feedback_count", 0) if isinstance(data_sources, dict) else 0
+    human_labels_count = (
+        data_sources.get("human_labels_count", 0)
+        if isinstance(data_sources, dict)
+        else 0
+    )
+    customer_feedback_count = (
+        data_sources.get("customer_feedback_count", 0)
+        if isinstance(data_sources, dict)
+        else 0
+    )
 
     sections: dict[str, str | dict | list] = {
         "status": "completed",

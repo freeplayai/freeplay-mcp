@@ -1,0 +1,155 @@
+name: Publish to PyPI
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: 'Release type'
+        required: false
+        default: 'prerelease'
+        type: choice
+        options:
+          - prerelease
+          - stable
+      use_testpypi:
+        description: 'Use TestPyPI for testing'
+        required: false
+        default: false
+        type: boolean
+
+concurrency:
+  group: publish-pypi
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          version: "latest"
+
+      - name: Install dependencies
+        run: uv sync --group dev --locked
+
+      - name: Determine release version
+        id: release_version
+        run: |
+          release_type="${{ github.event.inputs.release_type }}"
+          if [ -z "$release_type" ]; then
+            release_type="prerelease"
+          fi
+
+          repository="${{ github.event.inputs.use_testpypi == 'true' && 'testpypi' || 'pypi' }}"
+          uv run python scripts/determine_version.py "$release_type" "$repository"
+
+      - name: Confirm final version
+        run: |
+          final_version="${{ steps.release_version.outputs.version }}"
+          release_type="${{ steps.release_version.outputs.release_type }}"
+          echo "Final version to publish: $final_version ($release_type)"
+
+      - name: Set repository target
+        id: repo_config
+        run: |
+          if [ "${{ github.event.inputs.use_testpypi }}" = "true" ]; then
+            echo "repository=testpypi" >> $GITHUB_OUTPUT
+            echo "repository_name=TestPyPI" >> $GITHUB_OUTPUT
+            echo "publish_url=https://test.pypi.org/legacy/" >> $GITHUB_OUTPUT
+            echo "view_url=https://test.pypi.org/project/freeplay-mcp" >> $GITHUB_OUTPUT
+            echo "token_secret=TEST_PYPI_API_TOKEN" >> $GITHUB_OUTPUT
+          else
+            echo "repository=pypi" >> $GITHUB_OUTPUT
+            echo "repository_name=PyPI" >> $GITHUB_OUTPUT
+            echo "publish_url=https://upload.pypi.org/legacy/" >> $GITHUB_OUTPUT
+            echo "view_url=https://pypi.org/project/freeplay-mcp" >> $GITHUB_OUTPUT
+            echo "token_secret=PYPI_API_TOKEN" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Get latest version from repository
+        id: pypi_version
+        run: |
+          repository="${{ steps.repo_config.outputs.repository }}"
+          pypi_version=$(uv run python scripts/version_utils.py get-pypi-latest "$repository")
+          echo "version=$pypi_version" >> $GITHUB_OUTPUT
+          echo "${{ steps.repo_config.outputs.repository_name }} version: $pypi_version"
+
+      - name: Check if version already exists
+        run: |
+          publish_version="${{ steps.release_version.outputs.version }}"
+          release_type="${{ steps.release_version.outputs.release_type }}"
+          repository="${{ steps.repo_config.outputs.repository }}"
+
+          if [ "$release_type" = "stable" ]; then
+            echo "Checking stable version availability..."
+            uv run python scripts/check_version.py "$publish_version" "$release_type" "$repository"
+          else
+            echo "Skipping version check for prerelease (auto-bump guarantees uniqueness)"
+            echo "Prerelease version: $publish_version"
+          fi
+
+      - name: Set version for later steps
+        id: version
+        run: echo "version=${{ steps.release_version.outputs.version }}" >> $GITHUB_OUTPUT
+
+      - name: Type checking
+        run: make type-check
+
+      - name: Lint checking
+        run: make lint-check
+
+      - name: Clean dist directory
+        run: rm -rf dist/*
+
+      - name: Build package
+        run: uv build
+
+      - name: Check build artifacts
+        run: |
+          echo "Built packages:"
+          ls -la dist/
+
+      - name: Publish to TestPyPI
+        if: steps.repo_config.outputs.repository == 'testpypi'
+        env:
+          UV_PUBLISH_TOKEN: ${{ secrets.TEST_PYPI_API_TOKEN }}
+          UV_PUBLISH_URL: ${{ steps.repo_config.outputs.publish_url }}
+        run: |
+          echo "Publishing to TestPyPI for testing..."
+          uv publish
+
+      - name: Publish to PyPI
+        if: steps.repo_config.outputs.repository != 'testpypi'
+        env:
+          UV_PUBLISH_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+          UV_PUBLISH_URL: ${{ steps.repo_config.outputs.publish_url }}
+        run: |
+          echo "Publishing to PyPI..."
+          uv publish
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.version.outputs.version }}
+          name: Release v${{ steps.version.outputs.version }}
+          draft: false
+          prerelease: ${{ steps.release_version.outputs.release_type == 'prerelease' }}
+          body: |
+            Release v${{ steps.version.outputs.version }}
+
+            Published to ${{ steps.repo_config.outputs.repository_name }}: ${{ steps.repo_config.outputs.view_url }}/${{ steps.version.outputs.version }}/
+          files: |
+            dist/*.whl
+            dist/*.tar.gz

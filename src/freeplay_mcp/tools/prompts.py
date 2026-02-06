@@ -41,26 +41,30 @@ async def list_prompt_templates(
         api.get_list_prompt_templates, project_id, page=page, page_size=page_size
     )
 
-    templates = result.data if hasattr(result, 'data') else []
+    templates = result.data if hasattr(result, "data") else []
 
     items = []
     for template in templates:
         if isinstance(template, dict):
-            template_id = template.get('id', 'unknown')
-            name = template.get('name', 'Unnamed')
-            latest_version_id = template.get('latest_template_version_id', 'N/A')
+            template_id = template.get("id", "unknown")
+            name = template.get("name", "Unnamed")
+            latest_version_id = template.get("latest_template_version_id", "N/A")
         else:
-            template_id = getattr(template, 'id', 'unknown')
-            name = getattr(template, 'name', 'Unnamed')
-            latest_version_id = getattr(template, 'latest_template_version_id', 'N/A')
+            template_id = getattr(template, "id", "unknown")
+            name = getattr(template, "name", "Unnamed")
+            latest_version_id = getattr(template, "latest_template_version_id", "N/A")
 
-        items.append(ListItem(
-            id=template_id,
-            title=name,
-            lines=[f"Latest Version ID: {latest_version_id}"],
-        ))
+        items.append(
+            ListItem(
+                id=template_id,
+                title=name,
+                lines=[f"Latest Version ID: {latest_version_id}"],
+            )
+        )
 
-    return ListResponse(header=f"Found {len(items)} prompt templates", items=items).render()
+    return ListResponse(
+        header=f"Found {len(items)} prompt templates", items=items
+    ).render()
 
 
 async def create_prompt_version(
@@ -123,10 +127,10 @@ async def create_prompt_version(
         create_template_if_not_exists=create_if_not_exists,
         _preload_content=False,
     )
-    result = json.loads(response.data.decode('utf-8'))
+    result = json.loads(response.data.decode("utf-8"))
 
-    version_id = result.get('prompt_template_version_id', result.get('id', 'unknown'))
-    template_id = result.get('prompt_template_id', 'unknown')
+    version_id = result.get("prompt_template_version_id", result.get("id", "unknown"))
+    template_id = result.get("prompt_template_id", "unknown")
 
     details = {
         "template_name": template_name,
@@ -164,20 +168,23 @@ async def get_prompt_version(
     api = get_prompt_templates_api()
 
     response = await asyncio.to_thread(
-        api.get_get_by_template_version_id, project_id, template_id, version_id,
-        _preload_content=False
+        api.get_get_by_template_version_id,
+        project_id,
+        template_id,
+        version_id,
+        _preload_content=False,
     )
-    data = json.loads(response.data.decode('utf-8'))
+    data = json.loads(response.data.decode("utf-8"))
 
-    metadata = data.get('metadata', {})
-    messages = data.get('content', [])
-    model = metadata.get('model', 'unknown')
-    provider = metadata.get('provider', 'unknown')
-    llm_params = metadata.get('params', {})
-    tool_schema = data.get('tool_schema', [])
-    version_name = data.get('version_name', '')
-    version_desc = data.get('version_description', '')
-    template_name = data.get('prompt_template_name', '')
+    metadata = data.get("metadata", {})
+    messages = data.get("content", [])
+    model = metadata.get("model", "unknown")
+    provider = metadata.get("provider", "unknown")
+    llm_params = metadata.get("params", {})
+    tool_schema = data.get("tool_schema", [])
+    version_name = data.get("version_name", "")
+    version_desc = data.get("version_description", "")
+    template_name = data.get("prompt_template_name", "")
 
     title = f"Prompt: {template_name}"
     if version_name:
@@ -223,7 +230,7 @@ async def get_deployed_prompt_versions(
         )
         environments = [e.name for e in env_response.data if e.name]
     except Exception:
-        environments = ['dev', 'latest', 'prod']
+        environments = ["dev", "latest", "prod"]
 
     # Query each environment to find deployed versions
     env_to_version: dict[str, dict] = {}
@@ -238,13 +245,13 @@ async def get_deployed_prompt_versions(
                 environment=env,
                 _preload_content=False,
             )
-            result = json.loads(response.data.decode('utf-8'))
-            metadata = result.get('metadata', {})
+            result = json.loads(response.data.decode("utf-8"))
+            metadata = result.get("metadata", {})
             env_to_version[env] = {
-                'version_id': str(result.get('prompt_template_version_id', '')),
-                'version_name': result.get('version_name') or '',
-                'model': metadata.get('model', 'unknown') if metadata else 'unknown',
-                'template_id': str(result.get('prompt_template_id', '')),
+                "version_id": str(result.get("prompt_template_version_id", "")),
+                "version_name": result.get("version_name") or "",
+                "model": metadata.get("model", "unknown") if metadata else "unknown",
+                "template_id": str(result.get("prompt_template_id", "")),
             }
         except ApiException as e:
             if e.status == 404:
@@ -267,13 +274,17 @@ async def get_deployed_prompt_versions(
             sections["errors"] = errors
     else:
         first_result = next(iter(env_to_version.values()))
-        sections = {"template_id": first_result['template_id']}
+        sections = {"template_id": first_result["template_id"]}
 
         for env in environments:
             if env in env_to_version:
                 v = env_to_version[env]
-                version_label = v['version_name'] if v['version_name'] else v['version_id'][:8]
-                sections[env] = f"{version_label} (model: {v['model']}, id: {v['version_id']})"
+                version_label = (
+                    v["version_name"] if v["version_name"] else v["version_id"][:8]
+                )
+                sections[env] = (
+                    f"{version_label} (model: {v['model']}, id: {v['version_id']})"
+                )
             else:
                 sections[env] = "Not deployed"
 

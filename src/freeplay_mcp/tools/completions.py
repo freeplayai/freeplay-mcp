@@ -57,12 +57,21 @@ async def search_completions(
     """
     api = get_search_api()
     filters = build_filters(
-        start_date=start_date, end_date=end_date, environment=environment,
-        template_name=template_name, prompt_template_id=prompt_template_id,
-        model=model, provider=provider, session_id=session_id,
-        completion_id=completion_id, agent_name=agent_name,
-        review_status=review_status, cost_min=cost_min, cost_max=cost_max,
-        latency_min=latency_min, latency_max=latency_max,
+        start_date=start_date,
+        end_date=end_date,
+        environment=environment,
+        template_name=template_name,
+        prompt_template_id=prompt_template_id,
+        model=model,
+        provider=provider,
+        session_id=session_id,
+        completion_id=completion_id,
+        agent_name=agent_name,
+        review_status=review_status,
+        cost_min=cost_min,
+        cost_max=cost_max,
+        latency_min=latency_min,
+        latency_max=latency_max,
     )
 
     page_size = limit
@@ -70,41 +79,45 @@ async def search_completions(
     body = SearchRequest(filters=filters)
 
     result = await asyncio.to_thread(
-        api.post_search_completions, project_id, body=body, page=page, page_size=page_size
+        api.post_search_completions,
+        project_id,
+        body=body,
+        page=page,
+        page_size=page_size,
     )
 
-    completions = result.data if hasattr(result, 'data') else []
-    pagination = result.pagination if hasattr(result, 'pagination') else {}
-    has_next = pagination.has_next if hasattr(pagination, 'has_next') else False
+    completions = result.data if hasattr(result, "data") else []
+    pagination = result.pagination if hasattr(result, "pagination") else {}
+    has_next = pagination.has_next if hasattr(pagination, "has_next") else False
 
     items = []
     for comp in completions:
         if isinstance(comp, dict):
-            comp_id = comp.get('completion_id', comp.get('id', 'unknown'))
-            metadata = comp.get('completion_metadata', {}) or {}
-            messages = comp.get('messages', [])
+            comp_id = comp.get("completion_id", comp.get("id", "unknown"))
+            metadata = comp.get("completion_metadata", {}) or {}
+            messages = comp.get("messages", [])
         else:
-            comp_id = getattr(comp, 'completion_id', getattr(comp, 'id', 'unknown'))
-            metadata = getattr(comp, 'completion_metadata', {}) or {}
-            messages = getattr(comp, 'messages', [])
+            comp_id = getattr(comp, "completion_id", getattr(comp, "id", "unknown"))
+            metadata = getattr(comp, "completion_metadata", {}) or {}
+            messages = getattr(comp, "messages", [])
 
         if isinstance(metadata, dict):
-            start_time = metadata.get('start_time', 'unknown')
-            template_info = metadata.get('prompt_template')
-            env = metadata.get('environment', 'N/A')
-            model_name = metadata.get('model', 'N/A')
+            start_time = metadata.get("start_time", "unknown")
+            template_info = metadata.get("prompt_template")
+            env = metadata.get("environment", "N/A")
+            model_name = metadata.get("model", "N/A")
         else:
-            start_time = getattr(metadata, 'start_time', 'unknown')
-            template_info = getattr(metadata, 'prompt_template', None)
-            env = getattr(metadata, 'environment', 'N/A')
-            model_name = getattr(metadata, 'model', 'N/A')
+            start_time = getattr(metadata, "start_time", "unknown")
+            template_info = getattr(metadata, "prompt_template", None)
+            env = getattr(metadata, "environment", "N/A")
+            model_name = getattr(metadata, "model", "N/A")
 
         if isinstance(template_info, dict):
-            template = template_info.get('name', 'N/A')
+            template = template_info.get("name", "N/A")
         elif template_info:
-            template = getattr(template_info, 'name', 'N/A')
+            template = getattr(template_info, "name", "N/A")
         else:
-            template = 'N/A'
+            template = "N/A"
 
         lines = [
             f"Template: {template} | Env: {env} | Model: {model_name}",
@@ -114,9 +127,9 @@ async def search_completions(
         if messages:
             last_msg = messages[-1] if messages else {}
             if isinstance(last_msg, dict):
-                full_content = str(last_msg.get('content', ''))
+                full_content = str(last_msg.get("content", ""))
             else:
-                full_content = str(getattr(last_msg, 'content', ''))
+                full_content = str(getattr(last_msg, "content", ""))
             content = full_content[:100]
             if len(full_content) > 100:
                 content += "..."

@@ -35,32 +35,58 @@ class LoggingAnalysisResponse(ToolResponse):
         ]
 
         if self.completions_missing_prompt_template > 0:
-            pct = (self.completions_missing_prompt_template / self.completions_analyzed * 100)
+            pct = (
+                self.completions_missing_prompt_template
+                / self.completions_analyzed
+                * 100
+            )
             lines.append("=" * 60)
             lines.append("CRITICAL: PROMPT TEMPLATE NOT LINKED")
             lines.append("=" * 60)
-            lines.append(f"{self.completions_missing_prompt_template}/{self.completions_analyzed} completions ({pct:.0f}%) have no associated prompt template.")
+            lines.append(
+                f"{self.completions_missing_prompt_template}/{self.completions_analyzed} completions ({pct:.0f}%) have no associated prompt template."
+            )
             lines.append("")
             lines.append("Why this matters:")
-            lines.append("  - You cannot track prompt versions or see which prompt produced each completion")
-            lines.append("  - A/B testing and prompt iteration become impossible to measure")
-            lines.append("  - You lose the ability to correlate prompt changes with quality metrics")
+            lines.append(
+                "  - You cannot track prompt versions or see which prompt produced each completion"
+            )
+            lines.append(
+                "  - A/B testing and prompt iteration become impossible to measure"
+            )
+            lines.append(
+                "  - You lose the ability to correlate prompt changes with quality metrics"
+            )
             lines.append("")
             lines.append("Recommended fix:")
-            lines.append("  Integrate Freeplay prompt management into your application:")
-            lines.append("  1. Store your prompts in Freeplay using the prompt template editor")
-            lines.append("  2. Fetch prompts at runtime using the Freeplay SDK's get_prompt() method")
-            lines.append("  3. Use the SDK's record_completion() which automatically links the prompt template")
+            lines.append(
+                "  Integrate Freeplay prompt management into your application:"
+            )
+            lines.append(
+                "  1. Store your prompts in Freeplay using the prompt template editor"
+            )
+            lines.append(
+                "  2. Fetch prompts at runtime using the Freeplay SDK's get_prompt() method"
+            )
+            lines.append(
+                "  3. Use the SDK's record_completion() which automatically links the prompt template"
+            )
             lines.append("")
-            lines.append("  This ensures every completion is tied to a specific prompt version,")
-            lines.append("  enabling proper observability and prompt lifecycle management.")
+            lines.append(
+                "  This ensures every completion is tied to a specific prompt version,"
+            )
+            lines.append(
+                "  enabling proper observability and prompt lifecycle management."
+            )
             lines.append("")
             lines.append("=" * 60)
             lines.append("")
 
         if not self.issues:
             if self.completions_missing_prompt_template == 0:
-                lines.append("No logging issues found. All recommended fields are being logged.")
+                lines.append(
+                    "No logging issues found. All recommended fields are being logged."
+                )
                 lines.append("")
             lines.append("Fields present:")
             for field in self.all_fields_present:
@@ -71,8 +97,14 @@ class LoggingAnalysisResponse(ToolResponse):
         lines.append("")
 
         for issue in self.issues:
-            pct = (issue.missing_count / issue.total_count * 100) if issue.total_count > 0 else 100
-            lines.append(f"- {issue.field} (missing in {issue.missing_count}/{issue.total_count} completions, {pct:.0f}%)")
+            pct = (
+                (issue.missing_count / issue.total_count * 100)
+                if issue.total_count > 0
+                else 100
+            )
+            lines.append(
+                f"- {issue.field} (missing in {issue.missing_count}/{issue.total_count} completions, {pct:.0f}%)"
+            )
             lines.append(f"  Why: {issue.description}")
             lines.append(f"  Fix: {issue.fix_suggestion}")
             lines.append("")
@@ -121,7 +153,9 @@ def _is_empty(value: object) -> bool:
     return False
 
 
-def _analyze_completions(completions: list, check_prompt_template: bool = True) -> tuple[list[LoggingIssue], list[str], int]:
+def _analyze_completions(
+    completions: list, check_prompt_template: bool = True
+) -> tuple[list[LoggingIssue], list[str], int]:
     total = len(completions)
     if total == 0:
         return [], [], 0
@@ -169,13 +203,15 @@ def _analyze_completions(completions: list, check_prompt_template: bool = True) 
     for field, info in LOGGABLE_FIELDS.items():
         missing_count = field_missing_counts[field]
         if missing_count > 0:
-            issues.append(LoggingIssue(
-                field=field,
-                description=info["description"],
-                fix_suggestion=info["fix"],
-                missing_count=missing_count,
-                total_count=total,
-            ))
+            issues.append(
+                LoggingIssue(
+                    field=field,
+                    description=info["description"],
+                    fix_suggestion=info["fix"],
+                    missing_count=missing_count,
+                    total_count=total,
+                )
+            )
         else:
             present.append(field)
 
@@ -222,7 +258,9 @@ async def find_logging_issues(
         ).render()
 
     check_prompt_template = template_name is None
-    issues, present, missing_prompt_template_count = _analyze_completions(completions, check_prompt_template)
+    issues, present, missing_prompt_template_count = _analyze_completions(
+        completions, check_prompt_template
+    )
 
     return LoggingAnalysisResponse(
         template_name=template_name or "(all completions)",

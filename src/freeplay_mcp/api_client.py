@@ -41,7 +41,9 @@ def get_api_client() -> ApiClient:
         if not api_key:
             raise ValueError("FREEPLAY_API_KEY environment variable is required.")
 
-        base_url = os.environ.get("FREEPLAY_BASE_URL", "https://app.freeplay.ai").rstrip("/")
+        base_url = os.environ.get(
+            "FREEPLAY_BASE_URL", "https://app.freeplay.ai"
+        ).rstrip("/")
         verify_ssl_env = os.environ.get("FREEPLAY_VERIFY_SSL", "").lower()
         verify_ssl = verify_ssl_env not in ("false", "0", "no")
 
@@ -49,7 +51,9 @@ def get_api_client() -> ApiClient:
         config.host = base_url
         config.verify_ssl = verify_ssl
         # Set up Bearer auth - use .get() to access the actual key value
-        _api_client = ApiClient(config, header_name="Authorization", header_value=f"Bearer {api_key.get()}")
+        _api_client = ApiClient(
+            config, header_name="Authorization", header_value=f"Bearer {api_key.get()}"
+        )
         # Set custom user agent
         _api_client.user_agent = f"freeplay-mcp/{MCP_VERSION}"
     return _api_client
@@ -101,10 +105,14 @@ def build_filters(
 
     if start_date is not None:
         start_value = start_date if " " in start_date else f"{start_date} 00:00:00"
-        filter_conditions.append({"field": "start_time", "op": "gte", "value": start_value})
+        filter_conditions.append(
+            {"field": "start_time", "op": "gte", "value": start_value}
+        )
     if end_date is not None:
         end_value = end_date if " " in end_date else f"{end_date} 23:59:59"
-        filter_conditions.append({"field": "start_time", "op": "lte", "value": end_value})
+        filter_conditions.append(
+            {"field": "start_time", "op": "lte", "value": end_value}
+        )
 
     equality_filters = [
         ("environment", environment),
@@ -126,9 +134,13 @@ def build_filters(
     if cost_max is not None:
         filter_conditions.append({"field": "cost", "op": "lte", "value": cost_max})
     if latency_min is not None:
-        filter_conditions.append({"field": "latency", "op": "gte", "value": latency_min})
+        filter_conditions.append(
+            {"field": "latency", "op": "gte", "value": latency_min}
+        )
     if latency_max is not None:
-        filter_conditions.append({"field": "latency", "op": "lte", "value": latency_max})
+        filter_conditions.append(
+            {"field": "latency", "op": "lte", "value": latency_max}
+        )
 
     if len(filter_conditions) == 0:
         return {}

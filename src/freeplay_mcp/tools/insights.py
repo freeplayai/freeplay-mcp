@@ -35,16 +35,16 @@ async def list_insights(
         agent_id: Filter insights by agent UUID (optional)
     """
     api = InsightsApi(get_api_client())
-    
+
     kwargs: dict[str, int | str] = {
-        'page': page,
-        'page_size': page_size,
+        "page": page,
+        "page_size": page_size,
     }
 
     if prompt_template_id is not None:
-        kwargs['prompt_template_id'] = prompt_template_id
+        kwargs["prompt_template_id"] = prompt_template_id
     if agent_id is not None:
-        kwargs['agent_id'] = agent_id
+        kwargs["agent_id"] = agent_id
 
     result = await asyncio.to_thread(api.get_get_insights, project_id, **kwargs)
 
@@ -53,11 +53,11 @@ async def list_insights(
 
     items = []
     for insight in data:
-        insight_id = insight.get('id', 'unknown')
-        name = insight.get('name', 'Unnamed')
-        description = insight.get('description', '')
-        record_count = insight.get('record_count', 0)
-        context_source = insight.get('context_source', '')
+        insight_id = insight.get("id", "unknown")
+        name = insight.get("name", "Unnamed")
+        description = insight.get("description", "")
+        record_count = insight.get("record_count", 0)
+        context_source = insight.get("context_source", "")
 
         lines = []
         if description:
@@ -65,23 +65,23 @@ async def list_insights(
         lines.append(f"Records: {record_count}")
         lines.append(f"Source: {context_source}")
 
-        template_id = insight.get('prompt_template_id')
+        template_id = insight.get("prompt_template_id")
         if template_id:
             lines.append(f"Template ID: {template_id}")
 
-        agent_id_val = insight.get('agent_id')
+        agent_id_val = insight.get("agent_id")
         if agent_id_val:
             lines.append(f"Agent ID: {agent_id_val}")
 
-        items.append(ListItem(
-            id=insight_id,
-            title=name,
-            lines=lines,
-        ))
+        items.append(
+            ListItem(
+                id=insight_id,
+                title=name,
+                lines=lines,
+            )
+        )
 
     has_next = pagination.has_next if pagination else False
     return ListResponse(
-        header=f"Insights for Project {project_id}",
-        items=items,
-        has_next=has_next
+        header=f"Insights for Project {project_id}", items=items, has_next=has_next
     ).render()

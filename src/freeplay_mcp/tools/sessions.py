@@ -58,12 +58,20 @@ async def search_sessions(
     """
     api = get_search_api()
     filters = build_filters(
-        start_date=start_date, end_date=end_date, environment=environment,
-        template_name=template_name, prompt_template_id=prompt_template_id,
-        model=model, provider=provider, session_id=session_id,
-        agent_name=agent_name, review_status=review_status,
-        cost_min=cost_min, cost_max=cost_max,
-        latency_min=latency_min, latency_max=latency_max,
+        start_date=start_date,
+        end_date=end_date,
+        environment=environment,
+        template_name=template_name,
+        prompt_template_id=prompt_template_id,
+        model=model,
+        provider=provider,
+        session_id=session_id,
+        agent_name=agent_name,
+        review_status=review_status,
+        cost_min=cost_min,
+        cost_max=cost_max,
+        latency_min=latency_min,
+        latency_max=latency_max,
     )
 
     page_size = limit
@@ -74,22 +82,22 @@ async def search_sessions(
         api.post_search_sessions, project_id, body=body, page=page, page_size=page_size
     )
 
-    sessions = result.data if hasattr(result, 'data') else []
-    pagination = result.pagination if hasattr(result, 'pagination') else {}
-    has_next = pagination.has_next if hasattr(pagination, 'has_next') else False
+    sessions = result.data if hasattr(result, "data") else []
+    pagination = result.pagination if hasattr(result, "pagination") else {}
+    has_next = pagination.has_next if hasattr(pagination, "has_next") else False
 
     items = []
     for session in sessions:
         if isinstance(session, dict):
-            sess_id = session.get('session_id', session.get('id', 'unknown'))
-            env = session.get('environment', 'N/A')
-            start_time = session.get('start_time', 'unknown')
-            metadata = session.get('custom_metadata', {}) or {}
+            sess_id = session.get("session_id", session.get("id", "unknown"))
+            env = session.get("environment", "N/A")
+            start_time = session.get("start_time", "unknown")
+            metadata = session.get("custom_metadata", {}) or {}
         else:
-            sess_id = getattr(session, 'session_id', getattr(session, 'id', 'unknown'))
-            env = getattr(session, 'environment', 'N/A')
-            start_time = getattr(session, 'start_time', 'unknown')
-            metadata = getattr(session, 'custom_metadata', {}) or {}
+            sess_id = getattr(session, "session_id", getattr(session, "id", "unknown"))
+            env = getattr(session, "environment", "N/A")
+            start_time = getattr(session, "start_time", "unknown")
+            metadata = getattr(session, "custom_metadata", {}) or {}
 
         lines = [
             f"Environment: {env}",
