@@ -32,9 +32,10 @@ async def search_sessions(
     latency_min: float | None = None,
     latency_max: float | None = None,
 ) -> str:
-    """Search sessions in a Freeplay project.
+    """Search sessions in a Freeplay project. This is a read-only operation.
 
-    Sessions are top-level containers that group related traces and completions together.
+    Sessions are top-level containers for logging events that group related traces and completions
+    together, representing a complete user interaction, conversation, or agent run.
 
     Args:
         project_id: The Freeplay project ID (required)

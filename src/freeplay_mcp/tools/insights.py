@@ -20,11 +20,12 @@ async def list_insights(
     prompt_template_id: str | None = None,
     agent_id: str | None = None,
 ) -> str:
-    """List insights for a Freeplay project.
+    """List insights for a Freeplay project. This is a read-only operation.
 
-    Retrieve a paginated list of insights for a project. Insights are automatically
-    generated observations and patterns from your logged data. Filter by prompt
-    template or agent to see specific insights.
+    Retrieve a paginated list of insights. Insights are automatically generated
+    observations about patterns in your production data, surfacing actionable
+    themes from auto-evaluation scores on logs and from human annotations. Filter by prompt
+    template or agent to see specific insights for each component.
 
     Args:
         project_id: The Freeplay project ID (required)

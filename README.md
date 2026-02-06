@@ -1,22 +1,22 @@
 # Freeplay MCP Server
 
-An MCP (Model Context Protocol) server that enables AI agents to interact with the Freeplay platform. Agents can browse projects, test and score prompt changes, find insights about recent production behavior, and search through logs to analyze performance.
+An MCP (Model Context Protocol) server that enables AI agents to interact with [Freeplay](https://freeplay.ai), the ops platform for AI engineering teams. 
+
+Use it to analyze production logs, identify quality issues, iterate on prompts and agents using real data, and run experiments to validate changes before deploying.
 
 ## ⚠️ EXPERIMENTAL
 
 **This MCP server is an *experimental release* and will change.** Use at your own risk and keep an eye on what your agents are doing.
 
 Current limitations:
-- Does not support deployment operations or destructive deletion actions --> use the Freeplay UI
+- Does not support deployment operations or destructive deletion actions — use the Freeplay UI
 - Uses your regular Freeplay API key (not specially scoped to limit access for agents)
 
-**Security warning:** Because this uses your full API key, an agent could extract the key and write its own code outside the MCP to perform destructive actions against your Freeplay account.
+**Security warning:** Because this uses your full API key, an agent could extract the key and formulate its own API calls outside the scope of the tools included with this MCP server, including destructive actions against your Freeplay account.
 
 Additionally, all MCP servers share a security context within the host, enabling data exfiltration, prompt injection across tools, and cross-server data access.
 
 Only use this with agents and MCP servers you fully trust.
-
-And even for agents you do trust, keep in mind they can always attempt to formulate their own API calls outside the scope of the tools included with this MCP server.
 
 ---
 

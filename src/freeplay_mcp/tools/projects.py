@@ -10,10 +10,10 @@ logger = logging.getLogger(__name__)
 
 
 async def list_projects() -> str:
-    """List all Freeplay projects accessible to the authenticated user.
+    """List all Freeplay projects accessible to the authenticated user. This is a read-only operation.
 
     Returns a formatted list of projects with their IDs and names.
-    Use a project ID from this list for other Freeplay operations.
+    Start here for most workflows. Use a project ID from this list to scope most other Freeplay operations.
     """
     api = get_config_api()
     result = await asyncio.to_thread(api.get_get_projects)
