@@ -59,12 +59,20 @@ async def search_traces(
     """
     api = get_search_api()
     filters = build_filters(
-        start_date=start_date, end_date=end_date, environment=environment,
-        template_name=template_name, prompt_template_id=prompt_template_id,
-        model=model, provider=provider, session_id=session_id,
-        agent_name=agent_name, review_status=review_status,
-        cost_min=cost_min, cost_max=cost_max,
-        latency_min=latency_min, latency_max=latency_max,
+        start_date=start_date,
+        end_date=end_date,
+        environment=environment,
+        template_name=template_name,
+        prompt_template_id=prompt_template_id,
+        model=model,
+        provider=provider,
+        session_id=session_id,
+        agent_name=agent_name,
+        review_status=review_status,
+        cost_min=cost_min,
+        cost_max=cost_max,
+        latency_min=latency_min,
+        latency_max=latency_max,
     )
 
     page_size = limit
@@ -75,30 +83,30 @@ async def search_traces(
         api.post_search_traces, project_id, body=body, page=page, page_size=page_size
     )
 
-    traces = result.data if hasattr(result, 'data') else []
-    pagination = result.pagination if hasattr(result, 'pagination') else {}
-    has_next = pagination.has_next if hasattr(pagination, 'has_next') else False
+    traces = result.data if hasattr(result, "data") else []
+    pagination = result.pagination if hasattr(result, "pagination") else {}
+    has_next = pagination.has_next if hasattr(pagination, "has_next") else False
 
     items = []
     for trace in traces:
         if isinstance(trace, dict):
-            trace_id = trace.get('trace_id', trace.get('id', 'unknown'))
-            name = trace.get('name', 'N/A')
-            kind = trace.get('kind', 'N/A')
-            agent = trace.get('agent_name', 'N/A')
-            start_time = trace.get('start_time', 'unknown')
-            end_time = trace.get('end_time', 'unknown')
-            parent_id = trace.get('parent_id')
-            trace_input = trace.get('input', '')
+            trace_id = trace.get("trace_id", trace.get("id", "unknown"))
+            name = trace.get("name", "N/A")
+            kind = trace.get("kind", "N/A")
+            agent = trace.get("agent_name", "N/A")
+            start_time = trace.get("start_time", "unknown")
+            end_time = trace.get("end_time", "unknown")
+            parent_id = trace.get("parent_id")
+            trace_input = trace.get("input", "")
         else:
-            trace_id = getattr(trace, 'trace_id', getattr(trace, 'id', 'unknown'))
-            name = getattr(trace, 'name', 'N/A')
-            kind = getattr(trace, 'kind', 'N/A')
-            agent = getattr(trace, 'agent_name', 'N/A')
-            start_time = getattr(trace, 'start_time', 'unknown')
-            end_time = getattr(trace, 'end_time', 'unknown')
-            parent_id = getattr(trace, 'parent_id', None)
-            trace_input = getattr(trace, 'input', '')
+            trace_id = getattr(trace, "trace_id", getattr(trace, "id", "unknown"))
+            name = getattr(trace, "name", "N/A")
+            kind = getattr(trace, "kind", "N/A")
+            agent = getattr(trace, "agent_name", "N/A")
+            start_time = getattr(trace, "start_time", "unknown")
+            end_time = getattr(trace, "end_time", "unknown")
+            parent_id = getattr(trace, "parent_id", None)
+            trace_input = getattr(trace, "input", "")
 
         lines = [
             f"Name: {name} | Kind: {kind} | Agent: {agent}",

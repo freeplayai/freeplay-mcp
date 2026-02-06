@@ -425,7 +425,7 @@ tasks = [
 
 [[package]]
 name = "freeplay-mcp"
-version = "0.1.0"
+version = "0.0.3"
 source = { editable = "." }
 dependencies = [
     { name = "certifi" },
@@ -439,6 +439,7 @@ dependencies = [
 [package.dev-dependencies]
 dev = [
     { name = "basedpyright" },
+    { name = "packaging" },
     { name = "pytest" },
     { name = "ruff" },
 ]
@@ -456,6 +457,7 @@ requires-dist = [
 [package.metadata.requires-dev]
 dev = [
     { name = "basedpyright", specifier = ">=1.24.1,<2" },
+    { name = "packaging", specifier = ">=24.0" },
     { name = "pytest", specifier = ">=8.0.0,<9" },
     { name = "ruff", specifier = ">=0.9.7,<0.15" },
 ]

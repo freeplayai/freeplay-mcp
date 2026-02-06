@@ -18,18 +18,28 @@ async def list_projects() -> str:
     api = get_config_api()
     result = await asyncio.to_thread(api.get_get_projects)
 
-    projects = result.projects if hasattr(result, 'projects') else result
+    projects = result.projects if hasattr(result, "projects") else result
     items = []
     project_list = projects if isinstance(projects, list) else []
     for project in project_list:
-        project_id = str(project.id if hasattr(project, 'id') else project.get("id", "unknown"))
-        name = str(project.name if hasattr(project, 'name') else project.get("name", "Unnamed"))
-        description = str(project.description if hasattr(project, 'description') else project.get("description", ""))
+        project_id = str(
+            project.id if hasattr(project, "id") else project.get("id", "unknown")
+        )
+        name = str(
+            project.name if hasattr(project, "name") else project.get("name", "Unnamed")
+        )
+        description = str(
+            project.description
+            if hasattr(project, "description")
+            else project.get("description", "")
+        )
 
-        items.append(ListItem(
-            id=project_id,
-            title=name,
-            lines=[description] if description else [],
-        ))
+        items.append(
+            ListItem(
+                id=project_id,
+                title=name,
+                lines=[description] if description else [],
+            )
+        )
 
     return ListResponse(header="Available Freeplay Projects", items=items).render()

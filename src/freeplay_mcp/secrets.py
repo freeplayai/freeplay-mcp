@@ -32,12 +32,26 @@ class SecretString:
 
 
 _SECRET_PATTERNS = [
-    (re.compile(r'(Bearer\s+)[A-Za-z0-9_\-\.]+', re.IGNORECASE), r'\1[REDACTED]'),
-    (re.compile(r'(Authorization["\']?\s*:\s*["\']?)[^"\'}\s]+', re.IGNORECASE), r'\1[REDACTED]'),
-    (re.compile(r'(api[_-]?key["\']?\s*[:=]\s*["\']?)[A-Za-z0-9_\-\.]+', re.IGNORECASE), r'\1[REDACTED]'),
-    (re.compile(r'(secret["\']?\s*[:=]\s*["\']?)[A-Za-z0-9_\-\.]+', re.IGNORECASE), r'\1[REDACTED]'),
-    (re.compile(r'(token["\']?\s*[:=]\s*["\']?)[A-Za-z0-9_\-\.]+', re.IGNORECASE), r'\1[REDACTED]'),
-    (re.compile(r'(FREEPLAY_API_KEY\s*=\s*)[^\s]+', re.IGNORECASE), r'\1[REDACTED]'),
+    (re.compile(r"(Bearer\s+)[A-Za-z0-9_\-\.]+", re.IGNORECASE), r"\1[REDACTED]"),
+    (
+        re.compile(r'(Authorization["\']?\s*:\s*["\']?)[^"\'}\s]+', re.IGNORECASE),
+        r"\1[REDACTED]",
+    ),
+    (
+        re.compile(
+            r'(api[_-]?key["\']?\s*[:=]\s*["\']?)[A-Za-z0-9_\-\.]+', re.IGNORECASE
+        ),
+        r"\1[REDACTED]",
+    ),
+    (
+        re.compile(r'(secret["\']?\s*[:=]\s*["\']?)[A-Za-z0-9_\-\.]+', re.IGNORECASE),
+        r"\1[REDACTED]",
+    ),
+    (
+        re.compile(r'(token["\']?\s*[:=]\s*["\']?)[A-Za-z0-9_\-\.]+', re.IGNORECASE),
+        r"\1[REDACTED]",
+    ),
+    (re.compile(r"(FREEPLAY_API_KEY\s*=\s*)[^\s]+", re.IGNORECASE), r"\1[REDACTED]"),
 ]
 
 
