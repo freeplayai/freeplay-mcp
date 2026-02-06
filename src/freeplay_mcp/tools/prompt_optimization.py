@@ -3,7 +3,7 @@
 import asyncio
 import logging
 
-from fastmcp.dependencies import Progress
+from fastmcp import Context
 
 from freeplay_mcp.vendor.swagger_client.api.prompt_optimization_api import (
     PromptOptimizationApi,  # type: ignore[import-untyped]
@@ -30,7 +30,7 @@ async def optimize_prompt(
     use_labels: bool = True,
     use_customer_feedback: bool = True,
     run_test_after_optimization: bool = True,
-    progress: Progress = Progress(),
+    ctx: Context | None = None,
 ) -> str:
     """Optimize a prompt template version using AI-powered analysis and automated experimentation. This is a write operation that creates a new prompt template version. Always confirm with the user before calling this tool — describe which prompt template will be optimized, the dataset being used, and that this may incur LLM costs.
 
@@ -71,10 +71,10 @@ async def optimize_prompt(
     )
 
     job_id = start_result.job_id
-    if progress:
-        total_steps = 4 if run_test_after_optimization else 1
-        await progress.set_total(total_steps)
-        await progress.set_message("Starting optimization job...")
+    total_steps = 4 if run_test_after_optimization else 1
+
+    if ctx:
+        await ctx.info("Starting optimization job...")
 
     while True:
         status_result = await asyncio.to_thread(
@@ -85,14 +85,16 @@ async def optimize_prompt(
         status = status_result.status
         job_progress = status_result.progress or {}
 
-        if progress and job_progress:
+        if ctx and job_progress:
             step = job_progress.get("step", 1) if isinstance(job_progress, dict) else 1
             step_name = (
                 job_progress.get("step_name", "Processing...")
                 if isinstance(job_progress, dict)
                 else "Processing..."
             )
-            await progress.set_message(f"Step {step}: {step_name}")
+            progress_value = (step / total_steps) if total_steps > 0 else 0
+            await ctx.report_progress(progress=progress_value, total=1.0)
+            await ctx.info(f"Step {step}: {step_name}")
 
         if status in TERMINAL_STATUSES:
             break
