@@ -41,7 +41,55 @@ freeplay-mcp/
 - **Do not print**: Stdio is used for returning a response. It is critical to avoid print statements other than for
   a response.
 
+## Safety Classification System
+
+All operations must be classified by risk level with appropriate safeguards:
+
+**Level 0: Read (Unrestricted)**
+- No confirmation needed
+- Cannot modify any state
+- Only operations that do not require agent confirmation
+- Examples: search, list, get, analyze
+
+**Level 1: Create (Visible)**
+- Creates new resources but doesn't affect production
+- Must require explicit confirmation with resource name and preview
+- Examples: create prompt version (without deploy), create dataset, add test cases
+
+**Level 2: Execute (Confirmable)**
+- Runs operations that consume resources or create significant data
+- Must require explicit confirmation with operation name
+- Examples: run test, trigger optimization, run evaluations
+
+**Level 3: Deploy (Requires Confirmation)**
+- Affects production systems
+- Must require explicit user confirmation
+- Should show diff/impact before proceeding (e.g., summarizing before/after test run results before deploying a new prompt template version)
+- Examples: deploy to production, enable evaluation criteria
+
+**Level 4: Destroy with Version History (Strongly Protected)**
+- Deletes or permanently modifies data with rollback support
+- Should NEVER be executed by an agent without explicit confirmation
+- Examples: delete prompt template version, delete test run
+
+**Level 5: Destroy Resources (DISALLOWED)**
+- Deletes or permanently modifies data without version history and rollback support
+- Should NEVER be executed by an agent under any circumstances
+- Examples: delete dataset, delete prompt template, remove test cases
+
 ## Adding a New Tool
+
+### Tool Count: Why Less Is More
+
+**Target: 20-25 total tools.** Based on Anthropic's best practices:
+
+1. **Tool selection degrades as tool count grows.** Agents spend more turns deliberating and more often pick the wrong tool. Keep tools focused on workflows, not thin API wrappers.
+2. **Each tool's docstring competes for attention.** More tools = more noise = worse performance on any individual tool.
+3. **Maintenance burden scales linearly.** Every tool needs docstring polish, safety classification, tests, and version management.
+
+**Every new tool must justify its existence** by unblocking a skill workflow or capability that currently requires raw API calls.
+
+**Prefer few well-designed read tools over many narrow getters.** For example, `list_datasets` that returns enough detail to avoid needing a separate `get_dataset` is better than having both.
 
 ### File structure
 1. Create a new file in `tools/` (or add to existing file if related)
@@ -49,12 +97,10 @@ freeplay-mcp/
 3. Add to the `TOOLS` list in `server.py`
 
 ### Design principles
-- **Tools are workflows, not API wrappers.** Don't create a 1:1 mapping with swagger endpoints. Design tools around
-  what a user wants to accomplish, which may involve multiple API calls.
-- **Start from the caller.** Before writing implementation, define the function signature and docstring. What would
-  an LLM need to know to use this tool effectively?
-- **Docstrings are the interface.** The docstring becomes the tool description shown to the LLM. Be clear and concise.
-  Explain what the tool does in 1-2 sentences, then document every parameter with its type and purpose.
+- **Tools are workflows, not API wrappers.** Don't create a 1:1 mapping with swagger endpoints. Design tools around what a user wants to accomplish, which may involve multiple API calls.
+- **Start from the caller.** Before writing implementation, define the function signature and docstring. What would an LLM need to know to use this tool effectively?
+- **Docstrings are the interface.** The docstring becomes the tool description shown to the LLM. Be clear and concise. Explain what the tool does in 1-2 sentences, then document every parameter with its type and purpose.
+- **Consolidate related operations.** One tool that handles variations via parameters is better than multiple similar tools.
 
 ### Tool schema best practices
 - Use descriptive parameter names (`project_id` not `pid`, `template_name` not `name`)

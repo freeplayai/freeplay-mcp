@@ -47,8 +47,8 @@ TOOLS = [
 for tool in TOOLS:
     mcp.tool()(tool)
 
-# Register task-enabled tools (long-running async operations)
-mcp.tool(task=True)(optimize_prompt)
+# Register long-running tools
+mcp.tool()(optimize_prompt)
 
 
 def main() -> None:
