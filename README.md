@@ -1,20 +1,27 @@
 # Freeplay MCP Server
 
-An MCP (Model Context Protocol) server that enables AI agents to interact with [Freeplay](https://freeplay.ai), the ops platform for AI engineering teams. 
+An MCP (Model Context Protocol) server that enables AI agents to interact with [Freeplay](https://freeplay.ai), the ops
+platform for AI engineering teams.
 
-Use it to analyze production logs, identify quality issues, iterate on prompts and agents using real data, and run experiments to validate changes before deploying.
+Use it to analyze production logs, identify quality issues, iterate on prompts and agents using real data, and run
+experiments to validate changes before deploying.
 
 ## ⚠️ EXPERIMENTAL
 
-**This MCP server is an *experimental release* and will change.** Use at your own risk and keep an eye on what your agents are doing.
+**This MCP server is an *experimental release* and will change.** Use at your own risk and keep an eye on what your
+agents are doing.
 
 Current limitations:
+
 - Does not support deployment operations or destructive deletion actions — use the Freeplay UI
 - Uses your regular Freeplay API key (not specially scoped to limit access for agents)
 
-**Security warning:** Because this uses your full API key, an agent could extract the key and formulate its own API calls outside the scope of the tools included with this MCP server, including destructive actions against your Freeplay account.
+**Security warning:** Because this uses your full API key, an agent could extract the key and formulate its own API
+calls outside the scope of the tools included with this MCP server, including destructive actions against your Freeplay
+account.
 
-Additionally, all MCP servers share a security context within the host, enabling data exfiltration, prompt injection across tools, and cross-server data access.
+Additionally, all MCP servers share a security context within the host, enabling data exfiltration, prompt injection
+across tools, and cross-server data access.
 
 Only use this with agents and MCP servers you fully trust.
 
@@ -22,53 +29,69 @@ Only use this with agents and MCP servers you fully trust.
 
 ## Installation
 
-### Claude Code (with uv)
+### Claude Code
 
-1. Clone this repository locally.
+The simplest way to install the Freeplay MCP server is via `uvx`:
+
+```shell
+claude mcp add freeplay -- uvx freeplay-mcp
+```
+
+Set your API key in your MCP client process:
+
+```shell
+export FREEPLAY_API_KEY="your-api-key"
+export FREEPLAY_BASE_URL="https://app.freeplay.ai"
+```
+
+Start Claude Code and run `/mcp` to check installation.
+
+### Claude Desktop
+
+Add to your Claude Desktop config (`~/Library/Application Support/Claude/claude_desktop_config.json` on macOS):
+
+```json
+{
+   "mcpServers": {
+      "freeplay": {
+         "command": "uvx",
+         "args": [
+            "freeplay-mcp"
+         ],
+         "env": {
+            "FREEPLAY_API_KEY": "your-api-key",
+            "FREEPLAY_BASE_URL": "https://app.freeplay.ai"
+         }
+      }
+   }
+}
+```
+
+### Docker
+
+For containerized deployments:
+
+1. Clone and build:
    ```shell
    git clone git@github.com:freeplayai/freeplay-mcp.git
-   ```
-1.
-   ```shell
    cd freeplay-mcp
-   uv sync # install dependencies
-   ```
-1. Add the Freeplay MCP server to your Claude Code. From the freeplay-mcp directory.
-    ```shell
-   claude mcp add --transport stdio freeplay-mcp-v1 -- uv run main.py
-    ```
-1. Configure `.env` and:
-   ```shell
-   source .env
-   ```
-1. Start Claude code and run `/mcp` to check installation.
-
-### Claude Code (with Docker)
-
-1. Clone this repository locally.
-   ```shell
-   git clone git@github.com:freeplayai/freeplay-mcp.git
-   cd freeplay-mcp
-   ```
-
-2. Build the Docker image.
-   ```shell
    docker build -t freeplay-mcp .
    ```
-   For production deployments, consider using a hardened base image such as [Chainguard](https://www.chainguard.dev/) or [Distroless](https://github.com/GoogleContainerTools/distroless).
-
-3. Set your environment variables (in .env, then source it).
+2. Set your environment variables (in .env, then source it).
    ```shell
    export FREEPLAY_API_KEY="your-api-key"
    export FREEPLAY_BASE_URL="https://app.freeplay.ai"
    ```
 
-4. Add the Freeplay MCP server to Claude Code.
-   ```sh
-   claude mcp add --transport stdio freeplay-mcp-v1 -- docker run -i --rm -e FREEPLAY_API_KEY=$FREEPLAY_API_KEY -e FREEPLAY_BASE_URL=$FREEPLAY_BASE_URL freeplay-mcp
+3. Add to Claude Code:
+   ```shell
+   claude mcp add --transport stdio freeplay-mcp -- docker run -i --rm -e FREEPLAY_API_KEY=$FREEPLAY_API_KEY -e FREEPLAY_BASE_URL=$FREEPLAY_BASE_URL freeplay-mcp
    ```
 
-5. Start Claude Code and run `/mcp` to check installation.
+For production deployments, consider using a hardened base image such as [Chainguard](https://www.chainguard.dev/)
+or [Distroless](https://github.com/GoogleContainerTools/distroless).
+
+4. Start Claude Code and run `/mcp` to check installation.
 
 ## Authentication
 
@@ -76,43 +99,22 @@ Only use this with agents and MCP servers you fully trust.
 - All requests use Bearer token authentication
 - Base URL configurable via `FREEPLAY_BASE_URL` (default: `https://app.freeplay.ai`)
 
-
 ## Development
 
 ```bash
-# Install dev dependencies
-uv sync --dev
+# Clone and install
+git clone git@github.com:freeplayai/freeplay-mcp.git
+cd freeplay-mcp
+uv sync --group dev
 
 # Lint (with auto-fix)
-uv run ruff check --fix src/
+make lint
 
 # Type check
-uv run basedpyright src/
-```
+make type-check
 
-## Claude Desktop Configuration
-
-### Using uv
-
-```json
-{
-  "mcpServers": {
-    "freeplay": {
-      "command": "uv",
-      "args": [
-        "--directory",
-        "/path/to/freeplay-mcp",
-        "run",
-        "python",
-        "-m",
-        "freeplay_mcp.server"
-      ],
-      "env": {
-        "FREEPLAY_API_KEY": "your-api-key"
-      }
-    }
-  }
-}
+# Run both
+make check
 ```
 
 ### Using Docker
@@ -126,8 +128,10 @@ uv run basedpyright src/
         "run",
         "-i",
         "--rm",
-        "-e", "FREEPLAY_API_KEY",
-        "-e", "FREEPLAY_BASE_URL",
+        "-e",
+        "FREEPLAY_API_KEY",
+        "-e",
+        "FREEPLAY_BASE_URL",
         "freeplay-mcp"
       ],
       "env": {
