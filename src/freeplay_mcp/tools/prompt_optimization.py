@@ -32,15 +32,15 @@ async def optimize_prompt(
     run_test_after_optimization: bool = True,
     progress: Progress = Progress(),
 ) -> str:
-    """Optimize a prompt template using AI-powered analysis.
+    """Optimize a prompt template version using AI-powered analysis and automated experimentation. This is a write operation that creates a new prompt template version. Always confirm with the user before calling this tool — describe which prompt template will be optimized, the dataset being used, and that this may incur LLM costs.
 
-    Analyzes the prompt template version against examples from the dataset and
-    generates an improved version. The optimization considers human labels,
+    Analyzes the prompt template version against scored examples from production logs and
+    generates an improved version with guidance from the user on where to focus. The optimization considers human evaluation labels,
     customer feedback, and best practices based on the flags provided.
 
     This is a long-running operation that may take several minutes. When
-    run_test_after_optimization is True, the job will also run baseline and
-    optimized test runs and create a comparison.
+    run_test_after_optimization is True (the default), the job will also run baseline and
+    optimized test runs and create a comparison, which incurs additional LLM costs.
 
     Args:
         project_id: The Freeplay project ID
@@ -48,9 +48,9 @@ async def optimize_prompt(
         dataset_id: The dataset ID containing examples to analyze
         user_instructions: Optional specific instructions for the optimization (e.g., "focus on reducing hallucinations")
         use_best_practices: Whether to apply general prompt engineering best practices (default: True)
-        use_labels: Whether to use human labels from the dataset in analysis (default: True)
+        use_labels: Whether to use human evaluation labels from the dataset in analysis (default: True)
         use_customer_feedback: Whether to incorporate customer feedback data (default: True)
-        run_test_after_optimization: Whether to run a comparison test after optimization (default: False)
+        run_test_after_optimization: Whether to run a comparison test after optimization (default: True)
     """
     api = PromptOptimizationApi(get_api_client())
 

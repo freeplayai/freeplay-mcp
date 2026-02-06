@@ -189,12 +189,11 @@ async def find_logging_issues(
     environment: str | None = None,
     limit: int = 50,
 ) -> str:
-    """Analyze recent completions for a prompt template and identify missing logged fields.
+    """Analyze recent completions for a prompt template and identify missing logged fields. This is a read-only analysis operation.
 
     Fetches recent completions and checks which important fields are not being logged.
     Returns a list of missing fields with explanations and fix suggestions. Use this to
-    identify gaps in your logging instrumentation, then update your code to log the
-    missing fields.
+    identify gaps in your observability instrumentation.
 
     Args:
         project_id: The Freeplay project ID

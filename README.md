@@ -1,17 +1,18 @@
 # Freeplay MCP Server
 
-An MCP (Model Context Protocol) server that enables AI agents to interact with the Freeplay platform. Agents can browse projects, test prompts, run completions, and analyze prompt performance—all through natural language.
+An MCP (Model Context Protocol) server that enables AI agents to interact with [Freeplay](https://freeplay.ai), the ops platform for AI engineering teams. 
+
+Use it to analyze production logs, identify quality issues, iterate on prompts and agents using real data, and run experiments to validate changes before deploying.
 
 ## ⚠️ EXPERIMENTAL
 
-**This MCP server is experimental and will change.** Use at your own risk.
+**This MCP server is an *experimental release* and will change.** Use at your own risk and keep an eye on what your agents are doing.
 
 Current limitations:
-- Does not support destructive deletion actions
-- Does not support deployment operations
-- Uses your regular Freeplay API key (not scoped to limit access)
+- Does not support deployment operations or destructive deletion actions — use the Freeplay UI
+- Uses your regular Freeplay API key (not specially scoped to limit access for agents)
 
-**Security warning:** Because this uses your full API key, a malicious or compromised agent could extract the key and write its own code outside the MCP to perform destructive actions against your Freeplay account.
+**Security warning:** Because this uses your full API key, an agent could extract the key and formulate its own API calls outside the scope of the tools included with this MCP server, including destructive actions against your Freeplay account.
 
 Additionally, all MCP servers share a security context within the host, enabling data exfiltration, prompt injection across tools, and cross-server data access.
 
@@ -32,7 +33,7 @@ Only use this with agents and MCP servers you fully trust.
    cd freeplay-mcp
    uv sync # install dependencies
    ```
-1. Add the Freeplay MCP server to your claude code. From the freeplay-mcp directory.
+1. Add the Freeplay MCP server to your Claude Code. From the freeplay-mcp directory.
     ```shell
    claude mcp add --transport stdio freeplay-mcp-v1 -- uv run main.py
     ```

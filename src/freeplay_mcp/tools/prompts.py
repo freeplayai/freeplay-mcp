@@ -22,7 +22,7 @@ async def list_prompt_templates(
     limit: int = 50,
     offset: int = 0,
 ) -> str:
-    """List all prompt templates in a Freeplay project.
+    """List all prompt templates in a Freeplay project. This is a read-only operation.
 
     Returns a list of prompt templates with their IDs, names, and latest version info.
     Use the template name or ID when creating new versions.
@@ -76,10 +76,10 @@ async def create_prompt_version(
     output_schema: dict | None = None,
     create_if_not_exists: bool = True,
 ) -> str:
-    """Create a new version of a prompt template.
+    """Create a new version of a prompt template. This is a write operation. Always confirm with the user before calling — describe which prompt template will be modified, the model and provider, and whether a new template will be created.
 
-    This tool creates a new version of a prompt template with the given content.
-    If the template doesn't exist, it can optionally be created automatically.
+    If the template doesn't exist and create_if_not_exists is True, the template
+    will be created automatically.
 
     Note: Deployment is not supported via MCP at this time to reduce risk of
     unintentional changes. Use the Freeplay UI to deploy versions to environments.
@@ -151,10 +151,10 @@ async def get_prompt_version(
     template_id: str,
     version_id: str,
 ) -> str:
-    """Get the full contents of a prompt template version.
+    """Get the full contents of a prompt template version. This is a read-only operation.
 
-    Returns the complete prompt configuration including messages, model, provider,
-    and LLM parameters. Use this to inspect a version before making updates.
+    Returns the complete prompt template configuration including messages, model,
+    provider, and LLM parameters. Use this to inspect a version before making changes.
 
     Args:
         project_id: The Freeplay project ID
@@ -204,10 +204,10 @@ async def get_deployed_prompt_versions(
     project_id: str,
     template_name: str,
 ) -> str:
-    """Get deployment status for a prompt template showing which versions are deployed to each environment.
+    """Get deployment status for a prompt template showing which versions are deployed to each environment. This is a read-only operation.
 
-    Returns which prompt versions are currently deployed to all environments
-    (development, staging, production, and any custom environments).
+    Returns which prompt template versions are currently deployed to all
+    environments (dev, staging, production, and any custom environments).
 
     Args:
         project_id: The Freeplay project ID (required)

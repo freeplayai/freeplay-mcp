@@ -33,7 +33,7 @@ async def search_completions(
     latency_min: float | None = None,
     latency_max: float | None = None,
 ) -> str:
-    """Search logged completions in a Freeplay project.
+    """Search logged completions (individual LLM calls with their inputs, outputs, and metadata) in a Freeplay project. This is a read-only operation.
 
     Args:
         project_id: The Freeplay project ID (required)
