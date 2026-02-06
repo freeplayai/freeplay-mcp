@@ -1,6 +1,6 @@
 [project]
 name = "freeplay-mcp"
-version = "0.0.4"
+version = "0.0.5"
 description = "A Model Context Protocol server for Freeplay, the ops platform for AI engineering teams"
 readme = "README.md"
 license = "Apache-2.0"
