@@ -25,6 +25,8 @@ across tools, and cross-server data access.
 
 Only use this with agents and MCP servers you fully trust.
 
+And even for agents you do trust, keep in mind they can always attempt to formulate their own API calls outside the scope of the tools included with this MCP server.
+
 ---
 
 ## Installation
