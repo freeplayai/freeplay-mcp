@@ -10,6 +10,8 @@ freeplay-mcp/
 ├── src/freeplay_mcp/
 │   ├── api_client.py            # Shared API client setup, lazy initialization, helpers
 │   ├── server.py                # MCP server entry point, registers tools from TOOLS list
+│   ├── response.py              # Utilities/Models for MCP tool responses
+│   ├── secrets.py               # Utilities to help obscure things such as API keys
 │   ├── tools/                   # One file per tool or tool group
 │   │   ├── __init__.py          # Exports all tool functions
 │   │   ├── projects.py
