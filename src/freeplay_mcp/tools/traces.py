@@ -35,7 +35,7 @@ async def search_traces(
     """Search traces in a Freeplay project. This is a read-only operation.
 
     Traces group related completions and tool calls within a session, representing
-    a functional unit of work such as a single agent run, a single turn in a conversationsational interaction, or a step in a multi-step
+    a functional unit of work such as a single agent run, a single turn in a conversational interaction, or a step in a multi-step
     workflow. Traces can be nested to represent sub-agents or complex workflows.
 
     Args:
