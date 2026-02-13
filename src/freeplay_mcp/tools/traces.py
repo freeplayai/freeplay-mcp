@@ -64,13 +64,17 @@ async def search_traces(
             Operators: eq, gt, gte, lt, lte, contains, between
             For between: value is [lower, upper] (e.g. [0.01, 0.05])
 
+            Note on evaluation result fields: Use "contains" (not "eq") for
+            non-numeric evaluation values (e.g. boolean or text client evals).
+            The "eq" operator only matches numeric scores.
+
             Available fields:
             - completion_output (contains on LLM response text)
             - completion_inputs.<var> (contains on prompt input variables)
-            - completion_evaluation_results.<criteria> (auto-eval scores)
-            - completion_client_evaluation_results.<name> (client eval results)
-            - trace_evaluation_results.<criteria> (trace auto-eval scores)
-            - trace_client_eval_results.<name> (trace client eval results)
+            - completion_evaluation_results.<criteria> (numeric auto-eval scores; use eq/gt/lt)
+            - completion_client_evaluation_results.<name> (client eval results; use contains for text/boolean values, eq for numeric)
+            - trace_evaluation_results.<criteria> (numeric trace auto-eval scores; use eq/gt/lt)
+            - trace_client_eval_results.<name> (trace client eval results; use contains for text/boolean values, eq for numeric)
             - completion_feedback.<key>, trace_feedback.<key>
             - session_custom_metadata.<key>, trace_custom_metadata.<key>
             - trace_input.<key>, trace_output.<key>
@@ -79,7 +83,8 @@ async def search_traces(
             - insight_name, insight_id
 
             Examples:
-            '{"field": "completion_client_evaluation_results.Parseable", "op": "eq", "value": "No"}'
+            '{"field": "completion_client_evaluation_results.Parseable", "op": "contains", "value": "no"}'
+            '{"field": "completion_evaluation_results.Accuracy", "op": "gte", "value": 0.8}'
             '{"field": "completion_output", "op": "contains", "value": "error"}'
             '{"or": [{"field": "model", "op": "eq", "value": "gpt-4"}, {"field": "model", "op": "eq", "value": "claude-3"}]}'
     """
