@@ -1,5 +1,6 @@
 """Shared API client setup and utilities for Freeplay MCP tools."""
 
+import json
 import os
 from importlib.metadata import PackageNotFoundError, version
 
@@ -99,6 +100,7 @@ def build_filters(
     cost_max: float | None = None,
     latency_min: float | None = None,
     latency_max: float | None = None,
+    extra_filters: str | None = None,
 ) -> dict:
     """Build filter conditions for search endpoints."""
     filter_conditions = []
@@ -141,6 +143,13 @@ def build_filters(
         filter_conditions.append(
             {"field": "latency", "op": "lte", "value": latency_max}
         )
+
+    if extra_filters is not None:
+        parsed = json.loads(extra_filters)
+        if isinstance(parsed, list):
+            filter_conditions.extend(parsed)
+        else:
+            filter_conditions.append(parsed)
 
     if len(filter_conditions) == 0:
         return {}
