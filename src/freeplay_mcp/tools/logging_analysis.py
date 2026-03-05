@@ -229,7 +229,9 @@ async def find_logging_issues(
     api = get_search_api()
     conditions = []
     if template_name:
-        conditions.append({"field": "prompt_template", "op": "eq", "value": template_name})
+        conditions.append(
+            {"field": "prompt_template", "op": "eq", "value": template_name}
+        )
     if environment:
         conditions.append({"field": "environment", "op": "eq", "value": environment})
     if len(conditions) == 0:
