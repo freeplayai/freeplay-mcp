@@ -8,7 +8,7 @@ from freeplay_mcp.vendor.swagger_client.models.search_request import (
     SearchRequest,  # type: ignore[import-untyped]
 )
 
-from ..api_client import build_filters, get_search_api
+from ..api_client import get_search_api
 from ..response import ToolResponse
 
 
@@ -164,25 +164,13 @@ def _analyze_completions(
     missing_prompt_template_count = 0
 
     for comp in completions:
-        if isinstance(comp, dict):
-            session_id = comp.get("session_id")
-            input_variables = comp.get("input_variables")
-            metadata = comp.get("completion_metadata") or {}
-        else:
-            session_id = getattr(comp, "session_id", None)
-            input_variables = getattr(comp, "input_variables", None)
-            metadata = getattr(comp, "completion_metadata", None) or {}
-
-        if isinstance(metadata, dict):
-            environment = metadata.get("environment")
-            model = metadata.get("model")
-            provider = metadata.get("provider")
-            prompt_template = metadata.get("prompt_template")
-        else:
-            environment = getattr(metadata, "environment", None)
-            model = getattr(metadata, "model", None)
-            provider = getattr(metadata, "provider", None)
-            prompt_template = getattr(metadata, "prompt_template", None)
+        session_id = comp.get("session_id")
+        input_variables = comp.get("input_variables")
+        metadata = comp.get("completion_metadata") or {}
+        environment = metadata.get("environment")
+        model = metadata.get("model")
+        provider = metadata.get("provider")
+        prompt_template = metadata.get("prompt_template")
 
         if check_prompt_template and _is_empty(prompt_template):
             missing_prompt_template_count += 1
@@ -239,14 +227,26 @@ async def find_logging_issues(
         limit: Number of recent completions to analyze (default: 50)
     """
     api = get_search_api()
-    filters = build_filters(template_name=template_name, environment=environment)
+    conditions = []
+    if template_name:
+        conditions.append(
+            {"field": "prompt_template", "op": "eq", "value": template_name}
+        )
+    if environment:
+        conditions.append({"field": "environment", "op": "eq", "value": environment})
+    if len(conditions) == 0:
+        filters: dict = {}
+    elif len(conditions) == 1:
+        filters = conditions[0]
+    else:
+        filters = {"and": conditions}
 
     body = SearchRequest(filters=filters)
     result = await asyncio.to_thread(
         api.post_search_completions, project_id, body=body, page=1, page_size=limit
     )
 
-    completions = result.data if hasattr(result, "data") else []
+    completions = result.data
 
     if not completions:
         return LoggingAnalysisResponse(

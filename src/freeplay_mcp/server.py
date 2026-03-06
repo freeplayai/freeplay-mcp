@@ -14,9 +14,7 @@ from .tools import (
     list_projects,
     list_prompt_templates,
     optimize_prompt,
-    search_completions,
-    search_sessions,
-    search_traces,
+    search,
 )
 
 # Configure logging to stderr (stdout corrupts MCP JSON-RPC)
@@ -33,9 +31,7 @@ mcp = FastMCP("freeplay")
 # Register all tools with the MCP server
 TOOLS = [
     list_projects,
-    search_completions,
-    search_traces,
-    search_sessions,
+    search,
     list_prompt_templates,
     get_prompt_version,
     create_prompt_version,
