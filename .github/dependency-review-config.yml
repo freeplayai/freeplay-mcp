@@ -1,0 +1,23 @@
+fail-on-severity: high
+
+allow-licenses:
+  - MIT
+  - Apache-2.0
+  - BSD-2-Clause
+  - BSD-3-Clause
+  - ISC
+  - 0BSD
+  - Unlicense
+  - CC0-1.0
+  - Zlib
+  - PSF-2.0
+  - Python-2.0
+  - BlueOak-1.0.0
+  - BSL-1.0
+  - MITNFA
+  # MPL-2.0: weak copyleft — only requires sharing modifications to the
+  # licensed files themselves, not the consuming project. Used by certifi
+  # (Mozilla CA bundle), a transitive dependency of requests/httpx.
+  - MPL-2.0
+  - LicenseRef-scancode-protobuf
+  - MIT-0
