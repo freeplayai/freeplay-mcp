@@ -39,7 +39,7 @@ freeplay-mcp = "freeplay_mcp.server:main"
 dev = [
     "ruff>=0.9.7,<0.15",
     "basedpyright>=1.24.1,<2",
-    "pytest>=8.0.0,<9",
+    "pytest>=8.0.0,<10",
     "packaging>=24.0",
 ]
 
