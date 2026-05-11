@@ -1,6 +1,6 @@
 [project]
 name = "freeplay-mcp"
-version = "0.0.6"
+version = "0.0.7"
 description = "A Model Context Protocol server for Freeplay, the ops platform for AI engineering teams"
 readme = "README.md"
 license = "Apache-2.0"
@@ -21,7 +21,7 @@ dependencies = [
     "httpx>=0.28.0,<1.0",
     "pydantic>=2.0",
     "six>=1.10",
-    "urllib3>=1.15.1",
+    "urllib3>=2.6.3,<3",
     "python-dateutil>=2.5.3",
     "certifi>=14.05.14",
 ]

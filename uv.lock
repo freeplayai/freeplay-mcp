@@ -406,7 +406,7 @@ wheels = [
 
 [[package]]
 name = "freeplay-mcp"
-version = "0.0.6"
+version = "0.0.7"
 source = { editable = "." }
 dependencies = [
     { name = "certifi" },
@@ -434,7 +434,7 @@ requires-dist = [
     { name = "pydantic", specifier = ">=2.0" },
     { name = "python-dateutil", specifier = ">=2.5.3" },
     { name = "six", specifier = ">=1.10" },
-    { name = "urllib3", specifier = ">=1.15.1" },
+    { name = "urllib3", specifier = ">=2.6.3,<3" },
 ]
 
 [package.metadata.requires-dev]
