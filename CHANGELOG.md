@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.0.8] - 2026-08-07
+
+### Changed
+
+- Updated dependencies to remediate known security vulnerabilities.
+
 Notable additions, fixes, or breaking changes to the Freeplay MCP server.
 
 ## [0.0.3]
