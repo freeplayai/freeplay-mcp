@@ -54,6 +54,7 @@ packages = ["src/freeplay_mcp"]
 constraint-dependencies = [
     "click>=8.3.3",
     "cryptography>=50.0.0",
+    "mcp>=1.30.0",
 ]
 
 [tool.ruff]
